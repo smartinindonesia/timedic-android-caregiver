@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:orientation="vertical"
+    android:weightSum="4"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/appsLogo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/title_bar_white"/>
+
+</LinearLayout>

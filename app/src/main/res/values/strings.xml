@@ -1,4 +1,77 @@
 <resources>
-    <string name="app_name">Timedic Caregiver</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name">TiMedic Caregiver</string>
+    <string name="act_homecare">HOMECARE</string>
+    <string name="act_layanan_lokasi">PERAWAT</string>
+    <string name="act_map_selector">Pilih Lokasi</string>
+    <string name="act_select_patient">Pilih Pasien</string>
+    <string name="act_assessment">Assessment</string>
+    <string name="act_add_patient">Tambahkan Pasien</string>
+    <string name="act_date_time_pick">Tanggal dan Waktu</string>
+    <string name="act_resume">Rangkuman</string>
+    <string name="facebook_app_id">2018267148428273</string>
+
+    <string name="act_medical_record">Medical Record</string>
+
+    <string name="act_heatlh_calculator">Health Calculator</string>
+    <string name="act_imt">Indeks Masa Tubuh</string>
+    <string name="act_bbi">Berat Badan Ideal</string>
+    <string name="act_preg_cal">Taksiran Kehamilan</string>
+    <string name="act_fluid_req">Kebutuhan Cairan</string>
+    <string name="act_callories_calc">Kebutuhan Kalori</string>
+
+    <string name="act_health_product">Health Product</string>
+    <string name="act_health_video">Health Video</string>
+    <string name="act_medicine_reminder">Medicine Reminder</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!--Main message-->
+    <string name="login_failed_unauthorized">Maaf, password salah!</string>
+    <string name="login_failed_user_not_found">Maaf, username tidak ditemukan!</string>
+    <string name="login_err_unknown">Gagal melakukan login!</string>
+    <string name="session_time_out">Session anda telah berakhir. Mohon login ulang!</string>
+    <string name="network_problem">Jaringan bermasalah!</string>
+    <string name="additional_info_map_selector">ex : RT 01/RW 03 depan masjid Al-Ikhlas</string>
+    <string name="null_assessment">Terdapat asessmen yang belum dilengkapi!</string>
+    <string name="transaction_success">Proses transaksi berhasil dilakukan. Silahkan tunggu konfirmasi dari kami!</string>
+    <string name="transaction_failed">Proses transaksi gagal dilakukan. Silahkan coba lagi!</string>
+
+    <!-- screen first layout-->
+    <string name="first_msg"></string>
+    <string name="second_msg">Akses mudah melihat data-data kesehatan anda</string>
+    <string name="third_msg">Dapatkan alat-alat kesehatan yang anda butuhkan dengan mudah, aman dan berkualitas</string>
+    <string name="fourth_msg">Gunakan tools menarik disini seperti pengingat obat dan kalkulator kesehatan </string>
+    <string name="fifth_msg">Tonton video menarik mengenai tips dan trik dalam dunia kesehatan</string>
+
+    <string name="order_notif_msg">Pemesanan hanya dapat dilakukan maksimal 2 hari sebelum tanggal pelayanan</string>
+    <string name="thanks_page_msg1">Terima Kasih,
+Anda akan kami hubungi secepatnya untuk ketersediaan Perawat
+dan menjawab seluruh pertanyaan-pertanyaan anda
+    </string>
+    <string name="thanks_page_msg2">Biaya Kunjungan pengkajian awal pasien.</string>
+    <string name="thanks_page_price">Rp.......,- </string>
+
+    <string name="thanks_page_msg3">Kisaran harga layanan ini
+    </string>
+    <string name="thanks_page_msg4">Harga pas (Final) akan di tentukan sesuai kondisi pasien
+setelah kami melakukan kunjungan kerumah anda
+    </string>
+    <string name="thanks_page_msg5">TiMedic - Kami Rawat di Rumah Anda</string>
+
+    <string name="term_of_agreement">I agree with the term of service agreement</string>
+
+
+    <string name="cek_lab_notification">Masukkan jenis-jenis tes yang anda inginkan dibawah ini</string>
+    <string name="cek_lab_notification2">Upload gambar jika anda memiliki rujukan dokter</string>
+
+    <!-- Youtube Message -->
+    <string name="player_error">Error initializing YouTube player: %s</string>
+    <string name="seek_to">Jump To</string>
+    <string name="seek_to_hint">Seconds</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
