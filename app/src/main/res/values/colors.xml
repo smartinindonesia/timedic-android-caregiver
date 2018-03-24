@@ -28,4 +28,5 @@
     <color name="theme_pink">#ED3571</color>
     <color name="theme_gray">#EEEEEE</color>
     <color name="theme_black">#373435</color>
+    <color name="theme_link">#0000FF</color>
 </resources>
