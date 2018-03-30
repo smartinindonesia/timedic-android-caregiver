@@ -8,6 +8,9 @@
     <string name="act_add_patient">Tambahkan Pasien</string>
     <string name="act_date_time_pick">Tanggal dan Waktu</string>
     <string name="act_resume">Rangkuman</string>
+    <string name="act_account_setting">Profil</string>
+    <string name="act_sign_up">Pendaftaran Akun</string>
+    <string name="act_change_pass">Perubahan Password</string>
     <string name="facebook_app_id">2018267148428273</string>
 
     <string name="act_medical_record">Medical Record</string>
@@ -73,5 +76,6 @@ setelah kami melakukan kunjungan kerumah anda
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="term_of_agreement_link"><u>Persyaratan dan Ketentuan</u></string>
 
 </resources>

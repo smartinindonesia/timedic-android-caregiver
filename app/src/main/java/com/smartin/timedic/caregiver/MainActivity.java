@@ -13,7 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 
+import com.smartin.timedic.caregiver.fragment.AccountFragment;
 import com.smartin.timedic.caregiver.fragment.BlankFragment;
+import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
+import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +42,16 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.ic_tab_account
     };
 
+    private HomecareSessionManager homecareSessionManager;
+    private UserAPIInterface userAPIInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //setSupportActionBar(toolbar);
-        //createTitleBar();
+        setSupportActionBar(toolbar);
+        createTitleBar();
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
@@ -56,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new BlankFragment(), "Home");
-        //adapter.addFragment(new BlankFragment(), "Your Order");
-        //adapter.addFragment(new BlankFragment(), "Redeem Point");
-        //adapter.addFragment(new BlankFragment(), "Account");
+        adapter.addFragment(new BlankFragment(), "Your Order");
+        adapter.addFragment(new BlankFragment(), "Schedule");
+        adapter.addFragment(new AccountFragment(), "Account");
         viewPager.setAdapter(adapter);
     }
 
@@ -106,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-       //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
 

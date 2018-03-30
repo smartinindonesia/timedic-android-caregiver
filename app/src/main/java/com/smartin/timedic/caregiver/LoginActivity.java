@@ -1,13 +1,23 @@
 package com.smartin.timedic.caregiver;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.Intent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -26,13 +36,38 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.shaishavgandhi.loginbuttons.FacebookButton;
+import com.smartin.timedic.caregiver.config.PermissionConst;
+import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
+import com.smartin.timedic.caregiver.model.User;
+import com.smartin.timedic.caregiver.model.responsemodel.LoginResponse;
+import com.smartin.timedic.caregiver.tools.AesUtil;
+import com.smartin.timedic.caregiver.tools.restservice.APIClient;
+import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
 import java.util.Arrays;
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = "FACELOG";
+    public static final String TAG = "[LoginActivity]";
+
+    @BindView(R.id.btnSignIn)
+    Button signIn;
+    @BindView(R.id.emailAddress)
+    EditText username;
+    @BindView(R.id.password)
+    EditText password;
+    @BindView(R.id.mainLayout)
+    CoordinatorLayout mainLayout;
+    @BindView(R.id.btnSignup)
+    Button signUp;
 
     private CallbackManager mCallbackManager;
 
@@ -44,11 +79,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String fullName, email, urlPhoto;
 
+    private UserAPIInterface userAPIInterface;
+
+    private HomecareSessionManager homecareSessionManager;
+    private User user;
+    private boolean checkPermission = false;
+    private SweetAlertDialog progressDialog;
+
+    private static final int MY_PERMISSIONS_REQUEST = 999;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
         initSharedPreferences();
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
+
+        userAPIInterface = APIClient.getClient().create(UserAPIInterface.class);
+        homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -56,8 +107,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
-
         facebookButton = findViewById(R.id.btnFacebook);
+
+        if (homecareSessionManager.isLogin()) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
+
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "Sudah pencet tombol sign in");
+                doLogin();
+            }
+        });
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newinten = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(newinten);
+            }
+        });
+        setPermission();
+
+
+
 
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +203,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success");
                     FirebaseUser user = mAuth.getCurrentUser();
+
                     final GetTokenResult idTokenResult = user.getIdToken(false).getResult();
+
                     Log.d("User ID nya ", user.getUid());
+
+
+                    /*
                     Log.d("Provider ID nya ", user.getProviderId());
                     Log.d("Namanya ", user.getDisplayName());
                     Log.d("Email ", user.getEmail());
@@ -143,7 +222,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("email", user.getEmail());
                     editor.putString("urlPhoto", user.getPhotoUrl().toString());
                     editor.apply();
-
+                    */
+                    homecareSessionManager.createLoginSession(null, "");
 
                     facebookButton.setEnabled(true);
 
@@ -176,6 +256,65 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         urlPhoto = mSharedPreferences.getString("urlPhoto","");
     }
 
+    private void setPermission() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, PermissionConst.listPermission, MY_PERMISSIONS_REQUEST);
+        }
+    }
+
+    public void doLogin() {
+        openProgress("Loading...", "Proses Login!");
+
+        String shahex = AesUtil.Encrypt(password.getText().toString());
+        Call<LoginResponse> responseCall = userAPIInterface.loginUser(username.getText().toString(), shahex);
+        responseCall.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                closeProgress();
+                if (response.code() == 200) {
+                    Log.i(TAG, response.body().getUser().toString());
+                    Log.i(TAG, "NEW TOKEN " + response.body().getToken());
+                    gotoMainPage(response.body().getUser(), response.body().getToken());
+                } else if (response.code() == 401) {
+                    Log.i(TAG, response.raw().toString());
+                    Snackbar.make(mainLayout, getResources().getString(R.string.login_failed_unauthorized), Snackbar.LENGTH_LONG).show();
+                } else if (response.code() == 404) {
+                    Snackbar.make(mainLayout, getResources().getString(R.string.login_failed_user_not_found), Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(mainLayout, getResources().getString(R.string.login_err_unknown), Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Snackbar.make(mainLayout, getResources().getString(R.string.network_problem), Snackbar.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    private void openProgress(String title, String content){
+        progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        progressDialog.setTitleText(title);
+        progressDialog.setContentText(content);
+        progressDialog.setCanceledOnTouchOutside(true);
+        progressDialog.show();
+    }
+
+    private void closeProgress(){
+        progressDialog.dismiss();
+    }
+
+    public void gotoMainPage(User usr, String token) {
+        homecareSessionManager.createLoginSession(usr, token);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 }
 

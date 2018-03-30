@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Username"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="text"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Password"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Nama Depan"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="text"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Nama Tengah"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/middleName"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="text"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Nama Belakang"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="text"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Nomor Telefon"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/phoneUser"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="number"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Email"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/emailAddress"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Tanggal Lahir"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.6"
+                android:orientation="horizontal"
+                android:paddingTop="5dp">
+
+                <EditText
+                    android:id="@+id/dateOfBirth"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/calculator_input_height"
+                    android:layout_weight="0.6"
+                    android:background="@drawable/bg_gray_rounded_textfield"
+                    android:enabled="false"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/calculator_input_padding"
+                    android:paddingRight="@dimen/calculator_input_padding" />
+
+                <ImageButton
+                    android:id="@+id/selectDOB"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/calculator_input_height"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/orange_selector_button_bg"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_select_date_white" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/chkAgreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/term_of_agreement"
+            android:textColor="@color/black_link_color" />
+
+        <TextView
+            android:id="@+id/agreementLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/calculator_row_space"
+            android:paddingLeft="31dp"
+            android:text="@string/term_of_agreement_link"
+            android:textColor="@color/blue_link_color" />
+
+        <Button
+            android:id="@+id/signUP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_selector_button_bg"
+            android:textColorHint="@color/button_text_color"
+            android:hint="Daftarkan"/>
+
+    </LinearLayout>
+</ScrollView>

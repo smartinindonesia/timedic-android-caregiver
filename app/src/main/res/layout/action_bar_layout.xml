@@ -13,6 +13,6 @@
         android:layout_weight="2"
         android:layout_gravity="center"
         android:scaleType="centerInside"
-        android:src="@drawable/title_bar_white"/>
+        android:src="@drawable/title_bar_white_new"/>
 
 </LinearLayout>
