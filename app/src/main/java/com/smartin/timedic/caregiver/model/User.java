@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Created by Hafid on 9/8/2017.
  */
 
-public class User implements Serializable{
+public class User implements Serializable {
     public static final String TAG = "[User]";
 
     @SerializedName("id")
@@ -17,7 +17,7 @@ public class User implements Serializable{
     @SerializedName("address")
     private String address;
     @SerializedName("dateBirth")
-    private String dateBirth;
+    private Long dateBirth;
     @SerializedName("email")
     private String email;
     @SerializedName("frontName")
@@ -50,6 +50,12 @@ public class User implements Serializable{
     private boolean credentialsNonExpired;
     @SerializedName("enabled")
     private boolean enabled;
+    @SerializedName("firebaseIdFacebook")
+    private String firebaseIdFacebook;
+    @SerializedName("firebaseIdGoogle")
+    private String firebaseIdGoogle;
+    @SerializedName("fcmToken")
+    private String fcmToken;
 
     public Long getId() {
         return id;
@@ -67,11 +73,11 @@ public class User implements Serializable{
         this.address = address;
     }
 
-    public String getDateBirth() {
+    public Long getDateBirth() {
         return dateBirth;
     }
 
-    public void setDateBirth(String dateBirth) {
+    public void setDateBirth(Long dateBirth) {
         this.dateBirth = dateBirth;
     }
 
@@ -202,6 +208,31 @@ public class User implements Serializable{
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    public String getFirebaseIdFacebook() {
+        return firebaseIdFacebook;
+    }
+
+    public void setFirebaseIdFacebook(String firebaseIdFacebook) {
+        this.firebaseIdFacebook = firebaseIdFacebook;
+    }
+
+    public String getFirebaseIdGoogle() {
+        return firebaseIdGoogle;
+    }
+
+    public void setFirebaseIdGoogle(String firebaseIdGoogle) {
+        this.firebaseIdGoogle = firebaseIdGoogle;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
 
     @Override
     public String toString() {

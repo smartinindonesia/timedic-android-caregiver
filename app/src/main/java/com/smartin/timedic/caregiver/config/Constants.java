@@ -23,6 +23,7 @@ public class Constants {
     //AUTH CAREGIVER
     public static final String ROUTE_LOGIN_CAREGIVER = "/authenticate/caregiver?";
     public static final String ROUTE_REGISTER_CAREGIVER = "/register/caregiver";
+    public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/user?";
 
     //HOMESTAY HOMEVISIT
     public static final String ROUTE_HOMECARE_SERVICES_GET = "/api/homecareservices";

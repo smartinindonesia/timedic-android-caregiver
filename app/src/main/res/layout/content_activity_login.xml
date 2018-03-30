@@ -134,7 +134,7 @@
                 android:layout_height="0dp"/>
 
             <com.shaishavgandhi.loginbuttons.GooglePlusButton
-                android:id="@+id/btnFaceboo"
+                android:id="@+id/btnGoogleSignIn"
                 android:layout_weight="0.475"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

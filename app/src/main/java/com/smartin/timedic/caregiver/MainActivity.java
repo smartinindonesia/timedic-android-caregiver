@@ -10,12 +10,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.smartin.timedic.caregiver.fragment.AccountFragment;
 import com.smartin.timedic.caregiver.fragment.BlankFragment;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
+import com.smartin.timedic.caregiver.model.User;
+import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
 import java.util.ArrayList;
@@ -23,6 +27,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
-        //sendFCMTokenToServer();
+        sendFCMTokenToServer();
 
     }
 
@@ -117,5 +125,29 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
+    private void sendFCMTokenToServer(){
+        homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
+        User user = homecareSessionManager.getUserDetail();
+        String initialFCMToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "ID USER : "+user.getId());
+        Log.d(TAG, "FCM TOKEN SEND : "+initialFCMToken);
+        /*
+        user.setFcmToken(initialFCMToken);
+        userAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(UserAPIInterface.class);
+        Call<ResponseBody> services = userAPIInterface.updateUser(user.getId(), user);
+        services.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, "FCM Token Updated");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.i(TAG, "Update FCM Token Failed");
+                homecareSessionManager.logout();
+            }
+        });
+        */
+    }
 
 }

@@ -21,12 +21,16 @@ public class RegisterParam {
     private String middlename;
     @SerializedName("lastname")
     private String lastname;
-    @SerializedName("phone")
+    @SerializedName("phoneNumber")
     private String phone;
     @SerializedName("email")
     private String email;
-    @SerializedName("dateOfBirth")
+    @SerializedName("dateBirth")
     private Long dateOfBirth;
+    @SerializedName("firebaseIdFacebook")
+    private String firebaseIdFacebook;
+    @SerializedName("firebaseIdGoogle")
+    private String firebaseIdGoogle;
 
     public String getUsername() {
         return username;
@@ -103,6 +107,22 @@ public class RegisterParam {
 
     public boolean passwordValidator(String password){
         return this.password.equals(password);
+    }
+
+    public String getFirebaseIdFacebook() {
+        return firebaseIdFacebook;
+    }
+
+    public void setFirebaseIdFacebook(String firebaseIdFacebook) {
+        this.firebaseIdFacebook = firebaseIdFacebook;
+    }
+
+    public String getFirebaseIdGoogle() {
+        return firebaseIdGoogle;
+    }
+
+    public void setFirebaseIdGoogle(String firebaseIdGoogle) {
+        this.firebaseIdGoogle = firebaseIdGoogle;
     }
 
 }

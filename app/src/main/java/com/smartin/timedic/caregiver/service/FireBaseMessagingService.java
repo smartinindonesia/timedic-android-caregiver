@@ -1,16 +1,16 @@
-package com.smartin.timedic.caregiver;
+package com.smartin.timedic.caregiver.service;
 
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-/**
- * Created by adipura on 3/17/2018.
- */
+public class FireBaseMessagingService extends FirebaseMessagingService {
+    public static final String TAG = "[FireBaseMessaging]";
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
-    private static final String TAG = "FCM Service";
+    public FireBaseMessagingService() {
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -20,6 +20,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated.
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-    }
 
+        NotificationCompat.Builder noBuilder = new NotificationCompat.Builder(this)
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentText(remoteMessage.getNotification().getBody())
+                .setAutoCancel(true);
+    }
 }

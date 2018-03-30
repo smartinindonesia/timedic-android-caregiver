@@ -27,6 +27,15 @@ import com.facebook.login.LoginResult;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -35,8 +44,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.shaishavgandhi.loginbuttons.FacebookButton;
+import com.shaishavgandhi.loginbuttons.GooglePlusButton;
 import com.smartin.timedic.caregiver.config.PermissionConst;
+import com.smartin.timedic.caregiver.config.RequestCode;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.model.responsemodel.LoginResponse;
@@ -69,11 +81,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.btnSignup)
     Button signUp;
 
+    @BindView(R.id.btnGoogleSignIn)
+    GooglePlusButton btnGoogleSignIn;
+
     private CallbackManager mCallbackManager;
 
     private FirebaseAuth mAuth;
-
     private FacebookButton facebookButton;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private GoogleSignInOptions gso;
+    private GoogleApiClient mGoogleApiClient;
+
+
 
     private SharedPreferences mSharedPreferences;
 
@@ -163,6 +183,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        googleLoginInit();
 
     }
 
@@ -188,8 +209,115 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RequestCode.REQUEST_GOOGLE_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+
+                //updateUI();
+
+            } else {
+                // Google Sign In failed, update UI appropriately
+                // ...
+            }
+        }
+
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        openProgress("Loading...", "Proses verifikasi!");
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        closeProgress();
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
+                        } else {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                // User is signed in
+                                doLoginFirebase(user, "google");
+
+                                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                            } else {
+                                // User is signed out
+                                Log.d(TAG, "onAuthStateChanged:signed_out");
+                            }
+                            //Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+    }
+
+    public void doLoginFirebase(final FirebaseUser user, String type) {
+        openProgress("Loading...", "Proses Login!");
+
+        Call<LoginResponse> responseCall = userAPIInterface.loginUserWithFirebase(user.getUid().toString(), type);
+        responseCall.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                closeProgress();
+                if (response.code() == 200) {
+                    Log.i(TAG, response.body().getUser().toString());
+                    Log.i(TAG, "NEW TOKEN " + response.body().getToken());
+                    gotoMainPage(response.body().getUser(), response.body().getToken());
+                } else if (response.code() == 401) {
+                    Log.i(TAG, response.raw().toString());
+                    gotoFirebaseSignUpPage(user);
+                    Snackbar.make(mainLayout, getResources().getString(R.string.login_failed_unauthorized), Snackbar.LENGTH_LONG).show();
+                } else if (response.code() == 404) {
+                    Snackbar.make(mainLayout, getResources().getString(R.string.login_failed_user_not_found), Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(mainLayout, getResources().getString(R.string.login_err_unknown), Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Snackbar.make(mainLayout, getResources().getString(R.string.network_problem), Snackbar.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    private void gotoFirebaseSignUpPage(FirebaseUser fbaseuser) {
+        User user = new User();
+        String name[] = fbaseuser.getDisplayName().split(" ");
+        String elaborateLastName = "";
+        for (int i = 0; i < name.length; i++) {
+            if (i == 0) {
+                user.setFrontName(name[i]);
+            } else if (i == 1) {
+                user.setMiddleName(name[i]);
+            } else if (i > 1) {
+                elaborateLastName = elaborateLastName + " " + name[i];
+                user.setLastName(elaborateLastName);
+            }
+        }
+        user.setPhotoPath(fbaseuser.getPhotoUrl().toString());
+        user.setPhoneNumber(fbaseuser.getPhoneNumber());
+        user.setEmail(fbaseuser.getEmail());
+        user.setFirebaseIdGoogle(fbaseuser.getUid());
+        Intent intent = new Intent(this, FUserSignUpActivity.class);
+        intent.putExtra("fbase_user", user);
+        startActivity(intent);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -313,7 +441,68 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         homecareSessionManager.createLoginSession(usr, token);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
-        finish();
+    }
+
+    private void googleLoginInit() {
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    //doLoginFirebase(user, "google");
+
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+        btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    signIn();
+                    Log.d(TAG, "Sign in");
+                } else {
+                    signOut();
+                    Log.d(TAG, "Signed Out");
+                }
+            }
+        });
+    }
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RequestCode.REQUEST_GOOGLE_SIGN_IN);
+    }
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+
+                    }
+                });
     }
 
 }
