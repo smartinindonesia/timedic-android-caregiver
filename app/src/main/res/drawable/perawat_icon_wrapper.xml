@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/perawat_icon"
+        android:width="@dimen/icn_sz"
+        android:height="@dimen/icn_sz"/>
+
+</layer-list >

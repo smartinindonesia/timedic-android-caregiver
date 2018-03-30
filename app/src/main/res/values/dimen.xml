@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_home_care_padding">10dp</dimen>
+    <dimen name="global_act_padding">4dp</dimen>
+    <dimen name="global_page_padding">5dp</dimen>
+    <dimen name="global_page_small_pad">40dp</dimen>
+    <dimen name="fab_margin">5dp</dimen>
+    <dimen name="icn_sz">80dp</dimen>
+
+    <dimen name="calculator_devider_space">10dp</dimen>
+    <dimen name="calculator_input_height">34dp</dimen>
+    <dimen name="calculator_input_padding">5dp</dimen>
+    <dimen name="calculator_page_padding">20dp</dimen>
+    <dimen name="calculator_hint_size">18sp</dimen>
+    <dimen name="calculator_row_space">3dp</dimen>
+</resources>
