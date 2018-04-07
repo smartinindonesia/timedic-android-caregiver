@@ -1,11 +1,8 @@
 package com.smartin.timedic.caregiver.tools.restservice;
 
 import com.smartin.timedic.caregiver.config.Constants;
-import com.smartin.timedic.caregiver.model.User;
-import com.smartin.timedic.caregiver.model.parammodel.PasswordProfile;
-import com.smartin.timedic.caregiver.model.parammodel.RegisterParam;
-import com.smartin.timedic.caregiver.model.parammodel.UserProfile;
-import com.smartin.timedic.caregiver.model.responsemodel.LoginResponse;
+import com.smartin.timedic.caregiver.model.parammodel.ScheduleParam;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,12 +16,18 @@ import retrofit2.http.Query;
  * Created by Hafid on 1/2/2018.
  */
 
-public interface UserAPIInterface {
+public interface ScheduleInterface {
+
+
+    @POST(Constants.ROUTE_ADD_SCHEDULE)
+    Call<ResponseBody> addSchedule(@Body ScheduleParam param);
+
+    @POST(Constants.ROUTE_CHECK_SCHEDULE_DATA)
+    Call<ResponseBody> cekScheduleData(@Query("idCaregiver") Long idCaregiver, @Query("day") String day);
+
+    /*
     @POST(Constants.ROUTE_LOGIN_CAREGIVER)
     Call<LoginResponse> loginUser(@Query("username") String username, @Query("password") String password);
-
-    @POST(Constants.ROUTE_REGISTER_CAREGIVER)
-    Call<ResponseBody> registerUser(@Body RegisterParam param);
 
     @POST(Constants.ROUTE_LOGIN_FIREBASE)
     Call<LoginResponse> loginUserWithFirebase(@Query("firebaseId") String firebaseId, @Query("type") String type);
@@ -40,4 +43,5 @@ public interface UserAPIInterface {
 
     @GET(Constants.ROUTE_CAREGIVER_BY_ID + "{id}")
     Call<User> getProfile(@Path(value = "id", encoded = true) Long id);
+    */
 }

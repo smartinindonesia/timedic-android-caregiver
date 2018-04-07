@@ -16,7 +16,9 @@ import android.view.View;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.smartin.timedic.caregiver.fragment.AccountFragment;
-import com.smartin.timedic.caregiver.fragment.BlankFragment;
+import com.smartin.timedic.caregiver.fragment.ScheduleFragment;
+import com.smartin.timedic.caregiver.fragment.HomeFragment;
+import com.smartin.timedic.caregiver.fragment.Trx;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private int[] tabIcons = {
             R.drawable.ic_tab_home,
             R.drawable.ic_tab_yourorder,
-            R.drawable.ic_tab_redeempoint,
+            R.drawable.ic_tab_schedule,
             R.drawable.ic_tab_account
     };
 
@@ -69,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new BlankFragment(), "Home");
-        adapter.addFragment(new BlankFragment(), "Your Order");
-        adapter.addFragment(new BlankFragment(), "Schedule");
+        adapter.addFragment(new HomeFragment(), "Home");
+        adapter.addFragment(new Trx(), "Your Order");
+        adapter.addFragment(new ScheduleFragment(), "Your ScheduleFragment");
         adapter.addFragment(new AccountFragment(), "Account");
         viewPager.setAdapter(adapter);
     }
@@ -131,10 +133,12 @@ public class MainActivity extends AppCompatActivity {
         String initialFCMToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "ID USER : "+user.getId());
         Log.d(TAG, "FCM TOKEN SEND : "+initialFCMToken);
-        /*
+
         user.setFcmToken(initialFCMToken);
+
         userAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(UserAPIInterface.class);
         Call<ResponseBody> services = userAPIInterface.updateUser(user.getId(), user);
+
         services.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -147,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 homecareSessionManager.logout();
             }
         });
-        */
+
     }
 
 }

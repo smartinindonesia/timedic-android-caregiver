@@ -16,17 +16,16 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.model.parammodel.PasswordProfile;
-
 import com.smartin.timedic.caregiver.tools.AesUtil;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +34,8 @@ import retrofit2.Response;
 public class ChangePasswordActivity extends AppCompatActivity {
     public static final String TAG = "[ChangePasswordAct]";
 
+    @BindView(R.id.oldPassword)
+    EditText oldPassword;
     @BindView(R.id.password)
     EditText password;
     @BindView(R.id.rePassword)
@@ -101,7 +102,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     public void createTitleBar() {
         setSupportActionBar(toolbar);
-        ViewFaceUtility.changeToolbarFont(toolbar, this, "fonts/Dosis-Bold.otf", R.color.theme_black);
+        ViewFaceUtility.changeToolbarFont(toolbar, this, "fonts/BalooBhaina-Regular.ttf", R.color.theme_black);
         ActionBar mActionbar = getSupportActionBar();
         mActionbar.setDisplayHomeAsUpEnabled(true);
         mActionbar.setDefaultDisplayHomeAsUpEnabled(true);
@@ -118,17 +119,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     public void doUpdatePassword() {
         Log.i(TAG, password.getText().toString());
+        Boolean isOldPass = AesUtil.Decrypt(user.getPassword()).equals(oldPassword.getText().toString());
         PasswordProfile registerParam = new PasswordProfile();
         String shahex = AesUtil.Encrypt(password.getText().toString());
         registerParam.setPassword(shahex);
-        if (!password.getText().toString().trim().equals("")) {
-            if (password.getText().toString().equals(retypePassword.getText().toString())) {
-                postData(registerParam);
+        if (isOldPass) {
+            if (!password.getText().toString().trim().equals("")) {
+                if (password.getText().toString().equals(retypePassword.getText().toString())) {
+                    postData(registerParam);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Password tidak sesuai, harap diulang kembali!", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(getApplicationContext(), "Password tidak sesuai, harap diulang kembali!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Password tidak boleh kosong!", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Password tidak boleh kosong!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Password lama tidak sesuai!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -139,7 +145,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
                     Toast.makeText(getApplicationContext(), "Password berhasil diganti!", Toast.LENGTH_LONG).show();
-                    finish();
+                    getUserDetail();
                 } else {
                     Toast.makeText(getApplicationContext(), "Penggantian password baru gagal!", Toast.LENGTH_LONG).show();
                 }
@@ -149,6 +155,24 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 call.cancel();
                 homecareSessionManager.logout();
+            }
+        });
+    }
+
+    public void getUserDetail() {
+        final Call<User> resp = userAPIInterface.getProfile(user.getId());
+        resp.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                user = response.body();
+                homecareSessionManager.updateProfile(user);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "Jaringan bermasalah!", Toast.LENGTH_LONG).show();
             }
         });
     }

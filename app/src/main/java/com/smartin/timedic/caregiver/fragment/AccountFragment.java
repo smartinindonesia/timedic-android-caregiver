@@ -49,20 +49,28 @@ public class AccountFragment extends Fragment {
 
     @BindView(R.id.accountLayout)
     LinearLayout accountLayout;
+
     @BindView(R.id.btnLogout)
     LinearLayout logoutBtn;
+
     @BindView(R.id.btnRateApp)
     LinearLayout btnRateApp;
+
     @BindView(R.id.accountSetting)
     TextView accountSetting;
+
     @BindView(R.id.btnChangePassword)
     LinearLayout btnChangePassword;
+
     @BindView(R.id.btnPushNotification)
     RelativeLayout btnPushNotif;
+
     @BindView(R.id.turnNotification)
     Switch notifToggle;
+
     @BindView(R.id.btnPrivacy)
     LinearLayout btnPrivacy;
+
     @BindView(R.id.btnTermAndCond)
     LinearLayout btnTermAndCond;
 
@@ -72,7 +80,6 @@ public class AccountFragment extends Fragment {
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,8 +91,7 @@ public class AccountFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View newView = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, newView);
@@ -137,6 +143,7 @@ public class AccountFragment extends Fragment {
                 }
             }
         });
+
         btnRateApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,18 +203,6 @@ public class AccountFragment extends Fragment {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
+
     }
 }

@@ -14,14 +14,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
+import com.smartin.timedic.caregiver.model.GenderOption;
 import com.smartin.timedic.caregiver.model.User;
 
 import com.smartin.timedic.caregiver.model.parammodel.UserProfile;
@@ -55,6 +61,11 @@ public class AccountSettingActivity extends AppCompatActivity {
     TextView emailAddress;
     @BindView(R.id.mainLayout)
     RelativeLayout mainLayout;
+    @BindView(R.id.genderSpin)
+    Spinner genderSpin;
+
+    GenderSpinnerAdapter adapterGender;
+    List<GenderOption> genderOptions;
 
     private UserAPIInterface userAPIInterface;
     private HomecareSessionManager homecareSessionManager;
@@ -68,6 +79,13 @@ public class AccountSettingActivity extends AppCompatActivity {
         homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
         userAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(UserAPIInterface.class);
         createTitleBar();
+
+        genderOptions = new ArrayList<>();
+        genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-Laki"));
+        genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
+        adapterGender = new GenderSpinnerAdapter(this, genderOptions);
+        genderSpin.setAdapter(adapterGender);
+
         user = homecareSessionManager.getUserDetail();
         fillTheForm();
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +170,13 @@ public class AccountSettingActivity extends AppCompatActivity {
         lastName.setText(user.getLastName());
         phone.setText(user.getPhoneNumber());
         emailAddress.setText(user.getEmail());
+        if(user.getGender().equals("Laki-Laki")){
+            genderSpin.setSelection(0);
+        }
+        else{
+            genderSpin.setSelection(1);
+        }
+
     }
 
     @Override
@@ -187,6 +212,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         registerParam.setMiddleName(middleName.getText().toString());
         registerParam.setPhoneNumber(phone.getText().toString());
         registerParam.setEmail(emailAddress.getText().toString());
+        registerParam.setGender(genderSpin.getSelectedItem().toString());
 
         if (registerParam.isValidPhone()) {
             try {

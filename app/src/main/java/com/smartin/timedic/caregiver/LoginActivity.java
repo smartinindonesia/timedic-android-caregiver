@@ -45,6 +45,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.shaishavgandhi.loginbuttons.FacebookButton;
 import com.shaishavgandhi.loginbuttons.GooglePlusButton;
 import com.smartin.timedic.caregiver.config.PermissionConst;
@@ -66,7 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "[LoginActivity]";
 
@@ -88,11 +89,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private FacebookButton facebookButton;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
-
 
 
     private SharedPreferences mSharedPreferences;
@@ -151,8 +150,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setPermission();
 
 
-
-
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,19 +185,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            updateUI();
+        if (currentUser != null) {
+            if(currentUser.getProviders().get(0).equals("google.com")){
+                doLoginFirebase(currentUser, "google");
+            }
+            else if(currentUser.getProviders().get(0).equals("facebook.com")){
+                doLoginFirebase(currentUser, "facebook");
+            }
+        }
+        else {
+            //back to login
         }
     }
 
-    private void updateUI(){
+    private void updateUI() {
         Toast.makeText(LoginActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
 
-        Intent profileIntent = new Intent(this, MainActivity.class);
+        Intent profileIntent = new Intent(this, LoginActivity.class);
         startActivity(profileIntent);
         finish();
     }
@@ -248,6 +259,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
                         } else {
                             FirebaseUser user = mAuth.getCurrentUser();
+
                             if (user != null) {
                                 // User is signed in
                                 doLoginFirebase(user, "google");
@@ -265,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    public void doLoginFirebase(final FirebaseUser user, String type) {
+    public void doLoginFirebase(final FirebaseUser user, final String type) {
         openProgress("Loading...", "Proses Login!");
 
         Call<LoginResponse> responseCall = userAPIInterface.loginUserWithFirebase(user.getUid().toString(), type);
@@ -279,7 +291,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     gotoMainPage(response.body().getUser(), response.body().getToken());
                 } else if (response.code() == 401) {
                     Log.i(TAG, response.raw().toString());
-                    gotoFirebaseSignUpPage(user);
+                    gotoFirebaseSignUpPage(user, type);
                     Snackbar.make(mainLayout, getResources().getString(R.string.login_failed_unauthorized), Snackbar.LENGTH_LONG).show();
                 } else if (response.code() == 404) {
                     Snackbar.make(mainLayout, getResources().getString(R.string.login_failed_user_not_found), Snackbar.LENGTH_LONG).show();
@@ -297,7 +309,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    private void gotoFirebaseSignUpPage(FirebaseUser fbaseuser) {
+    private void gotoFirebaseSignUpPage(FirebaseUser fbaseuser, String type) {
         User user = new User();
         String name[] = fbaseuser.getDisplayName().split(" ");
         String elaborateLastName = "";
@@ -314,7 +326,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.setPhotoPath(fbaseuser.getPhotoUrl().toString());
         user.setPhoneNumber(fbaseuser.getPhoneNumber());
         user.setEmail(fbaseuser.getEmail());
-        user.setFirebaseIdGoogle(fbaseuser.getUid());
+        if(type.equals("google")){
+            user.setFirebaseIdGoogle(fbaseuser.getUid());
+        }
+        else if(type.equals("facebook")){
+            user.setFirebaseIdFacebook(fbaseuser.getUid());
+        }
         Intent intent = new Intent(this, FUserSignUpActivity.class);
         intent.putExtra("fbase_user", user);
         startActivity(intent);
@@ -336,26 +353,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     Log.d("User ID nya ", user.getUid());
 
-
-                    /*
-                    Log.d("Provider ID nya ", user.getProviderId());
-                    Log.d("Namanya ", user.getDisplayName());
-                    Log.d("Email ", user.getEmail());
-                    //Log.d("Phone ", user.getPhoneNumber());
-                    Log.d("Photo ", Objects.toString(user.getPhotoUrl()));
-                    Log.d("ID token firebase =", idTokenResult.getToken());
-
-                    SharedPreferences.Editor editor = mSharedPreferences.edit();
-                    editor.putString("name", user.getDisplayName());
-                    editor.putString("email", user.getEmail());
-                    editor.putString("urlPhoto", user.getPhotoUrl().toString());
-                    editor.apply();
-                    */
-                    homecareSessionManager.createLoginSession(null, "");
-
+                    doLoginFirebase(user, "facebook");
                     facebookButton.setEnabled(true);
-
-                    updateUI();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -363,25 +362,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     facebookButton.setEnabled(true);
 
-                    updateUI();
+                    //updateUI();
                 }
-
-                // ...
             }
         });
     }
 
-    @Override
-    public void onClick(View view){
-
-    }
-
     private void initSharedPreferences() {
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        fullName = mSharedPreferences.getString("name","");
-        email = mSharedPreferences.getString("email","");
-        urlPhoto = mSharedPreferences.getString("urlPhoto","");
+        fullName = mSharedPreferences.getString("name", "");
+        email = mSharedPreferences.getString("email", "");
+        urlPhoto = mSharedPreferences.getString("urlPhoto", "");
     }
 
     private void setPermission() {
@@ -424,7 +415,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    private void openProgress(String title, String content){
+    private void openProgress(String title, String content) {
         progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         progressDialog.setTitleText(title);
@@ -433,12 +424,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog.show();
     }
 
-    private void closeProgress(){
+    private void closeProgress() {
         progressDialog.dismiss();
     }
 
     public void gotoMainPage(User usr, String token) {
         homecareSessionManager.createLoginSession(usr, token);
+        Log.i(TAG, "Lewat sini " + usr);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
@@ -457,24 +449,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //doLoginFirebase(user, "google");
 
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
         btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -56,6 +56,8 @@ public class User implements Serializable {
     private String firebaseIdGoogle;
     @SerializedName("fcmToken")
     private String fcmToken;
+    @SerializedName("gender")
+    private String gender;
 
     public Long getId() {
         return id;
@@ -233,6 +235,12 @@ public class User implements Serializable {
         this.fcmToken = fcmToken;
     }
 
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     @Override
     public String toString() {

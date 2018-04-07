@@ -8,6 +8,8 @@ public class Constants {
     //Action constants
     public static final String actionPosition = "device_pos";
 
+    public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/caregiver?";
+
     //RestApi constants
     public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
@@ -15,16 +17,23 @@ public class Constants {
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
-    public static final String ROUTE_LOGIN = "/authenticate/user?";
-    public static final String ROUTE_RESGISTER = "/register/user";
-    public static final String ROUTE_USER_POST = "api/user";
-    public static final String ROUTE_USER_BY_ID = "api/user/";
+    //public static final String ROUTE_LOGIN = "/authenticate/user?";
+    //public static final String ROUTE_RESGISTER = "/register/user";
+    //public static final String ROUTE_USER_POST = "api/user";
+    //public static final String ROUTE_USER_BY_ID = "api/user/";
+
 
     //AUTH CAREGIVER
     public static final String ROUTE_LOGIN_CAREGIVER = "/authenticate/caregiver?";
     public static final String ROUTE_REGISTER_CAREGIVER = "/register/caregiver";
-    public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/user?";
+    public static final String ROUTE_CAREGIVER_POST = "api/caregiver";
+    public static final String ROUTE_CAREGIVER_BY_ID = "api/caregiver/";
 
+    //SCHEDULE
+    public static final String ROUTE_ADD_SCHEDULE = "api/caregiverSchedulle";
+    public static final String ROUTE_CHECK_SCHEDULE_DATA = "api/caregiverSchedulleCekData?";
+
+    /*
     //HOMESTAY HOMEVISIT
     public static final String ROUTE_HOMECARE_SERVICES_GET = "/api/homecareservices";
     public static final String ROUTE_HOMECARE_SERVICES_UTIL = "/api/homecareservices/"; //WITH ID PARAM INCLUDED BEHIND get,put,delete
@@ -56,6 +65,8 @@ public class Constants {
     public static final String YOUTUBE_API_KEY = "AIzaSyCs06OoysZqT-UN1-er9Ob7q6cXzVPnViY";
     public static final String YOUTUBE_CHANNEL = "UCjDX29cI6EMpGwAIOER4vvg";
     public static final String YOUTUBE_PROJECT_NAME = "TimedicApps";
+    */
+
 
     public static final String APP_KEY = "timedictimedic18";
     public static final String SALT = "dc0da04af8fee58593442bf834b30739";

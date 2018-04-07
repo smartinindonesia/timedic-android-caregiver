@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:orientation="vertical"
+    android:padding="@dimen/calculator_page_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih hari pertama dari periode menstruasi terakhir anda"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="Pilih Tanggal :"/>
+
+        <EditText
+            android:id="@+id/selectedDateTex"
+            android:enabled="false"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/calculator_input_height"
+            android:background="@drawable/bg_gray_rounded_textfield"
+            android:hint="Tanggal"/>
+
+        <ImageButton
+            android:id="@+id/btnChooseDate"
+            android:layout_width="0dp"
+            android:layout_weight="0.15"
+            android:src="@drawable/ic_select_date_white"
+            android:background="@drawable/orange_selector_button_bg"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/btnCalculate"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/green_selector_button_bg"
+        android:orientation="horizontal"
+        android:textColorHint="#FFFFFF">
+
+        <ImageView
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0000"
+            android:clickable="false"
+            android:src="@drawable/btn_hitung" />
+
+        <TextView
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0000"
+            android:clickable="false"
+            android:gravity="start|center_vertical"
+            android:hint="Hitung"
+            android:textAlignment="textStart"
+            android:textColorHint="@color/button_text_color" />
+
+    </LinearLayout>
+
+</LinearLayout>

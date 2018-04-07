@@ -102,22 +102,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/upcoming"/>
-
-                    <ImageButton
-                        android:id="@+id/btnMedicalRecord"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="false"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/btn_medical_record" />
-
                 </RelativeLayout>
 
             </LinearLayout>
@@ -135,22 +119,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/upcoming"/>
-
-                    <ImageButton
-                        android:id="@+id/btnHealthProduct"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:scaleType="fitCenter"
-                        android:clickable="false"
-                        android:src="@drawable/btn_health_product" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -159,22 +127,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/upcoming"/>
-
-                    <ImageButton
-                        android:id="@+id/btnMedicineReminder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:scaleType="fitCenter"
-                        android:clickable="false"
-                        android:src="@drawable/btn_health_reminder" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -182,22 +134,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/upcoming"/>
-
-                    <ImageButton
-                        android:id="@+id/btnHealthVideo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:scaleType="fitCenter"
-                        android:clickable="false"
-                        android:src="@drawable/btn_health_video" />
 
                 </RelativeLayout>
 

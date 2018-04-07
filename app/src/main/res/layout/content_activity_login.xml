@@ -17,9 +17,9 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="80dp"
+            android:layout_width="220dp"
             android:layout_height="80dp"
-            android:src="@drawable/login_logo" />
+            android:src="@drawable/timedic_cregiver_logo" />
 
         <View
             android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="Lupa kata sandi?" />
+                android:text="Forgot Password ?" />
 
             <Button
                 android:id="@+id/btnSignIn"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:background="@color/colorPrimary"
-                android:text="Atau"/>
+                android:text="or with"/>
 
         </RelativeLayout>
 
@@ -147,6 +147,43 @@
 
         </LinearLayout>
 
+    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider_horizontal"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btnFacebookCustom"
+                android:layout_weight="0.475"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@color/gray_btn_bg_color"
+                android:backgroundTintMode="src_over"
+                android:drawableLeft="@drawable/icon_berat_badan_ideal"
+                android:hint="Facebook"
+                android:textColorHint="@color/theme_black" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.05"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/btnGoogleCustom"
+                android:layout_weight="0.475"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@color/gray_btn_bg_color"
+                android:backgroundTintMode="src_over"
+                android:drawableLeft="@drawable/icon_berat_badan_ideal"
+                android:hint="Google"
+                android:textColorHint="@color/theme_black" />
+        </LinearLayout>
+        -->
 
 
         <TextView

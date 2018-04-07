@@ -165,6 +165,31 @@
         </EditText>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/calculator_row_space">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:text="Jenis Kelamin"
+            android:textSize="@dimen/calculator_hint_size"/>
+
+        <Spinner
+            android:id="@+id/genderSpin"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/calculator_input_height"
+            android:background="@drawable/bg_blue_rounded_field"
+            android:layout_weight="0.6">
+
+        </Spinner>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btnEdit"
         android:layout_width="match_parent"

@@ -29,6 +29,8 @@ public class UserProfile {
     private float latitude;
     @SerializedName("longitude")
     private float longitude;
+    @SerializedName("gender")
+    private String gender;
 
     public Long getId() {
         return id;
@@ -108,6 +110,14 @@ public class UserProfile {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public boolean isValidPhone() {

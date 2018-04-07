@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,9 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
+import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
+import com.smartin.timedic.caregiver.model.GenderOption;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.model.parammodel.RegisterParam;
 import com.smartin.timedic.caregiver.tools.AesUtil;
@@ -42,8 +46,14 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +95,11 @@ public class FUserSignUpActivity extends AppCompatActivity {
     EditText dob;
     @BindView(R.id.selectDOB)
     ImageButton selectDob;
+    @BindView(R.id.genderSpin)
+    Spinner genderSpin;
+
+    GenderSpinnerAdapter adapterGender;
+    List<GenderOption> genderOptions;
 
     private DatePickerDialog datePickerDialog;
     private UserAPIInterface userAPIInterface;
@@ -93,9 +108,10 @@ public class FUserSignUpActivity extends AppCompatActivity {
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private SweetAlertDialog progressDialog;
+
+    private HomecareSessionManager homecareSessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,9 +120,17 @@ public class FUserSignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         userAPIInterface = APIClient.getClient().create(UserAPIInterface.class);
         user = (User) getIntent().getSerializableExtra("fbase_user");
+        homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
         Log.i(TAG, user.getFrontName());
         googleLoginInit();
         createTitleBar();
+
+        genderOptions = new ArrayList<>();
+        genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-laki"));
+        genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
+        adapterGender = new GenderSpinnerAdapter(this, genderOptions);
+        genderSpin.setAdapter(adapterGender);
+
         signUP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,15 +256,25 @@ public class FUserSignUpActivity extends AppCompatActivity {
         registerParam.setUsername(username.getText().toString());
         registerParam.setPhone(phone.getText().toString());
         registerParam.setEmail(emailAddress.getText().toString());
+        registerParam.setGender(genderSpin.getSelectedItem().toString());
+
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateOfBirth(dobs);
-        registerParam.setFirebaseIdGoogle(user.getFirebaseIdGoogle());
-        Log.i(TAG, user.getFirebaseIdGoogle());
+
+        if(user.getFirebaseIdGoogle() != null){
+            registerParam.setFirebaseIdGoogle(user.getFirebaseIdGoogle());
+        }
+        else if(user.getFirebaseIdFacebook() != null){
+            registerParam.setFirebaseIdFacebook(user.getFirebaseIdFacebook());
+        }
+
+        //Log.i(TAG, user.getFirebaseIdGoogle());
         if (registerParam.isValidPhone()) {
             if (registerParam.isValidEmail()) {
                 if (checkAgreement.isChecked()) {
                     try {
                         postData(registerParam);
+                        //gotoLogin();
                     } catch (UnsupportedEncodingException e) {
                         Toast.makeText(getApplicationContext(), "Parameter tidak benar!", Toast.LENGTH_LONG).show();
                     }
@@ -256,6 +290,7 @@ public class FUserSignUpActivity extends AppCompatActivity {
     }
 
     private void postData(RegisterParam registerParam) throws UnsupportedEncodingException {
+
         final Call<ResponseBody> resp = userAPIInterface.registerUser(registerParam);
         resp.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -264,8 +299,17 @@ public class FUserSignUpActivity extends AppCompatActivity {
                 if (response.code() == 201) {
                     Toast.makeText(getApplicationContext(), "Pendaftaran user baru berhasil dilakukan! Silahkan login untuk melanjutkan", Toast.LENGTH_LONG).show();
                     gotoLogin();
-                } else {
-                    Snackbar.make(mainLayout, "Pendaftaran user baru gagal!", Snackbar.LENGTH_LONG).show();
+                } else if (response.code() == 401){
+                    try {
+                        //Log.i(TAG, response.body().string() + " Respon Body nya d sin");
+                        JSONObject object = new JSONObject(response.errorBody().string());
+                        Snackbar.make(mainLayout, object.getString("message") , Snackbar.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
@@ -315,22 +359,11 @@ public class FUserSignUpActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
+
     }
 
     private void signOut() {
+        homecareSessionManager.logout();
         FirebaseAuth.getInstance().signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
