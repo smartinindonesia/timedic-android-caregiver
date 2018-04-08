@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:divider="@drawable/divider_horizontal"
+    android:showDividers="middle"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <Button
+        android:id="@+id/btnBBI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:backgroundTintMode="src_over"
+        android:drawableLeft="@drawable/icon_berat_badan_ideal"
+        android:hint="Berat Badan Ideal"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/theme_black"
+        android:gravity="start|center_vertical" />
+
+    <Button
+        android:id="@+id/btnKebCairan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:backgroundTintMode="src_over"
+        android:drawableLeft="@drawable/icon_kebutuhan_cairan"
+        android:hint="Kebutuhan Cairan"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/theme_black"
+        android:gravity="start|center_vertical"/>
+
+    <Button
+        android:id="@+id/btnKebKalori"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:backgroundTintMode="src_over"
+        android:drawableLeft="@drawable/icon_kebutuhan_kalori"
+        android:hint="Kebutuhan Kalori"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/theme_black"
+        android:gravity="start|center_vertical"/>
+
+    <Button
+        android:id="@+id/btnIMT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:backgroundTintMode="src_over"
+        android:drawableLeft="@drawable/icon_indeks_masa_tubuh"
+        android:hint="Indeks Masa Tubuh"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/theme_black"
+        android:gravity="start|center_vertical"/>
+
+    <Button
+        android:id="@+id/btnTaksirHamil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:backgroundTintMode="src_over"
+        android:drawableLeft="@drawable/icon_taksiran_kehamilan"
+        android:hint="Taksiran Kehamilan"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/theme_black"
+        android:gravity="start|center_vertical"/>
+
+</LinearLayout>

@@ -44,8 +44,8 @@ public class ScheduleFragment extends Fragment {
     private HomecareSessionManager homecareSessionManager;
     private ScheduleInterface scheduleInterfaceAPI;
 
-    @BindView(R.id.accountLayout)
-    LinearLayout accountLayout;
+    @BindView(R.id.scheduleLayout)
+    LinearLayout scheduleLayout;
 
     @BindView(R.id.btnMonday)
     RelativeLayout btnMonday;
@@ -179,7 +179,7 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari senin telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari senin telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
 
                     ScheduleParam param = new ScheduleParam();
                     String day = "monday";
@@ -195,7 +195,7 @@ public class ScheduleFragment extends Fragment {
                     cekData(idCaregiver, day, param);
 
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari senin telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari senin telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     //btnMonday.setClickable(false);
                 }
             }
@@ -207,10 +207,10 @@ public class ScheduleFragment extends Fragment {
                 //appSetting.setActive(b);
                 //homecareSessionManager.setSetting(appSetting);
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari selasa telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari selasa telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
                     btnTuesday.setClickable(true);
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari selasa telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari selasa telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     btnTuesday.setClickable(false);
                 }
             }
@@ -222,10 +222,10 @@ public class ScheduleFragment extends Fragment {
                 //appSetting.setActive(b);
                 //homecareSessionManager.setSetting(appSetting);
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari rabu telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari rabu telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
                     btnWednesday.setClickable(true);
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari rabu telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari rabu telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     btnWednesday.setClickable(false);
                 }
             }
@@ -237,10 +237,10 @@ public class ScheduleFragment extends Fragment {
                 //appSetting.setActive(b);
                 //homecareSessionManager.setSetting(appSetting);
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari kamis telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari kamis telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
                     btnThursday.setClickable(true);
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari kamis telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari kamis telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     btnThursday.setClickable(false);
                 }
             }
@@ -252,10 +252,10 @@ public class ScheduleFragment extends Fragment {
                 //appSetting.setActive(b);
                 //homecareSessionManager.setSetting(appSetting);
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari jumat telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari jumat telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
                     btnFriday.setClickable(true);
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari jumat telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari jumat telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     btnFriday.setClickable(false);
                 }
             }
@@ -267,10 +267,10 @@ public class ScheduleFragment extends Fragment {
                 //appSetting.setActive(b);
                 //homecareSessionManager.setSetting(appSetting);
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari sabtu telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari sabtu telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
                     btnSaturday.setClickable(true);
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari sabtu telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari sabtu telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     btnSaturday.setClickable(false);
                 }
             }
@@ -282,10 +282,10 @@ public class ScheduleFragment extends Fragment {
                 //appSetting.setActive(b);
                 //homecareSessionManager.setSetting(appSetting);
                 if (b) {
-                    Snackbar.make(accountLayout, "Jadwal Hari minggu telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari minggu telah diaktifkan, silahkan isi jadwal untuk jam nya !", Snackbar.LENGTH_LONG).show();
                     btnSunday.setClickable(true);
                 } else {
-                    Snackbar.make(accountLayout, "Jadwal Hari minggu telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(scheduleLayout, "Jadwal Hari minggu telah dinonaktifkan !", Snackbar.LENGTH_LONG).show();
                     btnSunday.setClickable(false);
                 }
             }
@@ -305,42 +305,42 @@ public class ScheduleFragment extends Fragment {
         btnTuesday.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Snackbar.make(accountLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scheduleLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
             }
         });
 
         btnWednesday.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Snackbar.make(accountLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scheduleLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
             }
         });
 
         btnThursday.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Snackbar.make(accountLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scheduleLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
             }
         });
 
         btnFriday.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Snackbar.make(accountLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scheduleLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
             }
         });
 
         btnSaturday.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Snackbar.make(accountLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scheduleLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
             }
         });
 
         btnSunday.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Snackbar.make(accountLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scheduleLayout, "Bisa diklik !", Snackbar.LENGTH_LONG).show();
             }
         });
 
