@@ -41,6 +41,8 @@ public class Constants {
     public static final String ROUTE_HISTORY_ORDER = "/api/history/homecare/";
     public static final String ROUTE_ACTIVE_ORDER_PAGINATION = "/api/transactionOrderActiveWithPaginationByField";
     public static final String ROUTE_HISTORY_ORDER_PAGINATION = "/api/transactionOrderHistoryWithPaginationByField";
+    public static final String ROUTE_ITEM_ACTIVE_ORDER = "/api/transactionOrderActiveWithPaginationByFieldByIdCaregiver";
+    public static final String ROUTE_ITEM_HISTORY_ORDER = "/api/transactionOrderHistoryWithPaginationByFieldByIdCaregiver";
 
     //SCHEDULE
     public static final String ROUTE_ADD_SCHEDULE = "api/caregiverSchedulle";
