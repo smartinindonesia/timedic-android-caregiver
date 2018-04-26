@@ -13,14 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.smartin.timedic.caregiver.fragment.AccountFragment;
 import com.smartin.timedic.caregiver.fragment.ScheduleFragment;
 import com.smartin.timedic.caregiver.fragment.HomeFragment;
 import com.smartin.timedic.caregiver.fragment.Trx;
+import com.smartin.timedic.caregiver.fragment.YourOrderFragment;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
+import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
@@ -66,15 +70,19 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         sendFCMTokenToServer();
-
+        setFonts();
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new Trx(), "Your Order");
-        adapter.addFragment(new ScheduleFragment(), "Your ScheduleFragment");
-        adapter.addFragment(new AccountFragment(), "Account");
+        //HomeFragment homeFragment = new HomeFragment();
+        //Bundle intentBundle = new Bundle();
+        //intentBundle.putInt("tab_index",0);
+        //homeFragment.setArguments(intentBundle);
+        adapter.addFragment(new HomeFragment(), "Beranda");
+        adapter.addFragment(new YourOrderFragment(), "Pesanan");
+        adapter.addFragment(new ScheduleFragment(), "Atur Jadwal");
+        adapter.addFragment(new AccountFragment(), "Akun");
         viewPager.setAdapter(adapter);
     }
 
@@ -152,6 +160,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setFonts(){
+        setTabsFont();
+    }
+
+    public void setTabsFont() {
+
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+
+            int tabChildsCount = vgTab.getChildCount();
+
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    //Put your font in assests folder
+                    //assign name of the font here (Must be case sensitive)
+                    ViewFaceUtility.applyFont((TextView) tabViewChild, this, "fonts/BalooBhaina-Regular.ttf");
+                }
+            }
+        }
     }
 
 }

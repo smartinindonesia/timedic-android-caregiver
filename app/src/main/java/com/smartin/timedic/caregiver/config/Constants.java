@@ -11,9 +11,9 @@ public class Constants {
     public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/caregiver?";
 
     //RestApi constants
-    public static final String BASE_URL = "https://timedic.id:8443";
+    //public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
-    //public static final String BASE_URL = "http://192.168.1.4:8080";
+    public static final String BASE_URL = "http://192.168.1.4:8080";
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
@@ -22,16 +22,33 @@ public class Constants {
     //public static final String ROUTE_USER_POST = "api/user";
     //public static final String ROUTE_USER_BY_ID = "api/user/";
 
-
     //AUTH CAREGIVER
     public static final String ROUTE_LOGIN_CAREGIVER = "/authenticate/caregiver?";
     public static final String ROUTE_REGISTER_CAREGIVER = "/register/caregiver";
     public static final String ROUTE_CAREGIVER_POST = "api/caregiver";
     public static final String ROUTE_CAREGIVER_BY_ID = "api/caregiver/";
 
+    //CAREGIVER
+    public static final String ROUTE_CAREGIVER = "/api/caregiver/";
+
+    //RATING
+    public static final String ROUTE_RATE_POST = "/api/caregiverRate";
+    public static final String ROUTE_RATE_GET = "/api/getCaregiverRateByIdCaregiver/";
+
+    //HOMECARE TRANSACTION
+    public static final String ROUTE_TRANSACTION = "/api/transactions/homecare/";
+    public static final String ROUTE_ACTIVE_ORDER = "/api/orderactive/homecare/";
+    public static final String ROUTE_HISTORY_ORDER = "/api/history/homecare/";
+    public static final String ROUTE_ACTIVE_ORDER_PAGINATION = "/api/transactionOrderActiveWithPaginationByField";
+    public static final String ROUTE_HISTORY_ORDER_PAGINATION = "/api/transactionOrderHistoryWithPaginationByField";
+
     //SCHEDULE
     public static final String ROUTE_ADD_SCHEDULE = "api/caregiverSchedulle";
     public static final String ROUTE_CHECK_SCHEDULE_DATA = "api/caregiverSchedulleCekData?";
+    public static final String ROUTE_CHECK_SCHEDULE_STATUS = "api/caregiverSchedulleCekStatus?";
+    public static final String ROUTE_UPDATE_SCHEDULE_ID_CAREGIVER_AND_DAY= "/api/caregiverSchedulleByIdCaregiverAndDay?";
+    public static final String ROUTE_UPDATE_SCHEDULE_FOR_TIME= "/api/updateCaregiverSchedulleForTime?";
+    public static final String ROUTE_SCHEDULE_BY_ID = "api/caregiverSchedulle/";
 
     /*
     //HOMESTAY HOMEVISIT

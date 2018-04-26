@@ -4,6 +4,8 @@
     <dimen name="global_act_padding">4dp</dimen>
     <dimen name="global_page_padding">5dp</dimen>
     <dimen name="global_page_small_pad">40dp</dimen>
+    <dimen name="global_page_padding_normal">10dp</dimen>
+    <dimen name="global_page_padding_large">20dp</dimen>
     <dimen name="fab_margin">5dp</dimen>
     <dimen name="icn_sz">80dp</dimen>
 
@@ -13,4 +15,6 @@
     <dimen name="calculator_page_padding">20dp</dimen>
     <dimen name="calculator_hint_size">18sp</dimen>
     <dimen name="calculator_row_space">3dp</dimen>
+
+    <dimen name="prof_pic_size">150dp</dimen>
 </resources>

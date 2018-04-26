@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import com.smartin.timedic.caregiver.screenslidefragment.ScreenSlideHomeFragment
 
 public class HomeFragment extends Fragment {
 
+    public static String TAG = "[HomeFragment]";
+
     @BindView(R.id.btnHomecare)
     ImageButton btnHomecare;
     @BindView(R.id.btnHealthCalculator)
@@ -47,11 +50,31 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            Log.d(TAG, "Visible now");
+            if (!isVisibleToUser) {
+                Log.d(TAG, "Not visible anymore.  Stopping audio.");
+                // TODO stop audio playback
+            }
+            else {
+                Log.d(TAG, "Panggil Fungsi");
+            }
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Integer index = getArguments().getInt("tab_index");
+        //Log.i("HOMEFRAGMENT", index.toString() );
         View vwInflater = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, vwInflater);
         List<Slider> sliders = new ArrayList<>();
