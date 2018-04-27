@@ -24,6 +24,7 @@ import com.smartin.timedic.caregiver.adapter.ActiveOrderAdapter;
 import com.smartin.timedic.caregiver.customuicompt.EndlessScrollListener;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.HomecareOrder;
+import com.smartin.timedic.caregiver.model.OrderItem;
 import com.smartin.timedic.caregiver.model.responsemodel.HomecareListResponse;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.HomecareTransactionAPIInterface;
@@ -45,7 +46,7 @@ public class ActiveOrder extends Fragment {
     ProgressBar loadingBar;
 
     private HomecareSessionManager homecareSessionManager;
-    private List<HomecareOrder> homecareOrderList = new ArrayList<>();
+    private List<OrderItem> homecareOrderList = new ArrayList<>();
     private ActiveOrderAdapter activeOrderAdapter;
     private HomecareTransactionAPIInterface homecareTransactionAPIInterface;
 
@@ -87,7 +88,7 @@ public class ActiveOrder extends Fragment {
                 fetchNext();
             }
         });
-        getActiveOrder();
+        getActiveOrderPagination();
         // Inflate the layout for this fragment
         return view;
     }
@@ -123,31 +124,6 @@ public class ActiveOrder extends Fragment {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 call.cancel();
                 loadingBar.setVisibility(View.GONE);
-                homecareSessionManager.logout();
-            }
-        });
-    }
-
-    public void getActiveOrder() {
-        Call<List<HomecareOrder>> services = homecareTransactionAPIInterface.getActiveOrder(homecareSessionManager.getUserDetail().getId());
-        services.enqueue(new Callback<List<HomecareOrder>>() {
-            @Override
-            public void onResponse(Call<List<HomecareOrder>> call, Response<List<HomecareOrder>> response) {
-                if (response.code() == 200) {
-                    List<HomecareOrder> responseHomecareOrder = response.body();
-                    homecareOrderList.clear();
-                    for (int i = 0; i < responseHomecareOrder.size(); i++) {
-                        homecareOrderList.add(responseHomecareOrder.get(i));
-                    }
-                    activeOrderAdapter.notifyDataSetChanged();
-                } else {
-                    Log.i(TAG, "Code FAILURE");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<HomecareOrder>> call, Throwable t) {
-                call.cancel();
                 homecareSessionManager.logout();
             }
         });

@@ -38,9 +38,9 @@ public interface HomecareTransactionAPIInterface {
     @GET(Constants.ROUTE_ACTIVE_ORDER + "{id}")
     Call<List<HomecareOrder>> getActiveOrder(@Path(value = "id", encoded = true) Long id);
 
-    @GET(Constants.ROUTE_ACTIVE_ORDER_PAGINATION)//page, size, sort, sortField, idUser
+    @GET(Constants.ROUTE_ITEM_ACTIVE_ORDER)//page, size, sort, sortField, idUser
     Call<ResponseBody> getActiveOrderPage(@Query("page") Integer page, @Query("size") Integer size, @Query("sort") String sortType, @Query("sortField") String sortField, @Query("idCaregiver") Long idUser);
 
-    @GET(Constants.ROUTE_HISTORY_ORDER_PAGINATION)//page, size, sort, sortField, idUser
+    @GET(Constants.ROUTE_ITEM_HISTORY_ORDER)//page, size, sort, sortField, idUser
     Call<ResponseBody> getHistoryOrderPage(@Query("page") Integer page, @Query("size") Integer size, @Query("sort") String sortType, @Query("sortField") String sortField, @Query("idCaregiver") Long idUser);
 }

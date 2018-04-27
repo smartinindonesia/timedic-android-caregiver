@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.smartin.timedic.caregiver.OrderDetailsActivity;
 import com.smartin.timedic.caregiver.R;
-import com.smartin.timedic.caregiver.model.HomecareOrder;
+import com.smartin.timedic.caregiver.model.OrderItem;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 
@@ -28,13 +28,13 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapter.MyViewHolder> {
     public static final String TAG = "[ActiveOrdAdapter]";
 
-    private List<HomecareOrder> homecareOrderList;
+    private List<OrderItem> homecareOrderList;
     private Context context;
     private Activity activity;
 
     private boolean isLoadingAdded = false;
 
-    public HistoryOrderAdapter(Activity activity, Context context, List<HomecareOrder> homecareOrders) {
+    public HistoryOrderAdapter(Activity activity, Context context, List<OrderItem> homecareOrders) {
         this.homecareOrderList = homecareOrders;
         this.context = context;
         this.activity = activity;
@@ -48,13 +48,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
 
     @Override
     public void onBindViewHolder(HistoryOrderAdapter.MyViewHolder holder, int position) {
-        final HomecareOrder homecareOrder = homecareOrderList.get(position);
-        holder.serviceName.setText(homecareOrder.getSelectedService());
-        holder.orderDescription.setText(homecareOrder.getTransactionDescription());
-        holder.patientsName.setText(homecareOrder.getHomecarePatientId().getName());
-        holder.transactionDate.setText(ConverterUtility.getDateStringCustomPattern(homecareOrder.getDate(), "dd-MM-yyyy HH:mm"));
-        holder.transactionStatus.setText(homecareOrder.getHomecareTransactionStatus().getStatus());
-        holder.gotoDetails.setOnClickListener(new View.OnClickListener() {
+        final OrderItem homecareOrder = homecareOrderList.get(position);
+        holder.caregiverName.setText(homecareOrder.getCaregiverName());
+        holder.time.setText(homecareOrder.getTime());
+        holder.day.setText(homecareOrder.getDay());
+        holder.orderDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, OrderDetailsActivity.class);
@@ -62,7 +60,6 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
                 activity.startActivity(intent);
             }
         });
-        holder.caregiverNum.setText(homecareOrder.getCaregiverArrayList().size()+" Perawat");
     }
 
     @Override
@@ -70,18 +67,18 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         return homecareOrderList == null ? 0 : homecareOrderList.size();
     }
 
-    public void add(HomecareOrder mc) {
+    public void add(OrderItem mc) {
         homecareOrderList.add(mc);
         notifyItemInserted(homecareOrderList.size() - 1);
     }
 
-    public void addAll(List<HomecareOrder> mcList) {
-        for (HomecareOrder mc : mcList) {
+    public void addAll(List<OrderItem> mcList) {
+        for (OrderItem mc : mcList) {
             add(mc);
         }
     }
 
-    public void remove(HomecareOrder city) {
+    public void remove(OrderItem city) {
         int position = homecareOrderList.indexOf(city);
         if (position > -1) {
             homecareOrderList.remove(position);
@@ -101,14 +98,14 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     }
 
     public void addLoadingFooter() {
-        add(new HomecareOrder());
+        add(new OrderItem());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = homecareOrderList.size() - 1;
-        HomecareOrder item = getItem(position);
+        OrderItem item = getItem(position);
 
         if (item != null) {
             homecareOrderList.remove(position);
@@ -116,37 +113,28 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         }
     }
 
-    public HomecareOrder getItem(int position) {
+    public OrderItem getItem(int position) {
         return homecareOrderList.get(position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.serviceName)
-        public TextView serviceName;
-        @BindView(R.id.transactionDate)
-        public TextView transactionDate;
-        @BindView(R.id.orderDescripton)
-        public TextView orderDescription;
-        @BindView(R.id.patientsName)
-        public TextView patientsName;
-        @BindView(R.id.transactionStatus)
-        public TextView transactionStatus;
+        @BindView(R.id.caregiverName)
+        public TextView caregiverName;
+        @BindView(R.id.day)
+        public TextView day;
+        @BindView(R.id.time)
+        public TextView time;
         @BindView(R.id.orderDetails)
-        public ImageButton gotoDetails;
-        @BindView(R.id.caregiverNum)
-        public TextView caregiverNum;
+        public ImageButton orderDetails;
 
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ViewFaceUtility.applyFont(serviceName, activity, "fonts/Dosis-Bold.otf");
+            ViewFaceUtility.applyFont(caregiverName, activity, "fonts/Dosis-Bold.otf");
             ArrayList<TextView> arrayList = new ArrayList<>();
-            arrayList.add(transactionDate);
-            arrayList.add(orderDescription);
-            arrayList.add(patientsName);
-            arrayList.add(transactionStatus);
-            arrayList.add(caregiverNum);
+            arrayList.add(day);
+            arrayList.add(time);
             ViewFaceUtility.applyFonts(arrayList, activity, "fonts/Dosis-Medium.otf");
         }
     }

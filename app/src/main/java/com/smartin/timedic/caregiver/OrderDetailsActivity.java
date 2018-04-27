@@ -2,6 +2,7 @@ package com.smartin.timedic.caregiver;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,7 @@ import com.smartin.timedic.caregiver.customuicompt.RecyclerTouchListener;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.CaregiverOrder;
 import com.smartin.timedic.caregiver.model.HomecareOrder;
+import com.smartin.timedic.caregiver.model.OrderItem;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.TextFormatter;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
@@ -87,9 +89,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.caregiverHistoryTitle)
     TextView caregiverHistoryTitle;
 
+    OrderItem orderItem;
     HomecareOrder homecareOrder;
 
-    CaregiverHistoryAdapter caregiverHistoryAdapter;
+    //CaregiverHistoryAdapter caregiverHistoryAdapter;
     HomecareSessionManager homecareSessionManager;
     HomecareTransactionAPIInterface homecareTransactionAPIInterface;
 
@@ -99,14 +102,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
         createTitleBar();
-        homecareOrder = (HomecareOrder) getIntent().getSerializableExtra("homecareOrder");
-        fillPage();
+        orderItem = (OrderItem) getIntent().getSerializableExtra("homecareOrder");
         mapLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OrderDetailsActivity.this, MapViewerActivity.class);
-                intent.putExtra("latitude", homecareOrder.getLocationLatitude());
-                intent.putExtra("longitude", homecareOrder.getLocationLongitude());
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr="+homecareOrder.getLocationLatitude()+","+homecareOrder.getLocationLongitude()+""));
                 startActivity(intent);
             }
         });
@@ -114,6 +115,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         homecareSessionManager = new HomecareSessionManager(this, this);
         homecareTransactionAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(HomecareTransactionAPIInterface.class);
 
+        /*
         caregiverHistoryAdapter = new CaregiverHistoryAdapter(this, this, homecareOrder.getCaregiverArrayList());
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -121,25 +123,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         caregiverHistory.setLayoutManager(mLayoutManager);
         caregiverHistory.setItemAnimator(new DefaultItemAnimator());
         caregiverHistory.setAdapter(caregiverHistoryAdapter);
-        caregiverHistory.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), caregiverHistory, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                CaregiverOrder cgs = caregiverHistoryAdapter.getItem(position);
-                if (!cgs.getRateStatus()) {
-                    Intent intent = new Intent(OrderDetailsActivity.this, RateCaregiverActivity.class);
-                    intent.putExtra("caregiver", cgs);
-                    intent.putExtra("order", homecareOrder);
-                    startActivity(intent);
-                } else {
-                    Snackbar.make(mainLayout, "Rating sudah pernah dilakukan!", Snackbar.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+        */
         setFonts();
     }
 
@@ -203,13 +187,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void getOrderDetails() {
-        Call<HomecareOrder> resp = homecareTransactionAPIInterface.getTransactionById(homecareOrder.getId());
+        Call<HomecareOrder> resp = homecareTransactionAPIInterface.getTransactionById(orderItem.getIdTransaction());
         resp.enqueue(new Callback<HomecareOrder>() {
             @Override
             public void onResponse(Call<HomecareOrder> call, Response<HomecareOrder> response) {
                 homecareOrder = response.body();
-                caregiverHistoryAdapter = new CaregiverHistoryAdapter(OrderDetailsActivity.this, getApplicationContext(), homecareOrder.getCaregiverArrayList());
-                caregiverHistory.setAdapter(caregiverHistoryAdapter);
                 fillPage();
             }
 

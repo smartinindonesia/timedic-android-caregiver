@@ -18,7 +18,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_weight="0.2"
-        android:src="@drawable/ic_go_next"
+        android:src="@drawable/ic_group_collapse_09"
         android:layout_height="match_parent" />
 
 </LinearLayout>

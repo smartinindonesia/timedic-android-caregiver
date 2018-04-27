@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import com.smartin.timedic.caregiver.OrderDetailsActivity;
 import com.smartin.timedic.caregiver.R;
 import com.smartin.timedic.caregiver.model.HomecareOrder;
+import com.smartin.timedic.caregiver.model.OrderItem;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 
@@ -28,32 +29,31 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.MyViewHolder>{
     public static final String TAG = "[ActiveOrdAdapter]";
 
-    private List<HomecareOrder> homecareOrderList;
+    private List<OrderItem> homecareOrderList;
     private Context context;
     private Activity activity;
 
-    public ActiveOrderAdapter(Activity activity, Context context, List<HomecareOrder> homecareOrders) {
+    private boolean isLoadingAdded = false;
+
+    public ActiveOrderAdapter(Activity activity, Context context, List<OrderItem> homecareOrders) {
         this.homecareOrderList = homecareOrders;
         this.context = context;
         this.activity = activity;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_active_order, parent, false);
+    public ActiveOrderAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_active_order, parent, false);
         return new ActiveOrderAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        final HomecareOrder homecareOrder = homecareOrderList.get(position);
-        holder.serviceName.setText(homecareOrder.getSelectedService());
-        holder.orderDescription.setText(homecareOrder.getTransactionDescription());
-        holder.patientsName.setText(homecareOrder.getHomecarePatientId().getName());
-        holder.transactionDate.setText(ConverterUtility.getDateStringCustomPattern(homecareOrder.getDate(), "dd-MM-yyyy HH:mm"));
-        holder.transactionStatus.setText(homecareOrder.getHomecareTransactionStatus().getStatus());
-        holder.gotoDetails.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(ActiveOrderAdapter.MyViewHolder holder, int position) {
+        final OrderItem homecareOrder = homecareOrderList.get(position);
+        holder.caregiverName.setText(homecareOrder.getCaregiverName());
+        holder.time.setText(homecareOrder.getTime());
+        holder.day.setText(homecareOrder.getDay());
+        holder.orderDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, OrderDetailsActivity.class);
@@ -61,41 +61,81 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
                 activity.startActivity(intent);
             }
         });
-        holder.caregiverNum.setText(homecareOrder.getCaregiverArrayList().size()+" Perawat");
     }
 
     @Override
     public int getItemCount() {
-        return homecareOrderList.size();
+        return homecareOrderList == null ? 0 : homecareOrderList.size();
     }
 
+    public void add(OrderItem mc) {
+        homecareOrderList.add(mc);
+        notifyItemInserted(homecareOrderList.size() - 1);
+    }
+
+    public void addAll(List<OrderItem> mcList) {
+        for (OrderItem mc : mcList) {
+            add(mc);
+        }
+    }
+
+    public void remove(OrderItem city) {
+        int position = homecareOrderList.indexOf(city);
+        if (position > -1) {
+            homecareOrderList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void clear() {
+        isLoadingAdded = false;
+        while (getItemCount() > 0) {
+            remove(getItem(0));
+        }
+    }
+
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
+
+    public void addLoadingFooter() {
+        add(new OrderItem());
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+
+        int position = homecareOrderList.size() - 1;
+        OrderItem item = getItem(position);
+
+        if (item != null) {
+            homecareOrderList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public OrderItem getItem(int position) {
+        return homecareOrderList.get(position);
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.serviceName)
-        public TextView serviceName;
-        @BindView(R.id.transactionDate)
-        public TextView transactionDate;
-        @BindView(R.id.orderDescripton)
-        public TextView orderDescription;
-        @BindView(R.id.patientsName)
-        public TextView patientsName;
-        @BindView(R.id.transactionStatus)
-        public TextView transactionStatus;
+
+        @BindView(R.id.caregiverName)
+        public TextView caregiverName;
+        @BindView(R.id.day)
+        public TextView day;
+        @BindView(R.id.time)
+        public TextView time;
         @BindView(R.id.orderDetails)
-        public ImageButton gotoDetails;
-        @BindView(R.id.caregiverNum)
-        public TextView caregiverNum;
+        public ImageButton orderDetails;
 
         public MyViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
-            ViewFaceUtility.applyFont(serviceName, activity, "fonts/Dosis-Bold.otf");
+            ButterKnife.bind(this, view);
+            ViewFaceUtility.applyFont(caregiverName, activity, "fonts/Dosis-Bold.otf");
             ArrayList<TextView> arrayList = new ArrayList<>();
-            arrayList.add(transactionDate);
-            arrayList.add(orderDescription);
-            arrayList.add(patientsName);
-            arrayList.add(transactionStatus);
-            arrayList.add(caregiverNum);
+            arrayList.add(day);
+            arrayList.add(time);
             ViewFaceUtility.applyFonts(arrayList, activity, "fonts/Dosis-Medium.otf");
         }
     }
