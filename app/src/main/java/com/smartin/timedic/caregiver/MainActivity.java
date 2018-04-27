@@ -78,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        //HomeFragment homeFragment = new HomeFragment();
-        //Bundle intentBundle = new Bundle();
-        //intentBundle.putInt("tab_index",0);
-        //homeFragment.setArguments(intentBundle);
         adapter.addFragment(new HomeFragment(), "Beranda");
         adapter.addFragment(new YourOrderFragment(), "Pesanan");
         adapter.addFragment(new ScheduleFragment(), "Atur Jadwal");
