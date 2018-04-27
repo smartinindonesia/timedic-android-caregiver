@@ -12,6 +12,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import com.smartin.timedic.caregiver.R;
 import com.smartin.timedic.caregiver.model.CaregiverOrder;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
@@ -20,7 +21,7 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
  * Created by Hafid on 3/27/2018.
  */
 
-public class CaregiverHistoryAdapter extends RecyclerView.Adapter<CaregiverHistoryAdapter.MyViewHolder>{
+public class CaregiverHistoryAdapter extends RecyclerView.Adapter<CaregiverHistoryAdapter.MyViewHolder> {
 
     private List<CaregiverOrder> caregiverOrders;
     private Context context;
@@ -50,7 +51,7 @@ public class CaregiverHistoryAdapter extends RecyclerView.Adapter<CaregiverHisto
         return caregiverOrders.size();
     }
 
-    public CaregiverOrder getItem(int position){
+    public CaregiverOrder getItem(int position) {
         return caregiverOrders.get(position);
     }
 
@@ -60,7 +61,7 @@ public class CaregiverHistoryAdapter extends RecyclerView.Adapter<CaregiverHisto
 
         public MyViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
             ViewFaceUtility.applyFont(caregiverName, activity, "fonts/Dosis-Medium.otf");
         }
     }

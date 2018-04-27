@@ -13,11 +13,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -107,6 +109,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     OrderItem orderItem;
     HomecareOrder homecareOrder;
 
+    Integer called = 0;
+
     //CaregiverHistoryAdapter caregiverHistoryAdapter;
     HomecareSessionManager homecareSessionManager;
     HomecareTransactionAPIInterface homecareTransactionAPIInterface;
@@ -132,9 +136,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         assessmentDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OrderDetailsActivity.this, AssessmentDetailActivity.class);
-                intent.putExtra("order_details", homecareOrder);
-                startActivity(intent);
+                if (homecareOrder != null) {
+                    Intent intent = new Intent(OrderDetailsActivity.this, AssessmentDetailActivity.class);
+                    intent.putExtra("order_details", homecareOrder);
+                    startActivity(intent);
+                }
             }
         });
         setFonts();
@@ -204,19 +210,28 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void getOrderDetails() {
-        Call<HomecareOrder> resp = homecareTransactionAPIInterface.getTransactionById(orderItem.getIdTransaction());
-        resp.enqueue(new Callback<HomecareOrder>() {
-            @Override
-            public void onResponse(Call<HomecareOrder> call, Response<HomecareOrder> response) {
-                homecareOrder = response.body();
-                fillPage();
-            }
+        if (called == 0) {
+            Log.i(TAG, "Calling OrderDetails");
+            final Call<HomecareOrder> resp = homecareTransactionAPIInterface.getTransactionById(orderItem.getIdTransaction());
+            resp.enqueue(new Callback<HomecareOrder>() {
+                @Override
+                public void onResponse(Call<HomecareOrder> call, Response<HomecareOrder> response) {
+                    if (response.code() == 200) {
+                        Log.i(TAG, "lewat sini");
+                        homecareOrder = response.body();
+                        fillPage();
+                    }
+                }
 
-            @Override
-            public void onFailure(Call<HomecareOrder> call, Throwable t) {
-
-            }
-        });
+                @Override
+                public void onFailure(Call<HomecareOrder> call, Throwable t) {
+                    t.printStackTrace();
+                    Snackbar.make(mainLayout, "Jaringan Bermasalah!", Snackbar.LENGTH_LONG).show();
+                    call.cancel();
+                }
+            });
+        }
+        called++;
     }
 
     private void setFonts() {

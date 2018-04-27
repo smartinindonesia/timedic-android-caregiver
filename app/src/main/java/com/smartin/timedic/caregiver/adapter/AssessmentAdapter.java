@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by Hafid on 27/04/2018.
  */
 
-public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.MyViewHolder>{
+public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.MyViewHolder> {
 
     public static final String TAG = "[ActiveOrdAdapter]";
 
@@ -50,14 +50,18 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.My
 
     @Override
     public void onBindViewHolder(AssessmentAdapter.MyViewHolder holder, int position) {
-        final Assessment homecareOrder = assessmentList.get(position);
-        holder.answer.setText(homecareOrder.getAnswer());
-        holder.question.setText(homecareOrder.getQuestions());
+        final Assessment assessment = assessmentList.get(position);
+        holder.answer.setText("A : " + assessment.getAssessmentAnswer());
+        holder.question.setText("Q : " + assessment.getIdAssessment().getQuestion());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return assessmentList.size();
+    }
+
+    public Assessment getItem(int position) {
+        return assessmentList.get(position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -69,6 +73,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.My
 
         public MyViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this, view);
             ArrayList<TextView> arrayList = new ArrayList<>();
             arrayList.add(question);
             arrayList.add(answer);

@@ -53,7 +53,6 @@ public class HomecareOrder implements Serializable{
     @SerializedName("paymentPrepaidPriceStatusId")
     private HomecareTransactionStatus paymentPrepaidPriceStatusId;
 
-
     public Long getId() {
         return id;
     }
