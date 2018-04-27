@@ -5,7 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.smartin.timedic.caregiver.CalculatorBBI">
+    tools:context="com.smartin.timedic.caregiver.AssessmentDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -31,6 +31,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_calculator_bbi"/>
+    <include layout="@layout/content_assessment_detail_activity"/>
 
 </RelativeLayout>

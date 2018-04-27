@@ -76,14 +76,17 @@
 
             </LinearLayout>
 
-            <ImageButton
+            <Button
                 android:id="@+id/orderDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_group_collapse_09" />
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/orange_selector_button_bg"
+                android:hint="Lihat Detail"
+                android:textColorHint="@color/sign_up_selector_fg"
+                android:textSize="12sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

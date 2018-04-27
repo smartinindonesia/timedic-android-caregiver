@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import com.smartin.timedic.caregiver.adapter.CaregiverHistoryAdapter;
 import com.smartin.timedic.caregiver.customuicompt.RecyclerTouchListener;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
@@ -32,6 +34,7 @@ import com.smartin.timedic.caregiver.tools.TextFormatter;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.HomecareTransactionAPIInterface;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,7 +70,19 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView downPaymentStatus;
     @BindView(R.id.totalCashStatus)
     TextView totalCashStatus;
+    @BindView(R.id.orderCustomer)
+    TextView orderCustomer;
+    @BindView(R.id.orderPatient)
+    TextView orderPatient;
+    @BindView(R.id.orderContactNumber)
+    TextView orderContactNumber;
 
+    @BindView(R.id.orderCustomerTitle)
+    TextView orderCustomerTitle;
+    @BindView(R.id.orderPatientTitle)
+    TextView orderPatientTitle;
+    @BindView(R.id.orderContactNumberTitle)
+    TextView orderContactNumberTitle;
     @BindView(R.id.orderNumberTitle)
     TextView orderNumberTitle;
     @BindView(R.id.transactionOrderDateTitle)
@@ -84,6 +99,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView addressLocTitle;
     @BindView(R.id.transactionStatusTitle)
     TextView transactionStatusTitle;
+    @BindView(R.id.assessmentDetailTitle)
+    TextView assessmentDetailTitle;
+    @BindView(R.id.assessmentDetail)
+    Button assessmentDetail;
 
     OrderItem orderItem;
     HomecareOrder homecareOrder;
@@ -103,23 +122,21 @@ public class OrderDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?daddr="+homecareOrder.getLocationLatitude()+","+homecareOrder.getLocationLongitude()+""));
+                        Uri.parse("http://maps.google.com/maps?daddr=" + homecareOrder.getLocationLatitude() + "," + homecareOrder.getLocationLongitude() + ""));
                 startActivity(intent);
             }
         });
 
         homecareSessionManager = new HomecareSessionManager(this, this);
         homecareTransactionAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(HomecareTransactionAPIInterface.class);
-
-        /*
-        caregiverHistoryAdapter = new CaregiverHistoryAdapter(this, this, homecareOrder.getCaregiverArrayList());
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        caregiverHistory.addItemDecoration(dividerItemDecoration);
-        caregiverHistory.setLayoutManager(mLayoutManager);
-        caregiverHistory.setItemAnimator(new DefaultItemAnimator());
-        caregiverHistory.setAdapter(caregiverHistoryAdapter);
-        */
+        assessmentDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderDetailsActivity.this, AssessmentDetailActivity.class);
+                intent.putExtra("order_details", homecareOrder);
+                startActivity(intent);
+            }
+        });
         setFonts();
     }
 
@@ -144,6 +161,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
     public void fillPage() {
         serviceName.setText(homecareOrder.getSelectedService());
         orderNumber.setText(homecareOrder.getOrderNumber());
+
+        orderPatient.setText(homecareOrder.getHomecarePatientId().getName());
+        orderContactNumber.setText(homecareOrder.getHomecarePatientId().getIdAppUser().getPhoneNumber());
+        orderCustomer.setText(homecareOrder.getHomecarePatientId().getIdAppUser().getFrontName() + " " + homecareOrder.getHomecarePatientId().getIdAppUser().getMiddleName() + " " + homecareOrder.getHomecarePatientId().getIdAppUser().getLastName());
         transactionOrderDate.setText(ConverterUtility.getDateString(homecareOrder.getTransactionDate()));
         transactionVisitDate.setText(ConverterUtility.getDateString(homecareOrder.getDate()));
         downPayment.setText(TextFormatter.doubleToRupiah(homecareOrder.getPrepaidPrice()));
@@ -154,7 +175,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         transactionStatus.setText(homecareOrder.getHomecareTransactionStatus().getStatus());
         if (homecareOrder.getPaymentFixedPriceStatusId() != null) {
             totalCashStatus.setText(homecareOrder.getPaymentFixedPriceStatusId().getStatus());
-            if (homecareOrder.getPaymentFixedPriceStatusId().getId() == 1){
+            if (homecareOrder.getPaymentFixedPriceStatusId().getId() == 1) {
                 totalCashStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.green_button_background));
             } else if (homecareOrder.getPaymentFixedPriceStatusId().getId() == 2) {
                 totalCashStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.red_button_background));
@@ -162,7 +183,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
         if (homecareOrder.getPaymentPrepaidPriceStatusId() != null) {
             downPaymentStatus.setText(homecareOrder.getPaymentPrepaidPriceStatusId().getStatus());
-            if (homecareOrder.getPaymentPrepaidPriceStatusId().getId() == 1){
+            if (homecareOrder.getPaymentPrepaidPriceStatusId().getId() == 1) {
                 downPaymentStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.green_button_background));
             } else if (homecareOrder.getPaymentPrepaidPriceStatusId().getId() == 2) {
                 downPaymentStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.red_button_background));
@@ -212,6 +233,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         arrayList.add(downPaymentStatus);
         arrayList.add(totalCashStatus);
         arrayList.add(orderNumber);
+        arrayList.add(orderContactNumber);
+        arrayList.add(orderCustomer);
+        arrayList.add(orderPatient);
+        arrayList.add(assessmentDetailTitle);
+        arrayList.add(assessmentDetail);
 
         arrayList.add(transactionVisitDateTitle);
         arrayList.add(transactionOrderDateTitle);
@@ -221,6 +247,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         arrayList.add(addressLocTitle);
         arrayList.add(transactionStatusTitle);
         arrayList.add(orderNumberTitle);
+        arrayList.add(orderContactNumberTitle);
+        arrayList.add(orderCustomerTitle);
+        arrayList.add(orderPatientTitle);
 
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }

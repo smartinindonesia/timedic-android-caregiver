@@ -72,6 +72,72 @@
                 android:padding="@dimen/calculator_row_space">
 
                 <TextView
+                    android:id="@+id/orderCustomerTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Nama Pemesan" />
+
+                <TextView
+                    android:id="@+id/orderCustomer"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/calculator_input_height"
+                    android:layout_weight="0.6"
+                    android:paddingLeft="@dimen/calculator_input_padding"
+                    android:paddingRight="@dimen/calculator_input_padding" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/calculator_row_space">
+
+                <TextView
+                    android:id="@+id/orderPatientTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Nama Pasien" />
+
+                <TextView
+                    android:id="@+id/orderPatient"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/calculator_input_height"
+                    android:layout_weight="0.6"
+                    android:paddingLeft="@dimen/calculator_input_padding"
+                    android:paddingRight="@dimen/calculator_input_padding" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/calculator_row_space">
+
+                <TextView
+                    android:id="@+id/orderContactNumberTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Nomor Kontak Pemesan" />
+
+                <TextView
+                    android:id="@+id/orderContactNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/calculator_input_height"
+                    android:layout_weight="0.6"
+                    android:paddingLeft="@dimen/calculator_input_padding"
+                    android:paddingRight="@dimen/calculator_input_padding" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/calculator_row_space">
+
+                <TextView
                     android:id="@+id/transactionOrderDateTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -233,6 +299,32 @@
                         android:textColor="@color/blue_link_color" />
 
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/calculator_row_space">
+
+                <TextView
+                    android:id="@+id/assessmentDetailTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Status Transaksi" />
+
+                <Button
+                    android:id="@+id/assessmentDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.6"
+                    android:paddingLeft="@dimen/calculator_input_padding"
+                    android:hint="Lihat Assessment"
+                    android:textColorHint="@color/sign_up_selector_fg"
+                    android:paddingRight="@dimen/calculator_input_padding"
+                    android:background="@drawable/orange_selector_button_bg"/>
+
             </LinearLayout>
 
             <LinearLayout

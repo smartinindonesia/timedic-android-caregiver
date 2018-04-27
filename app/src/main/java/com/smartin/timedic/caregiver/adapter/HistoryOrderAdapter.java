@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -136,7 +137,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         @BindView(R.id.time)
         public TextView time;
         @BindView(R.id.orderDetails)
-        public ImageButton orderDetails;
+        public Button orderDetails;
 
         public MyViewHolder(View view) {
             super(view);
@@ -145,6 +146,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
             ArrayList<TextView> arrayList = new ArrayList<>();
             arrayList.add(day);
             arrayList.add(time);
+            arrayList.add(orderDetails);
             ViewFaceUtility.applyFonts(arrayList, activity, "fonts/Dosis-Medium.otf");
         }
     }

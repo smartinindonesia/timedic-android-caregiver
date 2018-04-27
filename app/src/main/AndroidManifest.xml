@@ -82,11 +82,9 @@
         <activity
             android:name=".CalculatorPregnancyEst"
             android:label="@string/act_preg_cal" />
-
         <activity
             android:name=".ScheduleActivity"
             android:label="@string/act_schedule" />
-
         <activity
             android:name=".OrderDetailsActivity"
             android:label="@string/act_order_details" />
@@ -94,6 +92,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <activity android:name=".AssessmentDetailActivity"
+            android:label="@string/act_assessment_details"/>
 
     </application>
 
