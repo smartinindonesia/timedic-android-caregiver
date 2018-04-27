@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import com.smartin.timedic.caregiver.OrderDetailsActivity;
 import com.smartin.timedic.caregiver.R;
 import com.smartin.timedic.caregiver.model.OrderItem;
@@ -50,8 +51,17 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     public void onBindViewHolder(HistoryOrderAdapter.MyViewHolder holder, int position) {
         final OrderItem homecareOrder = homecareOrderList.get(position);
         holder.caregiverName.setText(homecareOrder.getCaregiverName());
-        holder.time.setText(homecareOrder.getTime());
-        holder.day.setText(homecareOrder.getDay());
+        String strTime, strDay;
+        strDay = "";
+        strTime = "";
+        if (homecareOrder.getTime() != null) {
+            strTime = homecareOrder.getTime();
+        }
+        if (homecareOrder.getDay() != null) {
+            strDay = homecareOrder.getDay();
+        }
+        holder.time.setText("Waktu : " + strTime);
+        holder.day.setText("Hari : " + strDay);
         holder.orderDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

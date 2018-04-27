@@ -36,6 +36,9 @@ import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.AppSetting;
 
 import com.facebook.login.LoginManager;
+import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
+
+import java.util.ArrayList;
 
 
 /**
@@ -49,30 +52,39 @@ public class AccountFragment extends Fragment {
 
     @BindView(R.id.accountLayout)
     LinearLayout accountLayout;
-
     @BindView(R.id.btnLogout)
     LinearLayout logoutBtn;
-
     @BindView(R.id.btnRateApp)
     LinearLayout btnRateApp;
+    @BindView(R.id.btnChangePassword)
+    LinearLayout btnChangePassword;
+    @BindView(R.id.btnAccountSetting)
+    LinearLayout btnAccountSetting;
+    @BindView(R.id.btnPushNotification)
+    RelativeLayout btnPushNotif;
+    @BindView(R.id.turnNotification)
+    Switch notifToggle;
+    @BindView(R.id.btnPrivacy)
+    LinearLayout btnPrivacy;
+    @BindView(R.id.btnTermAndCond)
+    LinearLayout btnTermAndCond;
 
     @BindView(R.id.accountSetting)
     TextView accountSetting;
-
-    @BindView(R.id.btnChangePassword)
-    LinearLayout btnChangePassword;
-
-    @BindView(R.id.btnPushNotification)
-    RelativeLayout btnPushNotif;
-
-    @BindView(R.id.turnNotification)
-    Switch notifToggle;
-
-    @BindView(R.id.btnPrivacy)
-    LinearLayout btnPrivacy;
-
-    @BindView(R.id.btnTermAndCond)
-    LinearLayout btnTermAndCond;
+    @BindView(R.id.changePasswordText)
+    TextView changePasswordText;
+    @BindView(R.id.languageText)
+    TextView languageText;
+    @BindView(R.id.pushNotifText)
+    TextView pushNotifText;
+    @BindView(R.id.termAndCondText)
+    TextView termAndCondText;
+    @BindView(R.id.policyAndPrivacyText)
+    TextView policyAndPrivacyText;
+    @BindView(R.id.rateAppText)
+    TextView rateAppText;
+    @BindView(R.id.logoutText)
+    TextView logoutText;
 
     private HomecareSessionManager homecareSessionManager;
     private AppSetting appSetting;
@@ -180,6 +192,7 @@ public class AccountFragment extends Fragment {
                 openUrl(Constants.TERM_AND_COND);
             }
         });
+        setFonts();
         return newView;
     }
 
@@ -221,5 +234,18 @@ public class AccountFragment extends Fragment {
                 .build();
         mAuth = FirebaseAuth.getInstance();
 
+    }
+
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(accountSetting);
+        arrayList.add(changePasswordText);
+        arrayList.add(languageText);
+        arrayList.add(pushNotifText);
+        arrayList.add(termAndCondText);
+        arrayList.add(policyAndPrivacyText);
+        arrayList.add(rateAppText);
+        arrayList.add(logoutText);
+        ViewFaceUtility.applyFonts(arrayList, getActivity(), "fonts/Dosis-Medium.otf");
     }
 }

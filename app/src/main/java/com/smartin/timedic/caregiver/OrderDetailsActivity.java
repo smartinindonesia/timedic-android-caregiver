@@ -61,8 +61,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView mapLocation;
     @BindView(R.id.transactionStatus)
     TextView transactionStatus;
-    @BindView(R.id.caregiverHistory)
-    RecyclerView caregiverHistory;
     @BindView(R.id.mainLayout)
     RelativeLayout mainLayout;
     @BindView(R.id.downPaymentStatus)
@@ -86,8 +84,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView addressLocTitle;
     @BindView(R.id.transactionStatusTitle)
     TextView transactionStatusTitle;
-    @BindView(R.id.caregiverHistoryTitle)
-    TextView caregiverHistoryTitle;
 
     OrderItem orderItem;
     HomecareOrder homecareOrder;
@@ -224,7 +220,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         arrayList.add(totalCashTitle);
         arrayList.add(addressLocTitle);
         arrayList.add(transactionStatusTitle);
-        arrayList.add(caregiverHistoryTitle);
         arrayList.add(orderNumberTitle);
 
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");

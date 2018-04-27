@@ -88,7 +88,6 @@ public class ActiveOrder extends Fragment {
                 fetchNext();
             }
         });
-        getActiveOrderPagination();
         // Inflate the layout for this fragment
         return view;
     }

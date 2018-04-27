@@ -28,6 +28,7 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewPager;
+    @BindView(R.id.textSym)
+    TextView textSym;
 
     private int[] tabIcons = {
             R.drawable.ic_tab_home,
@@ -163,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(textSym);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/BalooBhaina-Regular.ttf");
         setTabsFont();
     }
 

@@ -17,11 +17,29 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                android:id="@+id/accountSetting"
+            <LinearLayout
+                android:id="@+id/btnAccountSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Setting Akun" />
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_action_account" />
+
+                <TextView
+                    android:id="@+id/accountSetting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="12"
+                    android:text="Setting Akun" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -52,6 +70,7 @@
                     android:src="@drawable/ic_change_password" />
 
                 <TextView
+                    android:id="@+id/changePasswordText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
@@ -80,6 +99,7 @@
                     android:src="@drawable/ic_languages" />
 
                 <TextView
+                    android:id="@+id/languageText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
@@ -98,9 +118,9 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_alignParentLeft="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:gravity="center"
@@ -113,6 +133,7 @@
                         android:src="@drawable/ic_push_notification" />
 
                     <TextView
+                        android:id="@+id/pushNotifText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="12"
@@ -122,9 +143,9 @@
 
                 <Switch
                     android:id="@+id/turnNotification"
-                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
 
@@ -157,6 +178,7 @@
                     android:src="@drawable/ic_terms_and_conditions" />
 
                 <TextView
+                    android:id="@+id/termAndCondText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
@@ -185,6 +207,7 @@
                     android:src="@drawable/ic_privacy_policy" />
 
                 <TextView
+                    android:id="@+id/policyAndPrivacyText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
@@ -221,6 +244,7 @@
                     android:src="@drawable/ic_rate_app" />
 
                 <TextView
+                    android:id="@+id/rateAppText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
@@ -256,6 +280,7 @@
                     android:src="@drawable/ic_logout" />
 
                 <TextView
+                    android:id="@+id/logoutText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"

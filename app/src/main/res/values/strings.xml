@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TiMedic Caregiver</string>
+    <string name="app_name">TiMedic Nurse</string>
     <string name="act_homecare">HOMECARE</string>
     <string name="act_layanan_lokasi">PERAWAT</string>
     <string name="act_map_selector">Pilih Lokasi</string>
