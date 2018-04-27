@@ -19,6 +19,7 @@
     <color name="btn_on_text">#FEFEFE</color>
     <color name="btn_off_text">#826161</color>
     <color name="theme_blue">#27A6AF</color>
+    <color name="theme_blue_alpha">#8027A6AF</color>
     <color name="theme_orange">#F29C46</color>
     <color name="theme_orange_alpha">#50F29C46</color>
     <color name="theme_red">#EB0E15</color>

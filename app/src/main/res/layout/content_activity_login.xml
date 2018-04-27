@@ -5,9 +5,7 @@
     android:gravity="center"
     android:orientation="horizontal"
     android:weightSum="5"
-    android:background="@color/colorPrimary"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:background="@color/colorPrimary" >
 
     <LinearLayout
         android:layout_width="0dp"
@@ -76,8 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/sign_in_selector_bg"
-                android:text="Login"
-                android:textColor="@color/sign_in_selector_fg" />
+                android:hint="Login"
+                android:textColorHint="@color/sign_in_selector_fg" />
 
         </RelativeLayout>
 
@@ -96,6 +94,7 @@
                 android:layout_centerInParent="true"/>
 
             <TextView
+                android:id="@+id/orWithText"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,6 +115,17 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
+
+            <ImageButton
+                android:id="@+id/btnFacebook"
+                android:padding="15dp"
+                android:layout_width="0dp"
+                android:layout_weight="0.475"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/btn_facebook_login_selector"/>
+
+            <!--
             <com.shaishavgandhi.loginbuttons.FacebookButton
                 android:id="@+id/btnFacebook"
                 android:layout_weight="0.475"
@@ -127,12 +137,23 @@
                 android:textStyle="bold"
                 android:textSize="11dp"
                 app:roundedCorner="true" />
+            -->
 
             <View
                 android:layout_width="0dp"
                 android:layout_weight="0.05"
                 android:layout_height="0dp"/>
 
+            <ImageButton
+                android:id="@+id/btnGoogleSignIn"
+                android:padding="15dp"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.475"
+                android:scaleType="fitCenter"
+                android:src="@drawable/btn_google_login_selector"/>
+
+            <!--
             <com.shaishavgandhi.loginbuttons.GooglePlusButton
                 android:id="@+id/btnGoogleSignIn"
                 android:layout_weight="0.475"
@@ -144,6 +165,7 @@
                 android:textStyle="bold"
                 android:textSize="11dp"
                 app:roundedCorner="true" />
+                -->
 
         </LinearLayout>
 
@@ -201,11 +223,12 @@
             android:id="@+id/btnSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/sign_up_selector_bg"
-            android:text="SIGN UP"
-            android:textColor="@color/sign_up_selector_fg" />
+            android:background="@drawable/sign_up_blue_selector_bg"
+            android:hint="Sign Up"
+            android:textColorHint="@color/sign_up_selector_fg" />
 
         <TextView
+            android:id="@+id/dontHaveAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Don't have account yet?"

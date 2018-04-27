@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -54,9 +56,12 @@ import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.model.responsemodel.LoginResponse;
 import com.smartin.timedic.caregiver.tools.AesUtil;
+import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -83,12 +88,20 @@ public class LoginActivity extends AppCompatActivity {
     Button signUp;
 
     @BindView(R.id.btnGoogleSignIn)
-    GooglePlusButton btnGoogleSignIn;
+    ImageButton btnGoogleSignIn;
+    @BindView(R.id.btnFacebook)
+    ImageButton facebookButton;
+
+    @BindView(R.id.lupaPassword)
+    TextView lupaPassword;
+    @BindView(R.id.orWithText)
+    TextView orWithText;
+    @BindView(R.id.dontHaveAccount)
+    TextView dontHaveAccount;
 
     private CallbackManager mCallbackManager;
 
     private FirebaseAuth mAuth;
-    private FacebookButton facebookButton;
 
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
@@ -125,8 +138,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-
-        facebookButton = findViewById(R.id.btnFacebook);
 
         if (homecareSessionManager.isLogin()) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -181,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         googleLoginInit();
-
+        setFonts();
     }
 
     @Override
@@ -482,5 +493,16 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(signIn);
+        arrayList.add(signUp);
+        arrayList.add(username);
+        arrayList.add(password);
+        arrayList.add(lupaPassword);
+        arrayList.add(orWithText);
+        arrayList.add(dontHaveAccount);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
+    }
 }
 

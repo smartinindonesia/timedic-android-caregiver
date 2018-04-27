@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -23,6 +24,7 @@ import com.smartin.timedic.caregiver.ScheduleActivity;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.days;
 import com.smartin.timedic.caregiver.model.parammodel.ScheduleParam;
+import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.ScheduleInterface;
 
@@ -30,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,18 +98,26 @@ public class ScheduleFragment extends Fragment {
     @BindView(R.id.turnSunday)
     Switch turnSunday;
 
-
-
-
-
+    @BindView(R.id.textSenin)
+    TextView textSenin;
+    @BindView(R.id.textSelasa)
+    TextView textSelasa;
+    @BindView(R.id.textRabu)
+    TextView textRabu;
+    @BindView(R.id.textKamis)
+    TextView textKamis;
+    @BindView(R.id.textJumat)
+    TextView textJumat;
+    @BindView(R.id.textSabtu)
+    TextView textSabtu;
+    @BindView(R.id.textMinggu)
+    TextView textMinggu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         homecareSessionManager = new HomecareSessionManager(getActivity(), getContext());
     }
-
-
 
     public void setFalseButton(){
         btnMonday.setClickable(false);
@@ -452,7 +463,19 @@ public class ScheduleFragment extends Fragment {
         if(getUserVisibleHint()){ // fragment is visible
             cekStatus(idCaregiver);
         }
-
+        setFonts();
         return newView;
+    }
+
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(textSenin);
+        arrayList.add(textSelasa);
+        arrayList.add(textRabu);
+        arrayList.add(textKamis);
+        arrayList.add(textJumat);
+        arrayList.add(textSabtu);
+        arrayList.add(textMinggu);
+        ViewFaceUtility.applyFonts(arrayList, getActivity(), "fonts/Dosis-Medium.otf");
     }
 }
