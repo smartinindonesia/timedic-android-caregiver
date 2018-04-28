@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,15 +22,21 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.config.Constants;
+import com.smartin.timedic.caregiver.model.GenderOption;
 import com.smartin.timedic.caregiver.model.parammodel.RegisterParam;
 import com.smartin.timedic.caregiver.tools.AesUtil;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
@@ -48,6 +55,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText username;
     @BindView(R.id.password)
     EditText password;
+    @BindView(R.id.rePassword)
+    EditText retypePassword;
     @BindView(R.id.firstName)
     EditText firstName;
     @BindView(R.id.middleName)
@@ -72,6 +81,32 @@ public class SignUpActivity extends AppCompatActivity {
     EditText dob;
     @BindView(R.id.selectDOB)
     ImageButton selectDob;
+    @BindView(R.id.genderSpin)
+    Spinner genderSpin;
+
+    @BindView(R.id.usernameTitle)
+    TextView usernameTitle;
+    @BindView(R.id.passwordTitle)
+    TextView passwordTitle;
+    @BindView(R.id.rePasswordTitle)
+    TextView rePasswordTitle;
+    @BindView(R.id.firstNameTitle)
+    TextView frontNameTitle;
+    @BindView(R.id.middleNameTitle)
+    TextView middleNameTitle;
+    @BindView(R.id.lastNameTitle)
+    TextView lastNameTitle;
+    @BindView(R.id.phoneUserTitle)
+    TextView phoneUserTitle;
+    @BindView(R.id.emailAddressTitle)
+    TextView emailAddressTitle;
+    @BindView(R.id.genderSpinTitle)
+    TextView genderSpinTitle;
+    @BindView(R.id.dateOfBirthTitle)
+    TextView dobTitle;
+
+    GenderSpinnerAdapter adapterGender;
+    List<GenderOption> genderOptions;
 
     private DatePickerDialog datePickerDialog;
     private UserAPIInterface userAPIInterface;
@@ -92,7 +127,7 @@ public class SignUpActivity extends AppCompatActivity {
         agreementLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openUrl(com.smartin.timedic.caregiver.config.Constants.TERM_AND_COND);
+                openUrl(Constants.TERM_AND_COND);
             }
         });
         final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -100,22 +135,29 @@ public class SignUpActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void afterTextChanged(Editable s) {
                 String email = emailAddress.getText().toString().trim();
+                Integer paddingTop = emailAddress.getPaddingTop();
+                Integer paddingBottom = emailAddress.getPaddingBottom();
+                Integer paddingLeft = emailAddress.getPaddingLeft();
+                Integer paddingRight = emailAddress.getPaddingRight();
                 if (s.length() > 0) {
                     if (email.matches(emailPattern)) {
                         emailAddress.setBackground(getDrawable(R.drawable.bg_green_rounded_textfield));
-                        emailAddress.setTextColor(getColor(R.color.btn_on_text));
+                        emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
                     } else {
                         emailAddress.setBackground(getDrawable(R.drawable.bg_red_rounded_textfield));
-                        emailAddress.setTextColor(getColor(R.color.btn_on_text));
+                        emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
                     }
                 } else {
                     emailAddress.setBackground(getDrawable(R.drawable.bg_gray_rounded_textfield));
-                    emailAddress.setTextColor(getColor(R.color.text_color));
+                    emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color));
                 }
+                emailAddress.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
             }
+
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // other stuffs
             }
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // other stuffs
             }
@@ -124,22 +166,29 @@ public class SignUpActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void afterTextChanged(Editable s) {
                 String num = phone.getText().toString().trim();
+                Integer paddingTop = phone.getPaddingTop();
+                Integer paddingBottom = phone.getPaddingBottom();
+                Integer paddingLeft = phone.getPaddingLeft();
+                Integer paddingRight = phone.getPaddingRight();
                 if (s.length() > 0) {
                     if (android.util.Patterns.PHONE.matcher(num).matches()) {
                         phone.setBackground(getDrawable(R.drawable.bg_green_rounded_textfield));
-                        phone.setTextColor(getColor(R.color.btn_on_text));
+                        phone.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
                     } else {
                         phone.setBackground(getDrawable(R.drawable.bg_red_rounded_textfield));
-                        phone.setTextColor(getColor(R.color.btn_on_text));
+                        phone.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
                     }
                 } else {
                     phone.setBackground(getDrawable(R.drawable.bg_gray_rounded_textfield));
-                    phone.setTextColor(getColor(R.color.text_color));
+                    phone.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color));
                 }
+                phone.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
             }
+
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // other stuffs
             }
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // other stuffs
             }
@@ -161,6 +210,73 @@ public class SignUpActivity extends AppCompatActivity {
                 dob.setText(day + "-" + (month + 1) + "-" + year);
             }
         });
+        retypePassword.addTextChangedListener(new TextWatcher() {
+            @TargetApi(Build.VERSION_CODES.M)
+            public void afterTextChanged(Editable s) {
+                String pass = password.getText().toString();
+                String rePass = retypePassword.getText().toString();
+                Integer paddingTop = retypePassword.getPaddingTop();
+                Integer paddingBottom = retypePassword.getPaddingBottom();
+                Integer paddingLeft = retypePassword.getPaddingLeft();
+                Integer paddingRight = retypePassword.getPaddingRight();
+                if (s.length() > 0) {
+                    if (pass.equals(rePass)) {
+                        retypePassword.setBackground(getDrawable(R.drawable.bg_green_rounded_textfield));
+                        retypePassword.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
+                    } else {
+                        retypePassword.setBackground(getDrawable(R.drawable.bg_red_rounded_textfield));
+                        retypePassword.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
+                    }
+                } else {
+                    retypePassword.setBackground(getDrawable(R.drawable.bg_gray_rounded_textfield));
+                    retypePassword.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color));
+                }
+                retypePassword.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // other stuffs
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // other stuffs
+            }
+        });
+
+        genderOptions = new ArrayList<>();
+        genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-Laki"));
+        genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
+        adapterGender = new GenderSpinnerAdapter(this, this, genderOptions);
+        genderSpin.setAdapter(adapterGender);
+
+        setFonts();
+    }
+
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(usernameTitle);
+        arrayList.add(username);
+        arrayList.add(passwordTitle);
+        arrayList.add(password);
+        arrayList.add(rePasswordTitle);
+        arrayList.add(retypePassword);
+        arrayList.add(frontNameTitle);
+        arrayList.add(firstName);
+        arrayList.add(middleNameTitle);
+        arrayList.add(middleName);
+        arrayList.add(lastNameTitle);
+        arrayList.add(lastName);
+        arrayList.add(phoneUserTitle);
+        arrayList.add(phone);
+        arrayList.add(emailAddressTitle);
+        arrayList.add(emailAddress);
+        arrayList.add(dobTitle);
+        arrayList.add(dob);
+        arrayList.add(genderSpinTitle);
+        arrayList.add(checkAgreement);
+        arrayList.add(agreementLink);
+        arrayList.add(signUP);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 
     @SuppressLint("RestrictedApi")
@@ -194,23 +310,39 @@ public class SignUpActivity extends AppCompatActivity {
         registerParam.setEmail(emailAddress.getText().toString());
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateOfBirth(dobs);
-
-        if (registerParam.isValidPhone()) {
-            if (registerParam.isValidEmail()) {
-                if (checkAgreement.isChecked()) {
-                    try {
-                        postData(registerParam);
-                    } catch (UnsupportedEncodingException e) {
-                        Toast.makeText(getApplicationContext(), "Parameter tidak benar!", Toast.LENGTH_LONG).show();
+        registerParam.setGender(genderSpin.getSelectedItem().toString());
+        if (retypePassword.getText().toString().equals(password.getText().toString())) {
+            if (registerParam.isValidUsername()) {
+                if (!registerParam.isUsernameContainSpace()) {
+                    if (!registerParam.isFirstNameEmpty()) {
+                        if (registerParam.isValidPhone()) {
+                            if (registerParam.isValidEmail()) {
+                                if (checkAgreement.isChecked()) {
+                                    try {
+                                        postData(registerParam);
+                                    } catch (UnsupportedEncodingException e) {
+                                        Toast.makeText(getApplicationContext(), "Parameter tidak benar!", Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Anda belum menyetujui pernyataan persetujuan!", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Email tidak valid!", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Nomor HP tidak valid!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Nama depan tidak boleh kosong!", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Anda belum menyetujui pernyataan persetujuan!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Username tidak boleh mengandung spasi!", Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Email tidak valid!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Username tidak boleh kosong!", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Nomor HP tidak valid!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Pastikan password anda benar!", Toast.LENGTH_LONG).show();
         }
     }
 

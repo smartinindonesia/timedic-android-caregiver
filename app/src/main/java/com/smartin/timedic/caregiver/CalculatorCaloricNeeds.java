@@ -66,7 +66,7 @@ public class CalculatorCaloricNeeds extends AppCompatActivity {
         genderOptions = new ArrayList<>();
         genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-laki"));
         genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
-        adapterGender = new GenderSpinnerAdapter(this, genderOptions);
+        adapterGender = new GenderSpinnerAdapter(this, this, genderOptions);
         genderSpin.setAdapter(adapterGender);
 
         initAlphaCalc();

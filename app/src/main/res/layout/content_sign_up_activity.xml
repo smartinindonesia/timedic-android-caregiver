@@ -19,6 +19,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/usernameTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -44,6 +45,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/passwordTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -69,6 +71,33 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/rePasswordTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Ulangi Password"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/rePassword"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:id="@+id/firstNameTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -94,6 +123,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/middleNameTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -119,6 +149,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/lastNameTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -144,10 +175,11 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/phoneUserTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:text="Nomor Telepon"
+                android:text="Nomor Telefon"
                 android:textSize="@dimen/calculator_hint_size" />
 
             <EditText
@@ -169,6 +201,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/emailAddressTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -183,7 +216,7 @@
                 android:background="@drawable/bg_gray_rounded_textfield"
                 android:inputType="textEmailAddress"
                 android:paddingLeft="@dimen/calculator_input_padding"
-                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+                android:paddingRight="@dimen/calculator_input_padding"/>
         </LinearLayout>
 
         <LinearLayout
@@ -194,6 +227,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/dateOfBirthTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -229,6 +263,33 @@
                     android:padding="4dp"
                     android:src="@drawable/ic_select_date_white" />
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:id="@+id/genderSpinTitle"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_height="wrap_content"
+                android:text="Jenis Kelamin"
+                android:textSize="@dimen/calculator_hint_size"/>
+
+            <Spinner
+                android:id="@+id/genderSpin"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:background="@drawable/bg_blue_rounded_field"
+                android:layout_weight="0.6">
+
+            </Spinner>
+
         </LinearLayout>
 
         <CheckBox

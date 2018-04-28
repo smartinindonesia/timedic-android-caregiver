@@ -16,8 +16,10 @@ import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.model.GenderOption;
 import com.smartin.timedic.caregiver.tools.CalculatorUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -58,7 +60,7 @@ public class CalculatorIMT extends AppCompatActivity {
         genderOptions = new ArrayList<>();
         genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-laki"));
         genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
-        adapterGender = new GenderSpinnerAdapter(this, genderOptions);
+        adapterGender = new GenderSpinnerAdapter(this, this, genderOptions);
         genderSpin.setAdapter(adapterGender);
 
         btnCalculate.setOnClickListener(new View.OnClickListener() {

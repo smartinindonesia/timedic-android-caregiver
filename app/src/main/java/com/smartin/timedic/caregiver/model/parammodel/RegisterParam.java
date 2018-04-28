@@ -99,8 +99,40 @@ public class RegisterParam {
     }
 
     public boolean isValidPhone() {
-        boolean isTrue = Patterns.PHONE.matcher(phone).matches();
+        boolean isTrue = android.util.Patterns.PHONE.matcher(phone).matches();
         return isTrue;
+    }
+
+    public boolean isValidUsername() {
+        if (username != null) {
+            if (username.trim().isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isUsernameContainSpace(){
+        if (username.contains(" ")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isFirstNameEmpty(){
+        if (firstname != null) {
+            if (firstname.trim().isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     public boolean isValidEmail() {

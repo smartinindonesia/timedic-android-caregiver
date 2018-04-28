@@ -98,7 +98,7 @@ public class Constants {
     public static final String SECURITY_ALGO = "AES";
 
     //WEB
-    public static final String TERM_AND_COND = "https://timedic.id/";
-    public static final String PRIVACY_STATEMENT = "https://timedic.id/";
+    public static final String TERM_AND_COND = "https://timedic.id/#privacyAndPolicy";
+    public static final String PRIVACY_STATEMENT = "https://timedic.id/#privacyAndPolicy";
 
 }
