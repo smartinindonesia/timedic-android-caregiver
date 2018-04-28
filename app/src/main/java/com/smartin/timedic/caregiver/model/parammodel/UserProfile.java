@@ -13,8 +13,8 @@ public class UserProfile {
     private Long id;
     @SerializedName("address")
     private String address;
-    @SerializedName("dateBirth")
-    private String dateBirth;
+    @SerializedName("dateOfBirth")
+    private Long dateBirth;
     @SerializedName("email")
     private String email;
     @SerializedName("frontName")
@@ -48,11 +48,11 @@ public class UserProfile {
         this.address = address;
     }
 
-    public String getDateBirth() {
+    public Long getDateBirth() {
         return dateBirth;
     }
 
-    public void setDateBirth(String dateBirth) {
+    public void setDateBirth(Long dateBirth) {
         this.dateBirth = dateBirth;
     }
 

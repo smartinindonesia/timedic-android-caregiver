@@ -16,7 +16,7 @@ public class User implements Serializable {
     private Long id;
     @SerializedName("address")
     private String address;
-    @SerializedName("dateBirth")
+    @SerializedName("dateOfBirth")
     private Long dateBirth;
     @SerializedName("email")
     private String email;
