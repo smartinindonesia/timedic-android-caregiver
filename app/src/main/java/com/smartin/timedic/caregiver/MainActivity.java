@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
     TextView textSym;
 
     private int[] tabIcons = {
-            R.drawable.ic_tab_home,
-            R.drawable.ic_tab_yourorder,
             R.drawable.ic_tab_schedule,
+            R.drawable.ic_tab_yourorder,
+            R.drawable.ic_tab_home,
             R.drawable.ic_tab_account
     };
 
@@ -73,14 +73,16 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         sendFCMTokenToServer();
+        User user = homecareSessionManager.getUserDetail();
+        textSym.setText(user.getFrontName() + " " + user.getMiddleName() + " " + user.getLastName());
         setFonts();
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Beranda");
+        adapter.addFragment(new ScheduleFragment(), "Jadwal");
         adapter.addFragment(new YourOrderFragment(), "Pesanan");
-        adapter.addFragment(new ScheduleFragment(), "Atur Jadwal");
+        adapter.addFragment(new HomeFragment(), "Alat Bantu");
         adapter.addFragment(new AccountFragment(), "Akun");
         viewPager.setAdapter(adapter);
     }
@@ -134,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
-    private void sendFCMTokenToServer(){
+    private void sendFCMTokenToServer() {
         homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
         User user = homecareSessionManager.getUserDetail();
         String initialFCMToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "ID USER : "+user.getId());
-        Log.d(TAG, "FCM TOKEN SEND : "+initialFCMToken);
+        Log.d(TAG, "ID USER : " + user.getId());
+        Log.d(TAG, "FCM TOKEN SEND : " + initialFCMToken);
 
         user.setFcmToken(initialFCMToken);
 
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setFonts(){
+    private void setFonts() {
         ArrayList<TextView> arrayList = new ArrayList<>();
         arrayList.add(textSym);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/BalooBhaina-Regular.ttf");

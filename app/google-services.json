@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "138437881243-im8t2fbb8qbud096inc59ts30d0hu0ps.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartin.timedic.caregiver",
+            "certificate_hash": "5aaa7bd74e3e78f1cd730ca8379a44e98298811c"
+          }
+        },
+        {
+          "client_id": "138437881243-28e4nqlrks0i9cbtcefd79ihhml9u92h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartin.timedic.caregiver",
+            "certificate_hash": "f6524d1b9b9ddc965e9972e49190cb185ce5629c"
+          }
+        },
+        {
           "client_id": "138437881243-jiiqo22qrsaaj7dg28141m1ldf0mihem.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

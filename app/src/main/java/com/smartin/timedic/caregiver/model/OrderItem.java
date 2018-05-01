@@ -3,6 +3,7 @@ package com.smartin.timedic.caregiver.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * Created by Hafid on 26/04/2018.
@@ -19,6 +20,8 @@ public class OrderItem implements Serializable {
     private String day;
     @SerializedName("time")
     private String time;
+    @SerializedName("date")
+    private Long date;
     @SerializedName("rateStatus")
     private Boolean isRated;
     @SerializedName("idCaregiver")
@@ -98,5 +101,19 @@ public class OrderItem implements Serializable {
 
     public void setIdHomecareClinic(HomecareClinic idHomecareClinic) {
         this.idHomecareClinic = idHomecareClinic;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
+    public Calendar getDateDetail(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        return calendar;
     }
 }

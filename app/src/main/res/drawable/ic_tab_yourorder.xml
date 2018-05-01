@@ -4,18 +4,18 @@
         android:state_selected="true"
         android:state_focused="false"
         android:state_pressed="false"
-        android:drawable="@drawable/ic_tab_order_dark" />
+        android:drawable="@drawable/btn_pesanan_01" />
     <item
         android:state_selected="false"
         android:state_focused="false"
         android:state_pressed="false"
-        android:drawable="@drawable/ic_tab_order_white" />
+        android:drawable="@drawable/btn_pesanan_02" />
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/ic_tab_order_dark" />
+        android:drawable="@drawable/btn_pesanan_01" />
     <item
         android:state_focused="true"
         android:state_selected="true"
         android:state_pressed="false"
-        android:drawable="@drawable/ic_tab_order_dark" />
+        android:drawable="@drawable/btn_pesanan_01" />
 </selector>
