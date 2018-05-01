@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,14 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
     @Override
     public void onBindViewHolder(ActiveOrderAdapter.MyViewHolder holder, int position) {
         final OrderItem homecareOrder = homecareOrderList.get(position);
-        holder.caregiverName.setText(homecareOrder.getCaregiverName());
         String strTime, strDay;
         strDay = "";
         strTime = "";
+        if (homecareOrder.getDate() != null) {
+            holder.date.setText(ConverterUtility.getDateString(homecareOrder.getDate()));
+            strDay = (String) DateFormat.format("EEEE", homecareOrder.getDateDetail());
+        }
+
         if (homecareOrder.getTime() != null) {
             strTime = homecareOrder.getTime();
         }
@@ -132,7 +137,7 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.caregiverName)
-        public TextView caregiverName;
+        public TextView date;
         @BindView(R.id.day)
         public TextView day;
         @BindView(R.id.time)
@@ -143,7 +148,7 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ViewFaceUtility.applyFont(caregiverName, activity, "fonts/Dosis-Bold.otf");
+            ViewFaceUtility.applyFont(date, activity, "fonts/Dosis-Bold.otf");
             ArrayList<TextView> arrayList = new ArrayList<>();
             arrayList.add(day);
             arrayList.add(time);

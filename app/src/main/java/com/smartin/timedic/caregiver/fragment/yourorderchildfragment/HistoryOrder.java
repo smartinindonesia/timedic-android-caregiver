@@ -66,7 +66,7 @@ public class HistoryOrder extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //resetData();
+        resetData();
         //getHistoryOrder()
     }
 

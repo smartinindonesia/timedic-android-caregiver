@@ -33,10 +33,10 @@ public class HomeFragment extends Fragment {
 
     public static String TAG = "[HomeFragment]";
 
-    @BindView(R.id.btnHomecare)
-    ImageButton btnHomecare;
     @BindView(R.id.btnHealthCalculator)
     ImageButton btnHealthCalc;
+    @BindView(R.id.btnMedicineReminder)
+    ImageButton btnMedicineReminder;
     @BindView(R.id.pager)
     ViewPager viewPager;
     @BindView(R.id.tabDots)
@@ -105,15 +105,6 @@ public class HomeFragment extends Fragment {
             }
         });
         tabLayout.setupWithViewPager(viewPager, true);
-
-
-        btnHomecare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(getActivity(), HomecareActivity.class);
-                //startActivity(intent);
-            }
-        });
 
         btnHealthCalc.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,6 +11,7 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/firstSessionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sesi Pertama"
@@ -31,6 +32,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/firstSessionStartTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -44,9 +46,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
                 android:background="@drawable/edittext_border"
-                android:drawableLeft="@drawable/ic_click_date"
-                android:hint="Waktu Mulai"
-                android:padding="4dp" />
+                android:hint="Waktu Mulai" />
 
         </LinearLayout>
 
@@ -58,6 +58,7 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/firstSessionEndTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -67,13 +68,10 @@
             <Spinner
                 android:id="@+id/endTime"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/calculator_input_height"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:background="@drawable/edittext_border"
-                android:drawableLeft="@drawable/ic_click_date"
-                android:hint="Waktu Selesai"
-                android:padding="4dp" />
+                android:hint="Waktu Selesai" />
 
         </LinearLayout>
 
@@ -84,6 +82,7 @@
             android:layout_height="10dp" />
 
         <TextView
+            android:id="@+id/secondSessionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sesi Kedua"
@@ -104,6 +103,7 @@
                 android:padding="@dimen/calculator_row_space">
 
                 <TextView
+                    android:id="@+id/secondSessionStartTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
@@ -117,9 +117,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.6"
                     android:background="@drawable/edittext_border"
-                    android:drawableLeft="@drawable/ic_click_date"
-                    android:hint="Waktu Mulai"
-                    android:padding="4dp" />
+                    android:hint="Waktu Mulai" />
 
             </LinearLayout>
 
@@ -131,6 +129,7 @@
                 android:padding="@dimen/calculator_row_space">
 
                 <TextView
+                    android:id="@+id/secondSessionEndTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
@@ -144,9 +143,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.6"
                     android:background="@drawable/edittext_border"
-                    android:drawableLeft="@drawable/ic_click_date"
-                    android:hint="Waktu Selesai"
-                    android:padding="4dp" />
+                    android:hint="Waktu Selesai" />
 
             </LinearLayout>
 

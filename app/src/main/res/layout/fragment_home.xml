@@ -65,12 +65,12 @@
                         android:layout_alignParentRight="true"/>
 
                     <ImageButton
-                        android:id="@+id/btnHomecare"
+                        android:id="@+id/btnHealthCalculator"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/btn_home_care" />
+                        android:src="@drawable/btn_health_calculator" />
 
                 </RelativeLayout>
 
@@ -84,15 +84,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"/>
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/upcoming"/>
 
                     <ImageButton
-                        android:id="@+id/btnHealthCalculator"
+                        android:id="@+id/btnMedicineReminder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/btn_health_calculator" />
+                        android:clickable="false"
+                        android:src="@drawable/btn_health_reminder" />
 
                 </RelativeLayout>
 
