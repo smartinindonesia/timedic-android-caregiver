@@ -59,13 +59,7 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
         if (homecareOrder.getDate() != null) {
             holder.date.setText(ConverterUtility.getDateString(homecareOrder.getDate()));
             strDay = (String) DateFormat.format("EEEE", homecareOrder.getDateDetail());
-        }
-
-        if (homecareOrder.getTime() != null) {
-            strTime = homecareOrder.getTime();
-        }
-        if (homecareOrder.getDay() != null) {
-            strDay = homecareOrder.getDay();
+            strTime = (String) DateFormat.format("HH:mm:ss", homecareOrder.getDateDetail());
         }
         holder.time.setText("Waktu : " + strTime);
         holder.day.setText("Hari : " + strDay);
