@@ -10,9 +10,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.smartin.timedic.caregiver.tools.CalculatorUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +35,13 @@ public class CalculatorFluidReq extends AppCompatActivity {
     LinearLayout btnReset;
     @BindView(R.id.btnCalculate)
     LinearLayout btnCalculate;
+
+    @BindView(R.id.weightTexText)
+    TextView weightTexText;
+    @BindView(R.id.btnCalculateTitle)
+    TextView btnCalculateTitle;
+    @BindView(R.id.btnResetTitle)
+    TextView btnResetTitle;
 
     SweetAlertDialog sweetAlertDialog;
 
@@ -54,6 +64,7 @@ public class CalculatorFluidReq extends AppCompatActivity {
                 calculateFluidReq();
             }
         });
+        setFonts();
     }
 
     private void calculateFluidReq() {
@@ -93,5 +104,14 @@ public class CalculatorFluidReq extends AppCompatActivity {
         finish();
         onBackPressed();
         return true;
+    }
+
+    private void setFonts() {
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(weightTex);
+        arrayList.add(weightTexText);
+        arrayList.add(btnCalculateTitle);
+        arrayList.add(btnResetTitle);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }

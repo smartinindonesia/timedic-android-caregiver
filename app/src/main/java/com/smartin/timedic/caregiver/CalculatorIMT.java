@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.model.GenderOption;
@@ -45,6 +46,19 @@ public class CalculatorIMT extends AppCompatActivity {
     @BindView(R.id.ageTex)
     EditText ageTex;
 
+    @BindView(R.id.genderTitle)
+    TextView genderTitle;
+    @BindView(R.id.ageTexTitle)
+    TextView ageTexTitle;
+    @BindView(R.id.heightTextTitle)
+    TextView heightTextTitle;
+    @BindView(R.id.weightTexTitle)
+    TextView weightTexTitle;
+    @BindView(R.id.btnCalculateTitle)
+    TextView btnCalculateTitle;
+    @BindView(R.id.btnResetTitle)
+    TextView btnResetTitle;
+
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
 
@@ -76,6 +90,7 @@ public class CalculatorIMT extends AppCompatActivity {
                 resetForm();
             }
         });
+        setFonts();
     }
 
     private void calculateIMT() {
@@ -120,6 +135,20 @@ public class CalculatorIMT extends AppCompatActivity {
         finish();
         onBackPressed();
         return true;
+    }
+
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(genderTitle);
+        arrayList.add(ageTexTitle);
+        arrayList.add(heightTextTitle);
+        arrayList.add(weightTexTitle);
+        arrayList.add(btnCalculateTitle);
+        arrayList.add(btnResetTitle);
+        arrayList.add(heightTex);
+        arrayList.add(weightTex);
+        arrayList.add(ageTex);
+        ViewFaceUtility.applyFonts( arrayList, this, "fonts/Dosis-Medium.otf");
     }
 
 }

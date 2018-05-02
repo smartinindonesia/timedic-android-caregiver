@@ -13,11 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.smartin.timedic.caregiver.tools.CalculatorUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -37,6 +39,13 @@ public class CalculatorPregnancyEst extends AppCompatActivity {
     ImageButton btnChooseDate;
     @BindView(R.id.selectedDateTex)
     EditText dateTex;
+
+    @BindView(R.id.btnCalculateTitle)
+    TextView btnCalculateTitle;
+    @BindView(R.id.descriptionTitle)
+    TextView descriptionTitle;
+    @BindView(R.id.dateTitle)
+    TextView dateTitle;
 
     private DatePickerDialog datePickerDialog;
     private SweetAlertDialog sweetAlertDialog;
@@ -70,6 +79,7 @@ public class CalculatorPregnancyEst extends AppCompatActivity {
                 calculatePregnancy();
             }
         });
+        setFonts();
     }
 
     private void calculatePregnancy() {
@@ -112,5 +122,15 @@ public class CalculatorPregnancyEst extends AppCompatActivity {
         finish();
         onBackPressed();
         return true;
+    }
+
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(btnCalculateTitle);
+        arrayList.add(descriptionTitle);
+        arrayList.add(dateTitle);
+        arrayList.add(btnCalculateTitle);
+        arrayList.add(dateTex);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }

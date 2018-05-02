@@ -13,6 +13,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/genderTitle"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/ageTexTitle"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
@@ -70,6 +72,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/heightTextTitle"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
@@ -97,6 +100,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/weightTexTitle"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
@@ -147,6 +151,7 @@
                 android:src="@drawable/btn_hitung" />
 
             <TextView
+                android:id="@+id/btnCalculateTitle"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -179,6 +184,7 @@
                 android:src="@drawable/btn_reset" />
 
             <TextView
+                android:id="@+id/btnResetTitle"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

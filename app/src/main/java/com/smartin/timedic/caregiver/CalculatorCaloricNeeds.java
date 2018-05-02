@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.smartin.timedic.caregiver.adapter.AlphaCalcSpinnerAdapter;
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
@@ -48,6 +49,21 @@ public class CalculatorCaloricNeeds extends AppCompatActivity {
     @BindView(R.id.ageTex)
     EditText ageTex;
 
+    @BindView(R.id.genderTitle)
+    TextView genderTitle;
+    @BindView(R.id.ageTexTitle)
+    TextView ageTexTitle;
+    @BindView(R.id.heightTextTitle)
+    TextView heightTexTitle;
+    @BindView(R.id.weightTexTitle)
+    TextView weightTexTitle;
+    @BindView(R.id.activitySpinTitle)
+    TextView activitySpinTitle;
+    @BindView(R.id.btnResetTitle)
+    TextView btnResetTitle;
+    @BindView(R.id.btnCalculateTitle)
+    TextView btnCalculateTitle;
+
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
 
@@ -70,7 +86,7 @@ public class CalculatorCaloricNeeds extends AppCompatActivity {
         genderSpin.setAdapter(adapterGender);
 
         initAlphaCalc();
-        adapterActivity = new AlphaCalcSpinnerAdapter(this, alphaCalcActivities);
+        adapterActivity = new AlphaCalcSpinnerAdapter(this, this, alphaCalcActivities);
         activitySpin.setAdapter(adapterActivity);
 
         btnCalculate.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +102,7 @@ public class CalculatorCaloricNeeds extends AppCompatActivity {
                 resetForm();
             }
         });
+        setFonts();
     }
 
     private void calculateCaloricNeeds() {
@@ -145,5 +162,20 @@ public class CalculatorCaloricNeeds extends AppCompatActivity {
         finish();
         onBackPressed();
         return true;
+    }
+
+    private void setFonts(){
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(genderTitle);
+        arrayList.add(ageTexTitle);
+        arrayList.add(heightTexTitle);
+        arrayList.add(weightTexTitle);
+        arrayList.add(activitySpinTitle);
+        arrayList.add(btnResetTitle);
+        arrayList.add(btnCalculateTitle);
+        arrayList.add(heightTex);
+        arrayList.add(weightTex);
+        arrayList.add(ageTex);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }

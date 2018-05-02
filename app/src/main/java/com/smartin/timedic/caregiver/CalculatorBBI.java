@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.model.GenderOption;
@@ -40,6 +41,15 @@ public class CalculatorBBI extends AppCompatActivity {
     @BindView(R.id.mainLayout)
     RelativeLayout mainLayout;
 
+    @BindView(R.id.genderSpinTitle)
+    TextView genderSpinTitle;
+    @BindView(R.id.heightTextTitle)
+    TextView heightTextTitle;
+    @BindView(R.id.btnCalculateTitle)
+    TextView btnCalculateTitle;
+    @BindView(R.id.btnResetTitle)
+    TextView btnResetTitle;
+
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
 
@@ -68,6 +78,7 @@ public class CalculatorBBI extends AppCompatActivity {
                 resetForm();
             }
         });
+        setFonts();
     }
 
     private void calculateBBI() {
@@ -106,5 +117,15 @@ public class CalculatorBBI extends AppCompatActivity {
         finish();
         onBackPressed();
         return true;
+    }
+
+    private void setFonts() {
+        ArrayList<TextView> arrayList = new ArrayList<>();
+        arrayList.add(genderSpinTitle);
+        arrayList.add(heightTextTitle);
+        arrayList.add(btnCalculateTitle);
+        arrayList.add(btnResetTitle);
+        arrayList.add(heigthText);
+        ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }
