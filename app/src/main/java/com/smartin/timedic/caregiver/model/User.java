@@ -58,6 +58,10 @@ public class User implements Serializable {
     private String fcmToken;
     @SerializedName("gender")
     private String gender;
+    @SerializedName("religion")
+    private String religion;
+    @SerializedName("idCaregiverStatus")
+    private Status status;
 
     public Long getId() {
         return id;
@@ -240,6 +244,22 @@ public class User implements Serializable {
     }
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getReligion() {
+        return religion;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
     }
 
     @Override

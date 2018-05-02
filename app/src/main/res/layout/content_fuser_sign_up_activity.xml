@@ -175,6 +175,30 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/religionNameText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Agama"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <Spinner
+                android:id="@+id/religionName"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_blue_rounded_field" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
                 android:id="@+id/phoneUserTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

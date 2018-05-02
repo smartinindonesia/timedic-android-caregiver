@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     @BindView(R.id.textSym)
     TextView textSym;
+    @BindView(R.id.textStatusRed)
+    TextView textStatusRed;
+    @BindView(R.id.textStatusGreen)
+    TextView textStatusGreen;
+    @BindView(R.id.textStatusOrange)
+    TextView textStatusOrange;
 
     private int[] tabIcons = {
             R.drawable.ic_tab_schedule,
@@ -75,6 +81,22 @@ public class MainActivity extends AppCompatActivity {
         sendFCMTokenToServer();
         User user = homecareSessionManager.getUserDetail();
         textSym.setText(user.getFrontName() + " " + user.getMiddleName() + " " + user.getLastName());
+        if (user.getStatus().getId() == 1){
+            textStatusGreen.setVisibility(View.VISIBLE);
+            textStatusRed.setVisibility(View.GONE);
+            textStatusOrange.setVisibility(View.GONE);
+        } else if (user.getStatus().getId() == 2) {
+            textStatusGreen.setVisibility(View.GONE);
+            textStatusRed.setVisibility(View.GONE);
+            textStatusOrange.setVisibility(View.VISIBLE);
+        } else if (user.getStatus().getId() == 3) {
+            textStatusGreen.setVisibility(View.GONE);
+            textStatusRed.setVisibility(View.VISIBLE);
+            textStatusOrange.setVisibility(View.GONE);
+        }
+        textStatusRed.setText("Status "+user.getStatus().getStatus());
+        textStatusOrange.setText("Status "+user.getStatus().getStatus());
+        textStatusGreen.setText("Status "+user.getStatus().getStatus());
         setFonts();
     }
 
@@ -165,8 +187,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setFonts() {
         ArrayList<TextView> arrayList = new ArrayList<>();
+        ArrayList<TextView> arrayListB = new ArrayList<>();
         arrayList.add(textSym);
+        arrayListB.add(textStatusGreen);
+        arrayListB.add(textStatusRed);
+        arrayListB.add(textStatusOrange);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/BalooBhaina-Regular.ttf");
+        ViewFaceUtility.applyFonts(arrayListB, this, "fonts/Dosis-Medium.otf");
         setTabsFont();
     }
 

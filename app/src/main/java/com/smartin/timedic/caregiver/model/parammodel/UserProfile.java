@@ -1,6 +1,7 @@
 package com.smartin.timedic.caregiver.model.parammodel;
 
 import com.google.gson.annotations.SerializedName;
+import com.smartin.timedic.caregiver.model.Status;
 
 /**
  * Created by Hafid on 3/20/2018.
@@ -31,6 +32,10 @@ public class UserProfile {
     private float longitude;
     @SerializedName("gender")
     private String gender;
+    @SerializedName("religion")
+    private String religion;
+    @SerializedName("status")
+    private Status status;
 
     public Long getId() {
         return id;
@@ -120,8 +125,25 @@ public class UserProfile {
         this.gender = gender;
     }
 
+
+    public String getReligion() {
+        return religion;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
+
     public boolean isValidPhone() {
         boolean isTrue = android.util.Patterns.PHONE.matcher(phoneNumber).matches();
         return isTrue;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

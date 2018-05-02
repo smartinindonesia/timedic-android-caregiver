@@ -49,7 +49,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".FUserSignUpActivity"
             android:label="@string/act_sign_up" />
@@ -97,7 +96,7 @@
         <activity
             android:name=".AssessmentDetailActivity"
             android:label="@string/act_assessment_details" />
-
+        <activity android:name=".ContactUsActivity"></activity>
     </application>
 
 </manifest>

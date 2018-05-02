@@ -35,8 +35,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
+import com.smartin.timedic.caregiver.adapter.ReligionAdapter;
+import com.smartin.timedic.caregiver.config.ConstantVals;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.GenderOption;
+import com.smartin.timedic.caregiver.model.Religion;
 import com.smartin.timedic.caregiver.model.User;
 
 import com.smartin.timedic.caregiver.model.parammodel.UserProfile;
@@ -79,6 +82,8 @@ public class AccountSettingActivity extends AppCompatActivity {
     Spinner genderSpin;
     @BindView(R.id.profPic)
     ImageView profPic;
+    @BindView(R.id.religionName)
+    Spinner religionName;
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -96,9 +101,14 @@ public class AccountSettingActivity extends AppCompatActivity {
     TextView dateOfBirthTitle;
     @BindView(R.id.genderSpinTitle)
     TextView genderSpinTitle;
+    @BindView(R.id.religionNameText)
+    TextView religionNameText;
 
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
+
+    ReligionAdapter religionAdapter;
+    List<Religion> religionList;
 
     private DatePickerDialog datePickerDialog;
     private UserAPIInterface userAPIInterface;
@@ -204,11 +214,13 @@ public class AccountSettingActivity extends AppCompatActivity {
             }
         });
 
-        genderOptions = new ArrayList<>();
-        genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-Laki"));
-        genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
+        genderOptions = ConstantVals.getGenders();
         adapterGender = new GenderSpinnerAdapter(this, this, genderOptions);
         genderSpin.setAdapter(adapterGender);
+
+        religionList = ConstantVals.getReligionList();
+        religionAdapter = new ReligionAdapter(this, this, religionList);
+        religionName.setAdapter(religionAdapter);
 
         getUserDetail();
         setFonts();
@@ -302,6 +314,25 @@ public class AccountSettingActivity extends AppCompatActivity {
         } else {
             genderSpin.setSelection(0);
         }
+        if (user.getReligion() != null) {
+            if (user.getReligion().equals("Islam")) {
+                religionName.setSelection(0);
+            } else if (user.getReligion().equals("Kristen")) {
+                religionName.setSelection(1);
+            } else if (user.getReligion().equals("Katolik")) {
+                religionName.setSelection(2);
+            } else if (user.getReligion().equals("Hindu")) {
+                religionName.setSelection(3);
+            } else if (user.getReligion().equals("Budha")) {
+                religionName.setSelection(4);
+            } else if (user.getReligion().equals("Kong Hu Cu")) {
+                religionName.setSelection(5);
+            } else {
+                religionName.setSelection(6);
+            }
+        } else {
+            religionName.setSelection(6);
+        }
         if (user.getPhotoPath() != null) {
             profPic.setVisibility(View.VISIBLE);
             Glide.with(getApplicationContext()).load(user.getPhotoPath()).apply(new RequestOptions()
@@ -350,7 +381,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateBirth(dobs);
         registerParam.setGender(genderSpin.getSelectedItem().toString());
-
+        registerParam.setReligion(((Religion) religionName.getAdapter().getItem(religionName.getSelectedItemPosition())).getReligion());
         if (registerParam.isValidPhone()) {
             try {
                 postData(registerParam);

@@ -52,6 +52,9 @@ public class Constants {
     public static final String ROUTE_UPDATE_SCHEDULE_FOR_TIME= "/api/updateCaregiverSchedulleForTime?";
     public static final String ROUTE_SCHEDULE_BY_ID = "api/caregiverSchedulle/";
 
+    //CONTACT
+    public static final String ROUTE_CONTACT = "api/getContactUsForNurse/";
+
     /*
     //HOMESTAY HOMEVISIT
     public static final String ROUTE_HOMECARE_SERVICES_GET = "/api/homecareservices";

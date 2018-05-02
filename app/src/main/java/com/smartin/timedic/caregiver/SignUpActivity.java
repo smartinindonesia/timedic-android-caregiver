@@ -35,14 +35,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
+import com.smartin.timedic.caregiver.adapter.ReligionAdapter;
+import com.smartin.timedic.caregiver.config.ConstantVals;
 import com.smartin.timedic.caregiver.config.Constants;
 import com.smartin.timedic.caregiver.model.GenderOption;
+import com.smartin.timedic.caregiver.model.Religion;
 import com.smartin.timedic.caregiver.model.parammodel.RegisterParam;
 import com.smartin.timedic.caregiver.tools.AesUtil;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,6 +87,8 @@ public class SignUpActivity extends AppCompatActivity {
     ImageButton selectDob;
     @BindView(R.id.genderSpin)
     Spinner genderSpin;
+    @BindView(R.id.religionName)
+    Spinner religionName;
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -104,9 +110,14 @@ public class SignUpActivity extends AppCompatActivity {
     TextView genderSpinTitle;
     @BindView(R.id.dateOfBirthTitle)
     TextView dobTitle;
+    @BindView(R.id.religionNameText)
+    TextView religionNameText;
 
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
+
+    ReligionAdapter religionAdapter;
+    List<Religion> religions;
 
     private DatePickerDialog datePickerDialog;
     private UserAPIInterface userAPIInterface;
@@ -243,16 +254,18 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        genderOptions = new ArrayList<>();
-        genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-Laki"));
-        genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
+        genderOptions = ConstantVals.getGenders();
         adapterGender = new GenderSpinnerAdapter(this, this, genderOptions);
         genderSpin.setAdapter(adapterGender);
+
+        religions = ConstantVals.getReligionList();
+        religionAdapter = new ReligionAdapter(this, this, religions);
+        religionName.setAdapter(religionAdapter);
 
         setFonts();
     }
 
-    private void setFonts(){
+    private void setFonts() {
         ArrayList<TextView> arrayList = new ArrayList<>();
         arrayList.add(usernameTitle);
         arrayList.add(username);
@@ -276,6 +289,7 @@ public class SignUpActivity extends AppCompatActivity {
         arrayList.add(checkAgreement);
         arrayList.add(agreementLink);
         arrayList.add(signUP);
+        arrayList.add(religionNameText);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 
@@ -311,6 +325,7 @@ public class SignUpActivity extends AppCompatActivity {
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateOfBirth(dobs);
         registerParam.setGender(genderSpin.getSelectedItem().toString());
+        registerParam.setReligion(((Religion) religionName.getAdapter().getItem(religionName.getSelectedItemPosition())).getReligion());
         if (retypePassword.getText().toString().equals(password.getText().toString())) {
             if (registerParam.isValidUsername()) {
                 if (!registerParam.isUsernameContainSpace()) {

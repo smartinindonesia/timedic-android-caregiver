@@ -38,9 +38,12 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
+import com.smartin.timedic.caregiver.adapter.ReligionAdapter;
+import com.smartin.timedic.caregiver.config.ConstantVals;
 import com.smartin.timedic.caregiver.config.Constants;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.GenderOption;
+import com.smartin.timedic.caregiver.model.Religion;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.model.parammodel.RegisterParam;
 import com.smartin.timedic.caregiver.tools.AesUtil;
@@ -102,6 +105,8 @@ public class FUserSignUpActivity extends AppCompatActivity {
     ImageButton selectDob;
     @BindView(R.id.genderSpin)
     Spinner genderSpin;
+    @BindView(R.id.religionName)
+    Spinner religionName;
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -123,6 +128,11 @@ public class FUserSignUpActivity extends AppCompatActivity {
     TextView genderSpinTitle;
     @BindView(R.id.dateOfBirthTitle)
     TextView dobTitle;
+    @BindView(R.id.religionNameText)
+    TextView religionNameText;
+
+    ReligionAdapter religionAdapter;
+    List<Religion> religions;
 
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
@@ -274,11 +284,13 @@ public class FUserSignUpActivity extends AppCompatActivity {
             }
         });
 
-        genderOptions = new ArrayList<>();
-        genderOptions.add(new GenderOption(R.drawable.btn_laki_laki, "Laki-Laki"));
-        genderOptions.add(new GenderOption(R.drawable.btn__perempuan, "Perempuan"));
+        genderOptions = ConstantVals.getGenders();
         adapterGender = new GenderSpinnerAdapter(this, this, genderOptions);
         genderSpin.setAdapter(adapterGender);
+
+        religions = ConstantVals.getReligionList();
+        religionAdapter = new ReligionAdapter(this, this, religions);
+        religionName.setAdapter(religionAdapter);
 
         fillTheForm();
         setFonts();
@@ -327,6 +339,7 @@ public class FUserSignUpActivity extends AppCompatActivity {
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateOfBirth(dobs);
         registerParam.setGender(genderSpin.getSelectedItem().toString());
+        registerParam.setReligion(((Religion) religionName.getAdapter().getItem(religionName.getSelectedItemPosition())).getReligion());
 
         if (user.getFirebaseIdGoogle() != null) {
             registerParam.setFirebaseIdGoogle(user.getFirebaseIdGoogle());
@@ -485,6 +498,7 @@ public class FUserSignUpActivity extends AppCompatActivity {
         arrayList.add(checkAgreement);
         arrayList.add(agreementLink);
         arrayList.add(signUP);
+        arrayList.add(religionNameText);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }

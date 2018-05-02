@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.smartin.timedic.caregiver.AccountSettingActivity;
 import com.smartin.timedic.caregiver.ChangePasswordActivity;
+import com.smartin.timedic.caregiver.ContactUsActivity;
 import com.smartin.timedic.caregiver.R;
 import com.smartin.timedic.caregiver.config.Constants;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
@@ -68,6 +69,8 @@ public class AccountFragment extends Fragment {
     LinearLayout btnPrivacy;
     @BindView(R.id.btnTermAndCond)
     LinearLayout btnTermAndCond;
+    @BindView(R.id.btnContactUs)
+    LinearLayout btnContactUs;
 
     @BindView(R.id.accountSetting)
     TextView accountSetting;
@@ -85,6 +88,8 @@ public class AccountFragment extends Fragment {
     TextView rateAppText;
     @BindView(R.id.logoutText)
     TextView logoutText;
+    @BindView(R.id.contactUsText)
+    TextView contactUsText;
 
     private HomecareSessionManager homecareSessionManager;
     private AppSetting appSetting;
@@ -112,8 +117,7 @@ public class AccountFragment extends Fragment {
             if (!isVisibleToUser) {
                 Log.d(TAG, "Not visible anymore.  Stopping audio.");
                 // TODO stop audio playback
-            }
-            else {
+            } else {
                 Log.d(TAG, "Panggil Fungsi");
             }
         }
@@ -159,7 +163,13 @@ public class AccountFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        btnContactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ContactUsActivity.class);
+                startActivity(intent);
+            }
+        });
         notifToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -212,7 +222,7 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    private void openUrl(String url){
+    private void openUrl(String url) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
@@ -236,7 +246,7 @@ public class AccountFragment extends Fragment {
 
     }
 
-    private void setFonts(){
+    private void setFonts() {
         ArrayList<TextView> arrayList = new ArrayList<>();
         arrayList.add(accountSetting);
         arrayList.add(changePasswordText);
