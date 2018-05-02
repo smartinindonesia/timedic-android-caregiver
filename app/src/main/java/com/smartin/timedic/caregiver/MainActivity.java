@@ -24,6 +24,7 @@ import com.smartin.timedic.caregiver.fragment.Trx;
 import com.smartin.timedic.caregiver.fragment.YourOrderFragment;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
+import com.smartin.timedic.caregiver.model.parammodel.FCMServerParam;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         sendFCMTokenToServer();
         User user = homecareSessionManager.getUserDetail();
         textSym.setText(user.getFrontName() + " " + user.getMiddleName() + " " + user.getLastName());
-        if (user.getStatus().getId() == 1){
+        if (user.getStatus().getId() == 1) {
             textStatusGreen.setVisibility(View.VISIBLE);
             textStatusRed.setVisibility(View.GONE);
             textStatusOrange.setVisibility(View.GONE);
@@ -94,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
             textStatusRed.setVisibility(View.VISIBLE);
             textStatusOrange.setVisibility(View.GONE);
         }
-        textStatusRed.setText("Status "+user.getStatus().getStatus());
-        textStatusOrange.setText("Status "+user.getStatus().getStatus());
-        textStatusGreen.setText("Status "+user.getStatus().getStatus());
+        textStatusRed.setText("Status " + user.getStatus().getStatus());
+        textStatusOrange.setText("Status " + user.getStatus().getStatus());
+        textStatusGreen.setText("Status " + user.getStatus().getStatus());
         setFonts();
     }
 
@@ -164,16 +165,15 @@ public class MainActivity extends AppCompatActivity {
         String initialFCMToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "ID USER : " + user.getId());
         Log.d(TAG, "FCM TOKEN SEND : " + initialFCMToken);
-
-        user.setFcmToken(initialFCMToken);
-
+        FCMServerParam fcmServerParam = new FCMServerParam();
+        fcmServerParam.setFcmToken(initialFCMToken);
         userAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(UserAPIInterface.class);
-        Call<ResponseBody> services = userAPIInterface.updateUser(user.getId(), user);
+        Call<ResponseBody> services = userAPIInterface.updateFCMTokenUser(user.getId(), fcmServerParam);
 
         services.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i(TAG, "FCM Token Updated");
+                Log.i(TAG, "FCM Token Updated" + response.code());
             }
 
             @Override

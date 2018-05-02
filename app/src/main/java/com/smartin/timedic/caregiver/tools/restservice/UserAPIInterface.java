@@ -2,6 +2,7 @@ package com.smartin.timedic.caregiver.tools.restservice;
 
 import com.smartin.timedic.caregiver.config.Constants;
 import com.smartin.timedic.caregiver.model.User;
+import com.smartin.timedic.caregiver.model.parammodel.FCMServerParam;
 import com.smartin.timedic.caregiver.model.parammodel.PasswordProfile;
 import com.smartin.timedic.caregiver.model.parammodel.RegisterParam;
 import com.smartin.timedic.caregiver.model.parammodel.UserProfile;
@@ -31,6 +32,9 @@ public interface UserAPIInterface {
 
     @PUT(Constants.ROUTE_CAREGIVER_BY_ID+ "{id}")
     Call<ResponseBody> updateUser(@Path(value = "id", encoded = true) Long id, @Body User user);
+
+    @PUT(Constants.ROUTE_CAREGIVER_BY_ID+ "{id}")
+    Call<ResponseBody> updateFCMTokenUser(@Path(value = "id", encoded = true) Long id, @Body FCMServerParam user);
 
     @PUT(Constants.ROUTE_CAREGIVER_BY_ID + "{id}")
     Call<ResponseBody> updateProfile(@Path(value = "id", encoded = true) Long id, @Body UserProfile user);
