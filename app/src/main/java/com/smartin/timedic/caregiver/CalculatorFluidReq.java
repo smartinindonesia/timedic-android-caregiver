@@ -72,7 +72,7 @@ public class CalculatorFluidReq extends AppCompatActivity {
             double w = Double.parseDouble(weightTex.getText().toString());
             double result = CalculatorUtility.calculatorFluidReq(w);
             sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
-            sweetAlertDialog.setTitleText("Hasil").setContentText("Anda membutuhkan " + String.format("%.3f", result) + " cc cairan!");
+            sweetAlertDialog.setTitleText("Hasil").setContentText("Anda membutuhkan " + String.format("%.1f", result) + " cc / " + String.format("%.1f", (result / 1000)) + " liter cairan!");
             sweetAlertDialog.show();
         } else {
             Snackbar.make(mainLayout, "Mohon lengkapi form terlebih dahulu!", Snackbar.LENGTH_LONG).show();

@@ -96,7 +96,7 @@ public class CalculatorIMT extends AppCompatActivity {
     private void calculateIMT() {
         if (validateForm()) {
             double w = Double.parseDouble(weightTex.getText().toString());
-            double h = Double.parseDouble(heightTex.getText().toString());
+            double h = (Double.parseDouble(heightTex.getText().toString())/100);
             double ag = Double.parseDouble(ageTex.getText().toString());
             String gend = genderSpin.getSelectedItem().toString();
             String result = CalculatorUtility.calculatorIMT(w, h);

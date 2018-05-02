@@ -85,7 +85,7 @@ public class CalculatorBBI extends AppCompatActivity {
         if (validateForm()) {
             Float result = CalculatorUtility.calculateBBI(Float.parseFloat(heigthText.getText().toString()), genderSpinner.getSelectedItem().toString());
             sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
-            sweetAlertDialog.setTitleText("Hasil").setContentText("Berat badan ideal anda " + String.format("%.3f", result) + " kg");
+            sweetAlertDialog.setTitleText("Hasil").setContentText("Berat badan ideal anda " + String.format("%.0f", result) + " kg");
             sweetAlertDialog.show();
         } else {
             Snackbar.make(mainLayout, "Mohon lengkapi form terlebih dahulu!", Snackbar.LENGTH_LONG).show();
