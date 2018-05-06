@@ -13,6 +13,7 @@
     <string name="act_change_pass">Perubahan Password</string>
     <string name="act_schedule">Atur Jam</string>
     <string name="act_order_details">Detail Pemesanan</string>
+    <string name="act_my_schedule_details">Jadwal Penugasan Saya</string>
     <string name="act_assessment_details">Detail Assessment</string>
     <string name="facebook_app_id">2018267148428273</string>
 

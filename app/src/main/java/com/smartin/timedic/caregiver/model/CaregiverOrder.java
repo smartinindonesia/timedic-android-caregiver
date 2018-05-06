@@ -9,16 +9,33 @@ import java.io.Serializable;
  */
 
 public class CaregiverOrder implements Serializable{
+
     @SerializedName("id")
     private Long id;
+
     @SerializedName("caregiverName")
     private String caregiverName;
+
+    @SerializedName("reasonAcceptanceStatus")
+    private String reasonAcceptanceStatus;
+
     @SerializedName("registerNurseNumber")
     private String registerNurseNumber;
+
     @SerializedName("idCaregiver")
     private Long caregiverId;
+
+    @SerializedName("acceptanceStatus")
+    private Boolean acceptanceStatus;
+
     @SerializedName("rateStatus")
     private Boolean rateStatus;
+
+    @SerializedName("date")
+    private Long date;
+
+    @SerializedName("time")
+    private String time;
 
     public Long getId() {
         return id;
@@ -58,5 +75,37 @@ public class CaregiverOrder implements Serializable{
 
     public void setRateStatus(Boolean rateStatus) {
         this.rateStatus = rateStatus;
+    }
+
+    public String getReasonAcceptanceStatus() {
+        return reasonAcceptanceStatus;
+    }
+
+    public void setReasonAcceptanceStatus(String reasonAcceptanceStatus) {
+        this.reasonAcceptanceStatus = reasonAcceptanceStatus;
+    }
+
+    public Boolean getAcceptanceStatus() {
+        return acceptanceStatus;
+    }
+
+    public void setAcceptanceStatus(Boolean acceptanceStatus) {
+        this.acceptanceStatus = acceptanceStatus;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

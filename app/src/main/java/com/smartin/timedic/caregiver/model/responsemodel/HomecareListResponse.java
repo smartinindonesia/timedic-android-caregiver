@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import com.smartin.timedic.caregiver.model.HomecareOrder;
 import com.smartin.timedic.caregiver.model.OrderItem;
+import com.smartin.timedic.caregiver.model.OrderItemGroupBy;
 
 import okhttp3.ResponseBody;
 
@@ -25,7 +26,7 @@ public class HomecareListResponse {
     public static final String TAG = "HomecareListResponse";
 
     private ResponseBody response;
-    private ArrayList<OrderItem> homecareOrders;
+    private ArrayList<OrderItemGroupBy> homecareOrders;
     private int numberOfRow;
     private Gson g = new Gson();
 
@@ -35,7 +36,7 @@ public class HomecareListResponse {
         Log.i(TAG, homecareOrderArr);
         String norItem = arr.getJSONObject(1).toString();
         Log.i(TAG, norItem);
-        TypeToken<ArrayList<OrderItem>> token = new TypeToken<ArrayList<OrderItem>>() {};
+        TypeToken<ArrayList<OrderItemGroupBy>> token = new TypeToken<ArrayList<OrderItemGroupBy>>() {};
         homecareOrders = g.fromJson(homecareOrderArr, token.getType());
         PageItem p = g.fromJson(norItem, PageItem.class);
         numberOfRow = p.getNumOfRows();
@@ -49,11 +50,11 @@ public class HomecareListResponse {
         this.response = response;
     }
 
-    public ArrayList<OrderItem> getHomecareOrders() {
+    public ArrayList<OrderItemGroupBy> getHomecareOrders() {
         return homecareOrders;
     }
 
-    public void setHomecareOrders(ArrayList<OrderItem> homecareOrders) {
+    public void setHomecareOrders(ArrayList<OrderItemGroupBy> homecareOrders) {
         this.homecareOrders = homecareOrders;
     }
 

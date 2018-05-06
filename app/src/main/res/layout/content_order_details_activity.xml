@@ -324,7 +324,31 @@
                     android:textColorHint="@color/sign_up_selector_fg"
                     android:paddingRight="@dimen/calculator_input_padding"
                     android:background="@drawable/orange_selector_button_bg"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/calculator_row_space">
+
+                <TextView
+                    android:id="@+id/myScheduleTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Jadwal Perawatan" />
+
+                <Button
+                    android:id="@+id/mySchedule"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.6"
+                    android:paddingLeft="@dimen/calculator_input_padding"
+                    android:hint="Lihat Jadwal Saya"
+                    android:textColorHint="@color/sign_up_selector_fg"
+                    android:paddingRight="@dimen/calculator_input_padding"
+                    android:background="@drawable/orange_selector_button_bg"/>
             </LinearLayout>
 
             <LinearLayout

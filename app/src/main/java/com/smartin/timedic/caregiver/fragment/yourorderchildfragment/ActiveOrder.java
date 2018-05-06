@@ -25,6 +25,7 @@ import com.smartin.timedic.caregiver.customuicompt.EndlessScrollListener;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.HomecareOrder;
 import com.smartin.timedic.caregiver.model.OrderItem;
+import com.smartin.timedic.caregiver.model.OrderItemGroupBy;
 import com.smartin.timedic.caregiver.model.responsemodel.HomecareListResponse;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.HomecareTransactionAPIInterface;
@@ -46,7 +47,7 @@ public class ActiveOrder extends Fragment {
     ProgressBar loadingBar;
 
     private HomecareSessionManager homecareSessionManager;
-    private List<OrderItem> homecareOrderList = new ArrayList<>();
+    private List<OrderItemGroupBy> homecareOrderList = new ArrayList<>();
     private ActiveOrderAdapter activeOrderAdapter;
     private HomecareTransactionAPIInterface homecareTransactionAPIInterface;
 
@@ -128,17 +129,53 @@ public class ActiveOrder extends Fragment {
         });
     }
 
+    public void getActiveOrderPaginationGroupBy() {
+        loadingBar.setVisibility(View.VISIBLE);
+        Call<ResponseBody> services = homecareTransactionAPIInterface.getActiveOrderPageGroupBy(page, sizePerPage, "DESC", "idCaregiver", homecareSessionManager.getUserDetail().getId());
+        services.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        HomecareListResponse homecareListResponse = new HomecareListResponse();
+                        homecareListResponse.setResponse(response.body());
+                        homecareListResponse.convertResponse();
+                        homecareOrderList.addAll(homecareListResponse.getHomecareOrders());
+                        activeOrderAdapter.notifyDataSetChanged();
+                        maxPage = (int) Math.round(homecareListResponse.getNumberOfRow() / sizePerPage);
+                        Log.i(TAG, maxPage + "Number of pages");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(TAG, response.body().toString());
+                } else {
+                    Log.i(TAG, "Code FAILURE");
+                }
+                loadingBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                call.cancel();
+                loadingBar.setVisibility(View.GONE);
+                homecareSessionManager.logout();
+            }
+        });
+    }
+
     public void fetchPrev() {
         if (this.page > 0) {
             this.page--;
-            this.getActiveOrderPagination();
+            this.getActiveOrderPaginationGroupBy();
         }
     }
 
     public void fetchNext() {
         if (this.page < (this.maxPage)) {
             this.page++;
-            this.getActiveOrderPagination();
+            this.getActiveOrderPaginationGroupBy();
         }
     }
 
@@ -158,6 +195,6 @@ public class ActiveOrder extends Fragment {
     private void resetData(){
         page = 0;
         homecareOrderList.clear();
-        getActiveOrderPagination();
+        getActiveOrderPaginationGroupBy();
     }
 }

@@ -11,9 +11,9 @@ public class Constants {
     public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/caregiver?";
 
     //RestApi constants
-    public static final String BASE_URL = "https://timedic.id:8443";
+    //public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
-    //public static final String BASE_URL = "http://192.168.1.4:8080";
+    public static final String BASE_URL = "http://192.168.1.3:8080";
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
@@ -43,6 +43,13 @@ public class Constants {
     public static final String ROUTE_HISTORY_ORDER_PAGINATION = "/api/transactionOrderHistoryWithPaginationByField";
     public static final String ROUTE_ITEM_ACTIVE_ORDER = "/api/transactionOrderActiveWithPaginationByFieldByIdCaregiver";
     public static final String ROUTE_ITEM_HISTORY_ORDER = "/api/transactionOrderHistoryWithPaginationByFieldByIdCaregiver";
+
+    public static final String ROUTE_ITEM_ACTIVE_ORDER_GROUP_BY = "/api/transactionOrderActiveWithPaginationByFieldByGroupByIdIdCaregiver";
+    public static final String ROUTE_ITEM_HISTORY_ORDER_GROUP_BY = "/api/transactionOrderHistoryWithPaginationByFieldByGroupByIdIdCaregiver";
+
+    public static final String ROUTE_GET_SCHEDULE_BY_ID_CAREGIVER_AND_ID_TRX = "/api/getByIdCaregiverAndIdTrx";
+    public static final String ROUTE_UPDATE_CAREGIVER_TRX_LIST = "api/caregiverTrxList/";
+
 
     //SCHEDULE
     public static final String ROUTE_ADD_SCHEDULE = "api/caregiverSchedulle";

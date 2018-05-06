@@ -12,22 +12,37 @@ import java.util.Calendar;
 public class OrderItem implements Serializable {
     @SerializedName("id")
     private Long id;
+
     @SerializedName("caregiverName")
     private String caregiverName;
+
     @SerializedName("registerNurseNumber")
     private String registerNurseNumber;
+
     @SerializedName("day")
     private String day;
+
     @SerializedName("time")
     private String time;
+
     @SerializedName("date")
     private Long date;
+
+    @SerializedName("reasonAcceptanceStatus")
+    private String reasonAcceptanceStatus;
+
     @SerializedName("rateStatus")
     private Boolean isRated;
+
+    @SerializedName("acceptanceStatus")
+    private Boolean acceptanceStatus;
+
     @SerializedName("idCaregiver")
     private Long idCaregiver;
+
     @SerializedName("idTransaction")
     private Long idTransaction;
+
     @SerializedName("idHomecareClinic")
     private HomecareClinic idHomecareClinic;
 
@@ -101,6 +116,22 @@ public class OrderItem implements Serializable {
 
     public void setIdHomecareClinic(HomecareClinic idHomecareClinic) {
         this.idHomecareClinic = idHomecareClinic;
+    }
+
+    public String getReasonAcceptanceStatus() {
+        return reasonAcceptanceStatus;
+    }
+
+    public void setReasonAcceptanceStatus(String reasonAcceptanceStatus) {
+        this.reasonAcceptanceStatus = reasonAcceptanceStatus;
+    }
+
+    public Boolean getAcceptanceStatus() {
+        return acceptanceStatus;
+    }
+
+    public void setAcceptanceStatus(Boolean acceptanceStatus) {
+        this.acceptanceStatus = acceptanceStatus;
     }
 
     public Long getDate() {

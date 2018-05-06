@@ -10,46 +10,73 @@ import java.util.ArrayList;
  */
 
 public class HomecareOrder implements Serializable{
+
     @SerializedName("id")
     private Long id;
+
     @SerializedName("orderNumber")
     private String orderNumber;
+
+    @SerializedName("dateTreatementStart")
+    private Long dateTreatementStart;
+
+    @SerializedName("dateTreatementEnd")
+    private Long dateTreatementEnd;
+
     @SerializedName("date")
     private Long date;
+
     @SerializedName("dateOrderIn")
     private Long transactionDate;
+
     @SerializedName("fixedPrice")
     private Double fixedPrice;
+
     @SerializedName("predictionPrice")
     private String predictionPrice;
+
     @SerializedName("prepaidPrice")
     private Double prepaidPrice;
+
     @SerializedName("expiredTransactionTime")
     private Long expiredTransactionTime;
+
     @SerializedName("receiptPath")
     private String receiptPath;
+
     @SerializedName("locationLatitude")
     private Double locationLatitude;
+
     @SerializedName("locationLongitude")
     private Double locationLongitude;
+
     @SerializedName("transactionDescription")
     private String transactionDescription;
+
     @SerializedName("homecareTransactionCaregiverlistList")
     private ArrayList<CaregiverOrder> caregiverArrayList;
+
     @SerializedName("homecareAssessmentRecordList")
     private ArrayList<Assessment> homecareAssessmentRecordList;
+
     @SerializedName("transactionStatusId")
     private HomecareTransactionStatus homecareTransactionStatus;
+
     @SerializedName("homecarePatientId")
     private Patient homecarePatientId;
+
     @SerializedName("paymentMethodId")
     private PaymentMethod paymentMethodId;
+
     @SerializedName("fullAddress")
     private String fullAddress;
+
     @SerializedName("selectedService")
     private String selectedService;
+
     @SerializedName("paymentFixedPriceStatusId")
     private HomecareTransactionStatus paymentFixedPriceStatusId;
+
     @SerializedName("paymentPrepaidPriceStatusId")
     private HomecareTransactionStatus paymentPrepaidPriceStatusId;
 
@@ -219,5 +246,21 @@ public class HomecareOrder implements Serializable{
 
     public void setPaymentPrepaidPriceStatusId(HomecareTransactionStatus paymentPrepaidPriceStatusId) {
         this.paymentPrepaidPriceStatusId = paymentPrepaidPriceStatusId;
+    }
+
+    public Long getDateTreatementStart() {
+        return dateTreatementStart;
+    }
+
+    public void setDateTreatementStart(Long dateTreatementStart) {
+        this.dateTreatementStart = dateTreatementStart;
+    }
+
+    public Long getDateTreatementEnd() {
+        return dateTreatementEnd;
+    }
+
+    public void setDateTreatementEnd(Long dateTreatementEnd) {
+        this.dateTreatementEnd = dateTreatementEnd;
     }
 }

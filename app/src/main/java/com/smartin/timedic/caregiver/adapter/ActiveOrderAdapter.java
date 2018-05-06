@@ -22,6 +22,7 @@ import com.smartin.timedic.caregiver.OrderDetailsActivity;
 import com.smartin.timedic.caregiver.R;
 import com.smartin.timedic.caregiver.model.HomecareOrder;
 import com.smartin.timedic.caregiver.model.OrderItem;
+import com.smartin.timedic.caregiver.model.OrderItemGroupBy;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 
@@ -32,13 +33,13 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.MyViewHolder> {
     public static final String TAG = "[ActiveOrdAdapter]";
 
-    private List<OrderItem> homecareOrderList;
+    private List<OrderItemGroupBy> homecareOrderList;
     private Context context;
     private Activity activity;
 
     private boolean isLoadingAdded = false;
 
-    public ActiveOrderAdapter(Activity activity, Context context, List<OrderItem> homecareOrders) {
+    public ActiveOrderAdapter(Activity activity, Context context, List<OrderItemGroupBy> homecareOrders) {
         this.homecareOrderList = homecareOrders;
         this.context = context;
         this.activity = activity;
@@ -52,7 +53,9 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
 
     @Override
     public void onBindViewHolder(ActiveOrderAdapter.MyViewHolder holder, int position) {
-        final OrderItem homecareOrder = homecareOrderList.get(position);
+        final OrderItemGroupBy homecareOrder = homecareOrderList.get(position);
+
+        /*
         String strTime, strDay;
         strDay = "";
         strTime = "";
@@ -61,8 +64,10 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
             strDay = (String) DateFormat.format("EEEE", homecareOrder.getDateDetail());
             strTime = (String) DateFormat.format("HH:mm:ss", homecareOrder.getDateDetail());
         }
-        holder.time.setText("Waktu : " + strTime);
-        holder.day.setText("Hari : " + strDay);
+        */
+        holder.date.setText(homecareOrder.getSelectedService());
+        holder.time.setText("No Order : " + homecareOrder.getOrderNumber());
+        holder.day.setText("Nama Pemesan : " + homecareOrder.getOrderName());
         holder.orderDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,18 +83,18 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
         return homecareOrderList == null ? 0 : homecareOrderList.size();
     }
 
-    public void add(OrderItem mc) {
+    public void add(OrderItemGroupBy mc) {
         homecareOrderList.add(mc);
         notifyItemInserted(homecareOrderList.size() - 1);
     }
 
-    public void addAll(List<OrderItem> mcList) {
-        for (OrderItem mc : mcList) {
+    public void addAll(List<OrderItemGroupBy> mcList) {
+        for (OrderItemGroupBy mc : mcList) {
             add(mc);
         }
     }
 
-    public void remove(OrderItem city) {
+    public void remove(OrderItemGroupBy city) {
         int position = homecareOrderList.indexOf(city);
         if (position > -1) {
             homecareOrderList.remove(position);
@@ -109,14 +114,14 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
     }
 
     public void addLoadingFooter() {
-        add(new OrderItem());
+        add(new OrderItemGroupBy());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = homecareOrderList.size() - 1;
-        OrderItem item = getItem(position);
+        OrderItemGroupBy item = getItem(position);
 
         if (item != null) {
             homecareOrderList.remove(position);
@@ -124,7 +129,7 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
         }
     }
 
-    public OrderItem getItem(int position) {
+    public OrderItemGroupBy getItem(int position) {
         return homecareOrderList.get(position);
     }
 
@@ -132,10 +137,13 @@ public class ActiveOrderAdapter extends RecyclerView.Adapter<ActiveOrderAdapter.
 
         @BindView(R.id.caregiverName)
         public TextView date;
+
         @BindView(R.id.day)
         public TextView day;
+
         @BindView(R.id.time)
         public TextView time;
+
         @BindView(R.id.orderDetails)
         public Button orderDetails;
 

@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.CaregiverOrder;
 import com.smartin.timedic.caregiver.model.HomecareOrder;
 import com.smartin.timedic.caregiver.model.OrderItem;
+import com.smartin.timedic.caregiver.model.OrderItemGroupBy;
 import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.TextFormatter;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
@@ -101,12 +103,19 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView addressLocTitle;
     @BindView(R.id.transactionStatusTitle)
     TextView transactionStatusTitle;
+
     @BindView(R.id.assessmentDetailTitle)
     TextView assessmentDetailTitle;
     @BindView(R.id.assessmentDetail)
     Button assessmentDetail;
 
-    OrderItem orderItem;
+    @BindView(R.id.myScheduleTitle)
+    TextView myScheduleTitle;
+    @BindView(R.id.mySchedule)
+    Button myScheduleDetail;
+
+    //OrderItem orderItem;
+    OrderItemGroupBy orderItemGroupBy;
     HomecareOrder homecareOrder;
 
     Integer called = 0;
@@ -121,7 +130,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
         createTitleBar();
-        orderItem = (OrderItem) getIntent().getSerializableExtra("homecareOrder");
+        //orderItem = (OrderItem) getIntent().getSerializableExtra("homecareOrder");
+        orderItemGroupBy = (OrderItemGroupBy) getIntent().getSerializableExtra("homecareOrder");
         mapLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +153,19 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        myScheduleDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (homecareOrder != null) {
+                    Intent intent = new Intent(OrderDetailsActivity.this, MyScheduleDetails.class);
+                    intent.putExtra("schedule_details", homecareOrder);
+                    startActivity(intent);
+                    //Toast.makeText(getApplicationContext(), "Masih on prosess", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         setFonts();
     }
 
@@ -212,7 +235,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private void getOrderDetails() {
         if (called == 0) {
             Log.i(TAG, "Calling OrderDetails");
-            final Call<HomecareOrder> resp = homecareTransactionAPIInterface.getTransactionById(orderItem.getIdTransaction());
+            final Call<HomecareOrder> resp = homecareTransactionAPIInterface.getTransactionById(orderItemGroupBy.getIdServiceTrx());
             resp.enqueue(new Callback<HomecareOrder>() {
                 @Override
                 public void onResponse(Call<HomecareOrder> call, Response<HomecareOrder> response) {
@@ -251,8 +274,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
         arrayList.add(orderContactNumber);
         arrayList.add(orderCustomer);
         arrayList.add(orderPatient);
+
         arrayList.add(assessmentDetailTitle);
         arrayList.add(assessmentDetail);
+
+        arrayList.add(myScheduleTitle);
+        arrayList.add(myScheduleDetail);
 
         arrayList.add(transactionVisitDateTitle);
         arrayList.add(transactionOrderDateTitle);

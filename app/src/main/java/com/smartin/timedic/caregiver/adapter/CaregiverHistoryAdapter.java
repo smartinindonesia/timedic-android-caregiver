@@ -2,6 +2,7 @@ package com.smartin.timedic.caregiver.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 
 import com.smartin.timedic.caregiver.R;
 import com.smartin.timedic.caregiver.model.CaregiverOrder;
+import com.smartin.timedic.caregiver.tools.ConverterUtility;
 import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 
 /**
@@ -43,7 +45,12 @@ public class CaregiverHistoryAdapter extends RecyclerView.Adapter<CaregiverHisto
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CaregiverOrder caregiverOrder = caregiverOrders.get(position);
-        holder.caregiverName.setText(caregiverOrder.getCaregiverName());
+        holder.caregiverName.setText("Penugasan Ke "+(position+1)+" : "+ConverterUtility.getDateString(caregiverOrder.getDate()) + ", " +caregiverOrder.getTime());
+        if(caregiverOrder != null){
+            if(!caregiverOrder.getAcceptanceStatus()){
+                holder.caregiverName.setTextColor(Color.RED);
+            }
+        }
     }
 
     @Override
@@ -56,6 +63,7 @@ public class CaregiverHistoryAdapter extends RecyclerView.Adapter<CaregiverHisto
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.caregiverName)
         public TextView caregiverName;
 

@@ -38,7 +38,7 @@ public class ConverterUtility {
 
     public static String getDateString(Long timeStamp) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
             Date netDate = (new Date(timeStamp));
             return sdf.format(netDate);
         } catch (Exception ex) {
