@@ -205,14 +205,27 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            if(currentUser.getProviders().get(0).equals("google.com")){
-                doLoginFirebase(currentUser, "google");
-            }
-            else if(currentUser.getProviders().get(0).equals("facebook.com")){
-                doLoginFirebase(currentUser, "facebook");
-            }
+            currentUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+
+
+                                    if(currentUser.getProviders().get(0).equals("google.com")){
+                                        doLoginFirebase(currentUser, "google", idToken);
+                                    }
+                                    else if(currentUser.getProviders().get(0).equals("facebook.com")){
+                                        doLoginFirebase(currentUser, "facebook", idToken);
+                                    }
+                                // ...
+                            } else {
+                                // Handle error -> task.getException();
+                            }
+                        }
+                    });
         }
         else {
             //back to login
@@ -269,18 +282,30 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
                         } else {
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            final FirebaseUser user = mAuth.getCurrentUser();
+                            //GetTokenResult idTokenResult = user.getIdToken(false).getResult();
+                            user.getIdToken(true)
+                                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                            if (task.isSuccessful()) {
+                                                String idToken = task.getResult().getToken();
+                                                if (user != null) {
+                                                    // User is signed in
+                                                    doLoginFirebase(user, "google",idToken);
+                                                    Log.d(TAG, "onAuthStateChanged:signed_in:" + idToken);
 
-                            if (user != null) {
-                                // User is signed in
-                                doLoginFirebase(user, "google");
+                                                } else {
+                                                    // User is signed out
+                                                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                                                }
+                                                // ...
+                                            } else {
+                                                // Handle error -> task.getException();
+                                            }
+                                        }
+                                    });
 
-                                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                            } else {
-                                // User is signed out
-                                Log.d(TAG, "onAuthStateChanged:signed_out");
-                            }
                             //Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
                         }
 
@@ -288,10 +313,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    public void doLoginFirebase(final FirebaseUser user, final String type) {
+    public void doLoginFirebase(final FirebaseUser user, final String type, final String tokenId) {
         openProgress("Loading...", "Proses Login!");
 
-        Call<LoginResponse> responseCall = userAPIInterface.loginUserWithFirebase(user.getUid().toString(), type);
+        Call<LoginResponse> responseCall = userAPIInterface.loginUserWithFirebaseToken(tokenId, type);
         responseCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -358,14 +383,33 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    final FirebaseUser user = mAuth.getCurrentUser();
+                    //GetTokenResult idTokenResult = user.getIdToken(false).getResult();
+                    //Log.d("User ID nya ", user.getUid());
 
-                    final GetTokenResult idTokenResult = user.getIdToken(false).getResult();
+                    user.getIdToken(true)
+                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful()) {
+                                        String idToken = task.getResult().getToken();
+                                        if (user != null) {
+                                            // User is signed in
+                                            //doLoginFirebase(user, "google",idToken);
+                                            doLoginFirebase(user, "facebook", idToken);
+                                            facebookButton.setEnabled(true);
+                                            Log.d(TAG, "onAuthStateChanged:signed_in:" + idToken);
 
-                    Log.d("User ID nya ", user.getUid());
+                                        } else {
+                                            // User is signed out
+                                            Log.d(TAG, "onAuthStateChanged:signed_out");
+                                        }
+                                        // ...
+                                    } else {
+                                        // Handle error -> task.getException();
+                                    }
+                                }
+                            });
 
-                    doLoginFirebase(user, "facebook");
-                    facebookButton.setEnabled(true);
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.getException());

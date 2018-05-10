@@ -30,6 +30,9 @@ public interface UserAPIInterface {
     @POST(Constants.ROUTE_LOGIN_FIREBASE)
     Call<LoginResponse> loginUserWithFirebase(@Query("firebaseId") String firebaseId, @Query("type") String type);
 
+    @POST(Constants.ROUTE_LOGIN_FIREBASE_TOKEN)
+    Call<LoginResponse> loginUserWithFirebaseToken(@Query("firebaseToken") String firebaseId, @Query("type") String type);
+
     @PUT(Constants.ROUTE_CAREGIVER_BY_ID+ "{id}")
     Call<ResponseBody> updateUser(@Path(value = "id", encoded = true) Long id, @Body User user);
 

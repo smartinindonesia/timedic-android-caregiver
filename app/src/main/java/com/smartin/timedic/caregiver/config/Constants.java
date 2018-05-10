@@ -9,11 +9,12 @@ public class Constants {
     public static final String actionPosition = "device_pos";
 
     public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/caregiver?";
+    public static final String ROUTE_LOGIN_FIREBASE_TOKEN = "/authenticateBySocialToken/caregiver?";
 
     //RestApi constants
-    //public static final String BASE_URL = "https://timedic.id:8443";
+    public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
-    public static final String BASE_URL = "http://192.168.1.3:8080";
+    //public static final String BASE_URL = "http://192.168.1.5:8080";
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
