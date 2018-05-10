@@ -72,9 +72,10 @@ public class MyScheduleDetails extends AppCompatActivity {
     CaregiverHistoryAdapter caregiverHistoryAdapter;
     HomecareSessionManager homecareSessionManager;
     HomecareTransactionAPIInterface homecareTransactionAPIInterface;
+    MaterialDialog dlg;
 
     public void displayDialog(String content, final Long id){
-        new MaterialDialog.Builder(this)
+        dlg = new MaterialDialog.Builder(this)
                 .title(content)
                 .content("Apakah anda mau menolak penugasan ini ?")
                 .positiveText("Tolak")
@@ -92,6 +93,10 @@ public class MyScheduleDetails extends AppCompatActivity {
                 .show();
     }
 
+    public void dismisDialog() {
+        dlg.dismiss();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +110,7 @@ public class MyScheduleDetails extends AppCompatActivity {
         homecareTransactionAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(HomecareTransactionAPIInterface.class);
         loadData();
         setFonts();
+
     }
 
     public void loadData(){
@@ -125,6 +131,24 @@ public class MyScheduleDetails extends AppCompatActivity {
         });
     }
 
+    public void loadDataOnResume(){
+        final Call<ArrayList<CaregiverOrder>> resp = homecareTransactionAPIInterface.getScheduleByIdCaregiverAndIdTrx(homecareSessionManager.getUserDetail().getId(), homecareOrder.getId());
+        resp.enqueue(new Callback<ArrayList<CaregiverOrder>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CaregiverOrder>> call, Response<ArrayList<CaregiverOrder>> response) {
+                if (response.code() == 200) {
+                    setDataOnResume(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<CaregiverOrder>> call, Throwable t) {
+                t.printStackTrace();
+                Snackbar.make(mainLayout, "Jaringan Bermasalah!", Snackbar.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
     public void updateAcceptanceStatus(Long idcaregiverTrxList, CaregiverOrder body){
         final Call<ResponseBody> resp = homecareTransactionAPIInterface.updatecaregiverTrxList(idcaregiverTrxList, body);
 
@@ -132,7 +156,7 @@ public class MyScheduleDetails extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
-                    loadData();
+                    loadDataOnResume();
                 }
             }
             @Override
@@ -156,10 +180,13 @@ public class MyScheduleDetails extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 CaregiverOrder cgs = caregiverHistoryAdapter.getItem(position);
-                if(cgs.getAcceptanceStatus()!=false || cgs.getAcceptanceStatus()==null){
+                if((cgs.getAcceptanceStatus()!=false || cgs.getAcceptanceStatus()==null) && homecareOrder.getHomecareTransactionStatus().getId() == 8){
                     displayDialog("Penugasan ke "+(position+1), cgs.getId());
                 }
-                else{
+                else if(homecareOrder.getHomecareTransactionStatus().getId() != 8){
+                    Snackbar.make(mainLayout, "Transaksi ini sudah "+homecareOrder.getHomecareTransactionStatus().getStatus(), Snackbar.LENGTH_LONG).show();
+                }
+                else if(cgs.getAcceptanceStatus() != true || cgs.getAcceptanceStatus()==null){
                     Snackbar.make(mainLayout, "Anda sudah pernah membatalkan penugasan ke "+(position+1), Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -169,15 +196,32 @@ public class MyScheduleDetails extends AppCompatActivity {
         }));
     }
 
+    public void setDataOnResume(ArrayList<CaregiverOrder> caregiverOrders){
+        caregiverHistoryAdapter = new CaregiverHistoryAdapter(this, this, caregiverOrders);
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        assignDateAndTime.addItemDecoration(dividerItemDecoration);
+        assignDateAndTime.setLayoutManager(mLayoutManager);
+        assignDateAndTime.setItemAnimator(new DefaultItemAnimator());
+        assignDateAndTime.setAdapter(caregiverHistoryAdapter);
+        //dismisDialog();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        fillPage();
+        fillPageOnResume();
+        //dismisDialog();
     }
 
     public void fillPage() {
         serviceName.setText(ConverterUtility.getDateString(homecareOrder.getDateTreatementStart()) +" s.d. "+ConverterUtility.getDateString(homecareOrder.getDateTreatementEnd()));
         loadData();
+    }
+
+    public void fillPageOnResume() {
+        serviceName.setText(ConverterUtility.getDateString(homecareOrder.getDateTreatementStart()) +" s.d. "+ConverterUtility.getDateString(homecareOrder.getDateTreatementEnd()));
+        loadDataOnResume();
     }
 
     @Override
