@@ -11,10 +11,11 @@ public class Constants {
     public static final String ROUTE_LOGIN_FIREBASE = "/authenticateBySocial/caregiver?";
     public static final String ROUTE_LOGIN_FIREBASE_TOKEN = "/authenticateBySocialToken/caregiver?";
 
+
     //RestApi constants
     public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
-    //public static final String BASE_URL = "http://192.168.1.5:8080";
+    //public static final String BASE_URL = "http://192.168.1.2:8080";
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
@@ -28,6 +29,8 @@ public class Constants {
     public static final String ROUTE_REGISTER_CAREGIVER = "/register/caregiver";
     public static final String ROUTE_CAREGIVER_POST = "api/caregiver";
     public static final String ROUTE_CAREGIVER_BY_ID = "api/caregiver/";
+    public static final String ROUTE_GET_URL_BY_ID_CAREGIVER = "api/getUrlByIdcaregiver?";
+    public static final String ROUTE_CHECK_PASSWORD_IS_NULL_OR_NOT = "checkCaregiverPasswordIsNullOrNot?";
 
     //CAREGIVER
     public static final String ROUTE_CAREGIVER = "/api/caregiver/";

@@ -37,6 +37,12 @@ public class UserProfile {
     @SerializedName("status")
     private Status status;
 
+    @SerializedName("registerNurseNumberUrl")
+    private String registerNurseNumberUrl;
+
+    @SerializedName("sippUrl")
+    private String sippUrl;
+
     public Long getId() {
         return id;
     }
@@ -145,5 +151,21 @@ public class UserProfile {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getRegisterNurseNumberUrl() {
+        return registerNurseNumberUrl;
+    }
+
+    public void setRegisterNurseNumberUrl(String registerNurseNumberUrl) {
+        this.registerNurseNumberUrl = registerNurseNumberUrl;
+    }
+
+    public String getSippUrl() {
+        return sippUrl;
+    }
+
+    public void setSippUrl(String sippUrl) {
+        this.sippUrl = sippUrl;
     }
 }

@@ -49,59 +49,83 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".FUserSignUpActivity"
             android:label="@string/act_sign_up" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".SignUpActivity"
             android:label="@string/act_sign_up" />
+
         <activity
             android:name=".AccountSettingActivity"
             android:label="@string/act_account_setting" />
+
         <activity
             android:name=".ChangePasswordActivity"
             android:label="@string/act_change_pass" />
+
         <activity
             android:name=".HealthCalculatorActivity"
             android:label="@string/act_heatlh_calculator" />
+
         <activity
             android:name=".CalculatorBBI"
             android:label="@string/act_bbi" />
+
         <activity
             android:name=".CalculatorFluidReq"
             android:label="@string/act_fluid_req" />
+
         <activity
             android:name=".CalculatorCaloricNeeds"
             android:label="@string/act_callories_calc" />
-        <activity
-            android:name=".CalculatorIMT"
-            android:label="@string/act_imt" />
-        <activity
-            android:name=".CalculatorPregnancyEst"
-            android:label="@string/act_preg_cal" />
-        <activity
-            android:name=".ScheduleActivity"
-            android:label="@string/act_schedule" />
-        <activity
-            android:name=".OrderDetailsActivity"
-            android:label="@string/act_order_details" />
 
         <activity
-            android:name=".MyScheduleDetails"
-            android:label="@string/act_my_schedule_details" />
+            android:name = ".CalculatorIMT"
+            android:label = "@string/act_imt" />
+
+        <activity
+            android:name = ".CalculatorPregnancyEst"
+            android:label = "@string/act_preg_cal" />
+
+        <activity
+            android:name = ".ScheduleActivity"
+            android:label = "@string/act_schedule" />
+
+        <activity
+            android:name = ".OrderDetailsActivity"
+            android:label = "@string/act_order_details" />
+
+        <activity
+            android:name = ".MyScheduleDetails"
+            android:label = "@string/act_my_schedule_details" />
 
         <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:name = "com.facebook.sdk.ApplicationId"
+            android:value = "@string/facebook_app_id" />
 
         <activity
-            android:name=".AssessmentDetailActivity"
-            android:label="@string/act_assessment_details" />
+            android:name = ".AssessmentDetailActivity"
+            android:label = "@string/act_assessment_details" />
 
-        <activity android:name=".ContactUsActivity" />
+        <activity
+            android:name = ".ContactUsActivity"
+            android:label = "@string/act_contact_us" />
+
+        <activity
+            android:name =".UploadStrActivity"
+            android:label ="@string/act_upload_str" />
+
+        <activity
+            android:name= ".ForgotPasswordActivity"
+            android:label= "@string/act_forgot_password" />
+
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 
 public interface UserAPIInterface {
     @POST(Constants.ROUTE_LOGIN_CAREGIVER)
-    Call<LoginResponse> loginUser(@Query("username") String username, @Query("password") String password);
+    Call<LoginResponse> loginUser(@Query("email") String email, @Query("password") String password);
 
     @POST(Constants.ROUTE_REGISTER_CAREGIVER)
     Call<ResponseBody> registerUser(@Body RegisterParam param);
@@ -30,8 +30,14 @@ public interface UserAPIInterface {
     @POST(Constants.ROUTE_LOGIN_FIREBASE)
     Call<LoginResponse> loginUserWithFirebase(@Query("firebaseId") String firebaseId, @Query("type") String type);
 
+    @POST(Constants.ROUTE_CHECK_PASSWORD_IS_NULL_OR_NOT)
+    Call<ResponseBody> checkCaregiverPasswordIsNullOrNot(@Query("email") String email);
+
     @POST(Constants.ROUTE_LOGIN_FIREBASE_TOKEN)
     Call<LoginResponse> loginUserWithFirebaseToken(@Query("firebaseToken") String firebaseId, @Query("type") String type);
+
+    @POST(Constants.ROUTE_GET_URL_BY_ID_CAREGIVER)
+    Call<ResponseBody> getUrlById(@Query("idCaregiver") String idCaregiver, @Query("type") String type);
 
     @PUT(Constants.ROUTE_CAREGIVER_BY_ID+ "{id}")
     Call<ResponseBody> updateUser(@Path(value = "id", encoded = true) Long id, @Body User user);

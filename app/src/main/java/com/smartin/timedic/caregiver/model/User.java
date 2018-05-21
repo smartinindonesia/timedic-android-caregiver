@@ -63,6 +63,12 @@ public class User implements Serializable {
     @SerializedName("idCaregiverStatus")
     private Status status;
 
+    @SerializedName("registerNurseNumberUrl")
+    private String registerNurseNumberUrl;
+
+    @SerializedName("sippUrl")
+    private String sippUrl;
+
     public Long getId() {
         return id;
     }
@@ -260,6 +266,22 @@ public class User implements Serializable {
 
     public void setReligion(String religion) {
         this.religion = religion;
+    }
+
+    public String getRegisterNurseNumberUrl() {
+        return registerNurseNumberUrl;
+    }
+
+    public void setRegisterNurseNumberUrl(String registerNurseNumberUrl) {
+        this.registerNurseNumberUrl = registerNurseNumberUrl;
+    }
+
+    public String getSippUrl() {
+        return sippUrl;
+    }
+
+    public void setSippUrl(String sippUrl) {
+        this.sippUrl = sippUrl;
     }
 
     @Override

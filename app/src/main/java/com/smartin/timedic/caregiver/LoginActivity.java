@@ -60,6 +60,7 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +69,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,12 +80,16 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.btnSignIn)
     Button signIn;
+
     @BindView(R.id.emailAddress)
     EditText username;
+
     @BindView(R.id.password)
     EditText password;
+
     @BindView(R.id.mainLayout)
     CoordinatorLayout mainLayout;
+
     @BindView(R.id.btnSignup)
     Button signUp;
 
@@ -94,8 +100,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.lupaPassword)
     TextView lupaPassword;
+
     @BindView(R.id.orWithText)
     TextView orWithText;
+
     @BindView(R.id.dontHaveAccount)
     TextView dontHaveAccount;
 
@@ -105,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
-
 
     private SharedPreferences mSharedPreferences;
 
@@ -147,8 +154,12 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "Sudah pencet tombol sign in");
-                doLogin();
+                if(password.getText().toString().equals("") && username.getText().toString().equals("")){
+                    Snackbar.make(mainLayout, "Silahkan isi email dan password akun anda", Snackbar.LENGTH_LONG).show();
+                }
+                else{
+                    cekMethod(username.getText().toString());
+                }
             }
         });
         signUp.setOnClickListener(new View.OnClickListener() {
@@ -158,8 +169,16 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(newinten);
             }
         });
-        setPermission();
 
+        lupaPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        setPermission();
 
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,8 +217,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -212,13 +229,14 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
                                 String idToken = task.getResult().getToken();
-
-
                                     if(currentUser.getProviders().get(0).equals("google.com")){
                                         doLoginFirebase(currentUser, "google", idToken);
                                     }
                                     else if(currentUser.getProviders().get(0).equals("facebook.com")){
                                         doLoginFirebase(currentUser, "facebook", idToken);
+                                    }
+                                    else if(currentUser.getProviders().get(0).equals("password")){
+                                        doLoginFirebase(currentUser, "email", idToken);
                                     }
                                 // ...
                             } else {
@@ -232,14 +250,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI() {
-        Toast.makeText(LoginActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
-
-        Intent profileIntent = new Intent(this, LoginActivity.class);
-        startActivity(profileIntent);
-        finish();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -251,69 +261,87 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-
-                //updateUI();
-
             } else {
                 // Google Sign In failed, update UI appropriately
-                // ...
             }
         }
-
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void cekMethod(String email){
+        Call<ResponseBody> responseCall = userAPIInterface.checkCaregiverPasswordIsNullOrNot(email);
+
+        responseCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String password = response.body().string();
+                        if(password.equals("false")){
+                            doLoginEmail();
+                        }
+                        else{
+                            doLogin();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Snackbar.make(mainLayout, "Login gagal", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Snackbar.make(mainLayout, getResources().getString(R.string.network_problem), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         openProgress("Loading...", "Proses verifikasi!");
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        closeProgress();
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
-                        } else {
-                            final FirebaseUser user = mAuth.getCurrentUser();
-                            //GetTokenResult idTokenResult = user.getIdToken(false).getResult();
-                            user.getIdToken(true)
-                                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                            if (task.isSuccessful()) {
-                                                String idToken = task.getResult().getToken();
-                                                if (user != null) {
-                                                    // User is signed in
-                                                    doLoginFirebase(user, "google",idToken);
-                                                    Log.d(TAG, "onAuthStateChanged:signed_in:" + idToken);
+                closeProgress();
 
-                                                } else {
-                                                    // User is signed out
-                                                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                                                }
-                                                // ...
-                                            } else {
-                                                // Handle error -> task.getException();
-                                            }
-                                        }
-                                    });
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "signInWithCredential", task.getException());Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    final FirebaseUser user = mAuth.getCurrentUser();
+                    //GetTokenResult idTokenResult = user.getIdToken(false).getResult();
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                if (user != null) {
+                                    // User is signed in
+                                    doLoginFirebase(user, "google",idToken);
+                                    Log.d(TAG, "onAuthStateChanged:signed_in:" + idToken);
 
-
-                            //Toast.makeText(getApplicationContext(), "Autentikasi google gagal!", Toast.LENGTH_LONG).show();
+                                } else {
+                                    // User is signed out
+                                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                                }                    // ...
+                            } else {
+                                // Handle error -> task.getException();
+                            }
                         }
-
-                    }
-                });
+                    });
+                }
+            }
+        });
     }
 
     public void doLoginFirebase(final FirebaseUser user, final String type, final String tokenId) {
+
         openProgress("Loading...", "Proses Login!");
 
         Call<LoginResponse> responseCall = userAPIInterface.loginUserWithFirebaseToken(tokenId, type);
@@ -438,6 +466,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     public void doLogin() {
         openProgress("Loading...", "Proses Login!");
 
@@ -466,6 +495,48 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Snackbar.make(mainLayout, getResources().getString(R.string.network_problem), Snackbar.LENGTH_LONG).show();
                 call.cancel();
+            }
+        });
+    }
+
+    public void doLoginEmail() {
+        openProgress("Loading...", "Proses Login!");
+        String shahex = AesUtil.Encrypt(password.getText().toString().trim());
+        Log.d(TAG, "Hasil enkripsi : " + shahex);
+        mAuth.signInWithEmailAndPassword(username.getText().toString().trim(), password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(!task.isSuccessful()){
+                    //error loging
+                    Toast.makeText(LoginActivity.this, "Email atau password tidak sesuai "+task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    closeProgress();
+                }
+                else{
+
+                    final FirebaseUser user = mAuth.getCurrentUser();
+                    //GetTokenResult idTokenResult = user.getIdToken(false).getResult();
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                if (user != null) {
+                                    //user.getProviders().get(0);
+                                    //Log.d(TAG, "Ini dia : " + user.getProviders().get(0));
+                                    doLoginFirebase(user, "email", idToken);
+                                    Log.d(TAG, "onAuthStateChanged:signed_in:" + idToken);
+
+                                } else {
+                                    // User is signed out
+                                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                                }
+                                // ...
+                            } else {
+                                // Handle error -> task.getException();
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -549,4 +620,3 @@ public class LoginActivity extends AppCompatActivity {
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }
-

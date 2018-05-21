@@ -27,11 +27,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.smartin.timedic.caregiver.AccountSettingActivity;
 import com.smartin.timedic.caregiver.ChangePasswordActivity;
 import com.smartin.timedic.caregiver.ContactUsActivity;
 import com.smartin.timedic.caregiver.R;
+import com.smartin.timedic.caregiver.UploadStrActivity;
 import com.smartin.timedic.caregiver.config.Constants;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.AppSetting;
@@ -71,6 +71,10 @@ public class AccountFragment extends Fragment {
     LinearLayout btnTermAndCond;
     @BindView(R.id.btnContactUs)
     LinearLayout btnContactUs;
+    @BindView(R.id.btnSippAndStr)
+    LinearLayout btnSippAndStr;
+    @BindView(R.id.btnSipp)
+    LinearLayout btnSipp;
 
     @BindView(R.id.accountSetting)
     TextView accountSetting;
@@ -90,6 +94,10 @@ public class AccountFragment extends Fragment {
     TextView logoutText;
     @BindView(R.id.contactUsText)
     TextView contactUsText;
+    @BindView(R.id.sippAndStr)
+    TextView sippAndStrText;
+    @BindView(R.id.sippText)
+    TextView sippText;
 
     private HomecareSessionManager homecareSessionManager;
     private AppSetting appSetting;
@@ -202,6 +210,14 @@ public class AccountFragment extends Fragment {
                 openUrl(Constants.TERM_AND_COND);
             }
         });
+
+        btnSippAndStr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UploadStrActivity.class);
+                startActivity(intent);
+            }
+        });
         setFonts();
         return newView;
     }
@@ -250,12 +266,15 @@ public class AccountFragment extends Fragment {
         ArrayList<TextView> arrayList = new ArrayList<>();
         arrayList.add(accountSetting);
         arrayList.add(changePasswordText);
-        arrayList.add(languageText);
+        //arrayList.add(languageText);
         arrayList.add(pushNotifText);
         arrayList.add(termAndCondText);
         arrayList.add(policyAndPrivacyText);
         arrayList.add(rateAppText);
         arrayList.add(logoutText);
+        arrayList.add(contactUsText);
+        arrayList.add(sippAndStrText);
+        arrayList.add(sippText);
         ViewFaceUtility.applyFonts(arrayList, getActivity(), "fonts/Dosis-Medium.otf");
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -34,6 +35,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.adapter.ReligionAdapter;
 import com.smartin.timedic.caregiver.config.ConstantVals;
@@ -121,6 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private DatePickerDialog datePickerDialog;
     private UserAPIInterface userAPIInterface;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +138,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
         userAPIInterface = APIClient.getClient().create(UserAPIInterface.class);
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
         createTitleBar();
         signUP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,7 +346,8 @@ public class SignUpActivity extends AppCompatActivity {
                             if (registerParam.isValidEmail()) {
                                 if (checkAgreement.isChecked()) {
                                     try {
-                                        postData(registerParam);
+                                        //postData(registerParam);
+                                        insertDataUserToAuthFirebase(registerParam);
                                     } catch (UnsupportedEncodingException e) {
                                         Toast.makeText(getApplicationContext(), "Parameter tidak benar!", Toast.LENGTH_LONG).show();
                                     }
@@ -361,7 +374,9 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private void postData(RegisterParam registerParam) throws UnsupportedEncodingException {
+    private void postData(RegisterParam registerParam, String Uid) throws UnsupportedEncodingException {
+        registerParam.setFirebaseIdByEmail(Uid);
+        registerParam.setPassword(null);
         final Call<ResponseBody> resp = userAPIInterface.registerUser(registerParam);
         resp.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -370,6 +385,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (response.code() == 201) {
                     Toast.makeText(getApplicationContext(), "Pendaftaran user baru berhasil dilakukan! Silahkan login untuk melanjutkan", Toast.LENGTH_LONG).show();
                     finish();
+                    //insertDataUserToAuthFirebase(registerParam.getFirstname()+ " " + registerParam.getMiddlename() + " " + registerParam.getLastname(), registerParam.getEmail(), registerParam.getPassword());
                 } else {
                     Snackbar.make(mainLayout, "Pendaftaran user baru gagal!", Snackbar.LENGTH_LONG).show();
                 }
@@ -388,4 +404,31 @@ public class SignUpActivity extends AppCompatActivity {
         i.setData(Uri.parse(url));
         startActivity(i);
     }
+
+    private void insertDataUserToAuthFirebase(final RegisterParam registerParam) throws UnsupportedEncodingException{
+
+        mAuth.createUserWithEmailAndPassword(registerParam.getEmail(), registerParam.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(!task.isSuccessful()){
+                    //there was an error
+                    Toast.makeText(SignUpActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+                else{
+
+                    final FirebaseUser newUser = task.getResult().getUser();
+                    try {
+                        postData(registerParam, newUser.getUid());
+                    }
+                    catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    //success creating user, now set display name as name
+                    //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(registerParam.getFirstname()+" "+registerParam.getMiddlename()+" "+registerParam.getLastname()).build();
+                }
+            }
+        });
+    }
+
+
 }

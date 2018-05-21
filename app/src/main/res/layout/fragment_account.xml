@@ -255,6 +255,43 @@
             android:layout_height="5dp" />
 
         <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadowy_layout"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/btnRateApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_rate_app" />
+
+            <TextView
+                android:id="@+id/rateAppText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="12"
+                android:text="Nilai aplikasi ini" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shadowy_layout"
@@ -262,7 +299,7 @@
             android:padding="10dp">
 
             <LinearLayout
-                android:id="@+id/btnRateApp"
+                android:id="@+id/btnSippAndStr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -274,14 +311,50 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_rate_app" />
+                    android:src="@drawable/ic_terms_and_conditions" />
 
                 <TextView
-                    android:id="@+id/rateAppText"
+                    android:id="@+id/sippAndStr"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
-                    android:text="Nilai aplikasi ini" />
+                    android:text="Upload STR" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadowy_layout"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/btnSipp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_terms_and_conditions" />
+
+                <TextView
+                    android:id="@+id/sippText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="12"
+                    android:text="Upload SIPP" />
 
             </LinearLayout>
         </LinearLayout>

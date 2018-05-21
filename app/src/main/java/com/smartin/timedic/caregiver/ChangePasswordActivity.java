@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.User;
 import com.smartin.timedic.caregiver.model.parammodel.PasswordProfile;
@@ -54,22 +61,41 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private UserAPIInterface userAPIInterface;
     private HomecareSessionManager homecareSessionManager;
     private User user;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         ButterKnife.bind(this);
+
+
         homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
         userAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(UserAPIInterface.class);
         createTitleBar();
         user = homecareSessionManager.getUserDetail();
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doUpdatePassword();
+                FirebaseUser usr = mAuth.getCurrentUser();
+                if(usr != null){
+                    if(usr.getProviders().get(0).equals("password")){
+                        doUpdatePasswordInFirebase();
+                    }
+                    else{
+                        doUpdatePassword();
+                    }
+                }
+                else{
+                    doUpdatePassword();
+                }
             }
         });
+
         retypePassword.addTextChangedListener(new TextWatcher() {
             @TargetApi(Build.VERSION_CODES.M)
             public void afterTextChanged(Editable s) {
@@ -102,6 +128,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 // other stuffs
             }
         });
+
         setFonts();
     }
 
@@ -128,6 +155,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 
     public void doUpdatePassword() {
         Log.i(TAG, password.getText().toString());
@@ -156,10 +184,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
-                    Toast.makeText(getApplicationContext(), "Password berhasil diganti!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Password berhasil diganti !", Toast.LENGTH_LONG).show();
                     getUserDetail();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Penggantian password baru gagal!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Penggantian password baru gagal !", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -167,9 +195,43 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 call.cancel();
                 homecareSessionManager.logout();
+                mAuth.signOut();
             }
         });
     }
+
+    public void doUpdatePasswordInFirebase() {
+
+        String oldpassword = oldPassword.getText().toString();
+        final String newpassword = password.getText().toString();
+        String retypepassword = retypePassword.getText().toString();
+
+        if (!newpassword.trim().equals("")) {
+            if (newpassword.equals(retypepassword)) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String shahex = AesUtil.Encrypt(newpassword);
+
+                user.updatePassword(newpassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Password berhasil diganti !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Penggantian password baru gagal !", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+            else {
+                    Toast.makeText(getApplicationContext(), "Password tidak sesuai, mohon diulang kembali !", Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+                Toast.makeText(getApplicationContext(), "Password tidak boleh kosong !", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 
     public void getUserDetail() {
         final Call<User> resp = userAPIInterface.getProfile(user.getId());

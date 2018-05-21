@@ -15,7 +15,11 @@
     <string name="act_order_details">Detail Pemesanan</string>
     <string name="act_my_schedule_details">Jadwal Penugasan Saya</string>
     <string name="act_assessment_details">Detail Assessment</string>
+    <string name="act_upload_str">Upload STR</string>
+    <string name="act_upload_sipp">Upload SIPP</string>
     <string name="facebook_app_id">2018267148428273</string>
+    <string name="act_forgot_password">Halaman Reset Password</string>
+    <string name="act_contact_us">Hubungi Kami</string>
 
     <string name="act_medical_record">Medical Record</string>
 
@@ -70,6 +74,9 @@ setelah kami melakukan kunjungan kerumah anda
 
 
     <string name="contact_us">Silahkan hubungi kami melalui nomor berikut:</string>
+
+    <string name="title_forgot_password">Anda tidak bisa masuk ? Silahkan masukkan Email login anda di bawah ini </string>
+
     <string name="cek_lab_notification">Masukkan jenis-jenis tes yang anda inginkan dibawah ini</string>
     <string name="cek_lab_notification2">Upload gambar jika anda memiliki rujukan dokter</string>
 
