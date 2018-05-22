@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.btnGoogleSignIn)
     ImageButton btnGoogleSignIn;
+
     @BindView(R.id.btnFacebook)
     ImageButton facebookButton;
 
@@ -179,37 +180,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         setPermission();
-
-        facebookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                facebookButton.setEnabled(false);
-
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
-                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                        handleFacebookAccessToken(loginResult.getAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                        Log.d(TAG, "facebook:onCancel");
-                        // ...
-                    }
-
-                    @Override
-                    public void onError(FacebookException error) {
-                        Log.d(TAG, "facebook:onError", error);
-                        // ...
-                    }
-                });
-            }
-        });
-
+        facebookButton();
         googleLoginInit();
         setFonts();
     }
@@ -277,12 +248,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
                     try {
-                        String password = response.body().string();
-                        if(password.equals("false")){
+                        String dataIndikator = response.body().string();
+
+                        if(dataIndikator.equals("false")){
                             doLoginEmail();
                         }
                         else{
-                            doLogin();
+                            if(dataIndikator.substring(5).equals("f")){
+                                facebookButton.performClick();
+                            }
+                            else{
+                                btnGoogleSignIn.performClick();
+                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -575,19 +552,53 @@ public class LoginActivity extends AppCompatActivity {
                 } /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
         mAuth = FirebaseAuth.getInstance();
+        googleButton();
+    }
 
+    private void googleButton(){
         btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     signIn();
-                    Log.d(TAG, "Sign in");
+                    Log.d(TAG, "Sign in ");
                 } else {
                     signOut();
-                    Log.d(TAG, "Signed Out");
+                    Log.d(TAG, "Signed Out ");
                 }
+            }
+        });
+    }
+
+    private void facebookButton(){
+        facebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                facebookButton.setEnabled(false);
+
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
+                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                        Log.d(TAG, "facebook:onCancel");
+                        // ...
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.d(TAG, "facebook:onError", error);
+                        // ...
+                    }
+                });
             }
         });
     }
@@ -603,7 +614,6 @@ public class LoginActivity extends AppCompatActivity {
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-
                     }
                 });
     }
