@@ -20,6 +20,7 @@
     <string name="facebook_app_id">2018267148428273</string>
     <string name="act_forgot_password">Halaman Reset Password</string>
     <string name="act_contact_us">Hubungi Kami</string>
+    <string name="act_add_reminder">Detail Alarm</string>
 
     <string name="act_medical_record">Medical Record</string>
 

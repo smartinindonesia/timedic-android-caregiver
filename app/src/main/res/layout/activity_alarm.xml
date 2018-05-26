@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.smartin.timedic.caregiver.AlarmActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="368dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/swipe_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/login_logo"/>
+
+        <AnalogClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <DigitalClock
+            android:id="@+id/digitalClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="75sp" />
+
+        <TextView
+            android:id="@+id/notifText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/swipe_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:button_background="@drawable/sld_shape_button"
+        app:button_bottom_padding="20dp"
+        app:button_image_disabled="@drawable/ic_stop_black"
+        app:button_image_enabled="@drawable/ic_stop_white"
+        app:button_image_height="60dp"
+        app:button_image_width="100dp"
+        app:button_left_padding="20dp"
+        app:button_right_padding="20dp"
+        app:button_top_padding="20dp"
+        app:has_activate_state="true"
+        app:initial_state="disabled"
+        app:inner_text="SWIPE"
+        app:inner_text_background="@drawable/shape_rounded"
+        app:inner_text_bottom_padding="18dp"
+        app:inner_text_color="@android:color/white"
+        app:inner_text_size="16sp"
+        app:inner_text_top_padding="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

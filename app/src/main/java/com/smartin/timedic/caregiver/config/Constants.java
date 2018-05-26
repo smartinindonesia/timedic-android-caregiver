@@ -13,9 +13,9 @@ public class Constants {
 
 
     //RestApi constants
-    //public static final String BASE_URL = "https://timedic.id:8443";
+    public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
-    public static final String BASE_URL = "http://192.168.1.2:8080";
+    //public static final String BASE_URL = "http://192.168.1.2:8080";
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
@@ -54,6 +54,9 @@ public class Constants {
     public static final String ROUTE_GET_SCHEDULE_BY_ID_CAREGIVER_AND_ID_TRX = "/api/getByIdCaregiverAndIdTrx";
     public static final String ROUTE_UPDATE_CAREGIVER_TRX_LIST = "api/caregiverTrxList/";
 
+    //LOCAL DB SETTING
+    public static final String LOCALDB_NAME = "com.smartin.timedic.caregiver.timedicalarm";
+    public static final Integer LOCALDB_VERSION = 1;
 
     //SCHEDULE
     public static final String ROUTE_ADD_SCHEDULE = "api/caregiverSchedulle";

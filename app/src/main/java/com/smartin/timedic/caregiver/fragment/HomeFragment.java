@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.smartin.timedic.caregiver.HealthCalculatorActivity;
+import com.smartin.timedic.caregiver.MedicineReminderActivity;
 import com.smartin.timedic.caregiver.model.uimodel.Slider;
 
 import java.util.ArrayList;
@@ -35,12 +36,12 @@ public class HomeFragment extends Fragment {
 
     @BindView(R.id.btnHealthCalculator)
     ImageButton btnHealthCalc;
-    @BindView(R.id.btnMedicineReminder)
-    ImageButton btnMedicineReminder;
     @BindView(R.id.pager)
     ViewPager viewPager;
     @BindView(R.id.tabDots)
     TabLayout tabLayout;
+    @BindView(R.id.btnMedicineReminder)
+    ImageButton btnMedicineRemind;
 
     private PagerAdapter mPagerAdapter;
 
@@ -114,6 +115,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        btnMedicineRemind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MedicineReminderActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnMedicineRemind.setEnabled(true);
         return vwInflater;
     }
 
