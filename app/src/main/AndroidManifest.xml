@@ -124,6 +124,10 @@
             android:label ="@string/act_upload_str" />
 
         <activity
+            android:name =".UploadSippActivity"
+            android:label ="@string/act_upload_sipp" />
+
+        <activity
             android:name= ".ForgotPasswordActivity"
             android:label= "@string/act_forgot_password" />
 

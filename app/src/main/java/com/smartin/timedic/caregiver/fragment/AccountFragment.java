@@ -31,6 +31,7 @@ import com.smartin.timedic.caregiver.AccountSettingActivity;
 import com.smartin.timedic.caregiver.ChangePasswordActivity;
 import com.smartin.timedic.caregiver.ContactUsActivity;
 import com.smartin.timedic.caregiver.R;
+import com.smartin.timedic.caregiver.UploadSippActivity;
 import com.smartin.timedic.caregiver.UploadStrActivity;
 import com.smartin.timedic.caregiver.config.Constants;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
@@ -71,8 +72,8 @@ public class AccountFragment extends Fragment {
     LinearLayout btnTermAndCond;
     @BindView(R.id.btnContactUs)
     LinearLayout btnContactUs;
-    @BindView(R.id.btnSippAndStr)
-    LinearLayout btnSippAndStr;
+    @BindView(R.id.btnStr)
+    LinearLayout btnStr;
     @BindView(R.id.btnSipp)
     LinearLayout btnSipp;
 
@@ -94,8 +95,10 @@ public class AccountFragment extends Fragment {
     TextView logoutText;
     @BindView(R.id.contactUsText)
     TextView contactUsText;
-    @BindView(R.id.sippAndStr)
-    TextView sippAndStrText;
+
+    @BindView(R.id.strText)
+    TextView strText;
+
     @BindView(R.id.sippText)
     TextView sippText;
 
@@ -211,13 +214,22 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        btnSippAndStr.setOnClickListener(new View.OnClickListener() {
+        btnSipp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UploadSippActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnStr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UploadStrActivity.class);
                 startActivity(intent);
             }
         });
+
         setFonts();
         return newView;
     }
@@ -273,7 +285,7 @@ public class AccountFragment extends Fragment {
         arrayList.add(rateAppText);
         arrayList.add(logoutText);
         arrayList.add(contactUsText);
-        arrayList.add(sippAndStrText);
+        arrayList.add(strText);
         arrayList.add(sippText);
         ViewFaceUtility.applyFonts(arrayList, getActivity(), "fonts/Dosis-Medium.otf");
     }

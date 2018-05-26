@@ -27,9 +27,11 @@
             android:gravity="center"
             android:padding="5dp" >
             <Button
-                android:id="@+id/btnSelectPhotoSTR"
+                android:id="@+id/btnSelectPhotoSIPP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/orange_selector_button_bg"
+                android:textColor="@color/sign_in_selector_fg"
                 android:text="Browse File" />
         </LinearLayout>
 
@@ -38,10 +40,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="10dp" >
+
             <ImageView
-                android:id="@+id/viewImageSTR"
+                android:id="@+id/viewImageSIPP"
+                android:padding="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
 
 

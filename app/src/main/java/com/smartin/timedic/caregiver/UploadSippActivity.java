@@ -44,17 +44,17 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class UploadStrActivity extends AppCompatActivity implements Imageutils.ImageAttachmentListener{
+public class UploadSippActivity extends AppCompatActivity implements Imageutils.ImageAttachmentListener{
 
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.btnSelectPhotoSTR)
-    Button btnSelectPhotoSTR;
+    @BindView(R.id.btnSelectPhotoSIPP)
+    Button btnSelectPhotoSIPP;
 
-    @BindView(R.id.viewImageSTR)
-    ImageView imagePhotoSTR;
+    @BindView(R.id.viewImageSIPP)
+    ImageView imagePhotoSIPP;
 
     private Bitmap bitmap;
     private String file_name;
@@ -70,7 +70,7 @@ public class UploadStrActivity extends AppCompatActivity implements Imageutils.I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_str);
+        setContentView(R.layout.activity_upload_sipp);
 
         ButterKnife.bind(this);
         homecareSessionManager = new HomecareSessionManager(this, getApplicationContext());
@@ -79,14 +79,14 @@ public class UploadStrActivity extends AppCompatActivity implements Imageutils.I
         createTitleBar();
         setFonts();
 
-        btnSelectPhotoSTR.setOnClickListener(new View.OnClickListener() {
+        btnSelectPhotoSIPP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageutils.imagepicker(1, "str");
+                imageutils.imagepicker(1,"sipp");
             }
         });
 
-        loadImage("str");
+        loadImage("sipp");
 
     }
 
@@ -109,7 +109,7 @@ public class UploadStrActivity extends AppCompatActivity implements Imageutils.I
                     }
                 }
                 else if(response.code() == 404){
-                    Toast.makeText(getApplicationContext(), "File STR anda masih kosong, silahkan upload STR anda !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "File SIPP anda masih kosong, silahkan upload SIPP anda !", Toast.LENGTH_LONG).show();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Gagal mendapatkan url foto !", Toast.LENGTH_LONG).show();
@@ -139,8 +139,8 @@ public class UploadStrActivity extends AppCompatActivity implements Imageutils.I
                 closeProgress();
                 return false;
             }
-        }).into(imagePhotoSTR);
-        imagePhotoSTR.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_blue));
+        }).into(imagePhotoSIPP);
+        imagePhotoSIPP.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_blue));
 
     }
 
@@ -180,7 +180,7 @@ public class UploadStrActivity extends AppCompatActivity implements Imageutils.I
     private void setFonts() {
         ArrayList<TextView> arrayList = new ArrayList<>();
         //ArrayList<TextView> arrayListB = new ArrayList<>();
-        arrayList.add(btnSelectPhotoSTR);
+        arrayList.add(btnSelectPhotoSIPP);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
         //ViewFaceUtility.applyFonts(arrayListB, this, "fonts/Dosis-ExtraBold.otf");
     }

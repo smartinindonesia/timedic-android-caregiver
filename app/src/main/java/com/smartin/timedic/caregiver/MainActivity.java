@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
     TextView textStatusOrange;
 
     private int[] tabIcons = {
+            R.drawable.ic_tab_home,
             R.drawable.ic_tab_schedule,
             R.drawable.ic_tab_yourorder,
-            R.drawable.ic_tab_home,
             R.drawable.ic_tab_account
     };
 
@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new HomeFragment(), "Alat Bantu");
         adapter.addFragment(new ScheduleFragment(), "Jadwal");
         adapter.addFragment(new YourOrderFragment(), "Pesanan");
-        adapter.addFragment(new HomeFragment(), "Alat Bantu");
         adapter.addFragment(new AccountFragment(), "Akun");
         viewPager.setAdapter(adapter);
     }

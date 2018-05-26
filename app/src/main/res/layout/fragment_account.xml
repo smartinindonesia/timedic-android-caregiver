@@ -291,15 +291,15 @@
             android:layout_width="match_parent"
             android:layout_height="5dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadowy_layout"
-            android:orientation="vertical"
-            android:padding="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadowy_layout"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-            <LinearLayout
-                android:id="@+id/btnSippAndStr"
+        <LinearLayout
+                android:id="@+id/btnStr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -314,27 +314,20 @@
                     android:src="@drawable/ic_terms_and_conditions" />
 
                 <TextView
-                    android:id="@+id/sippAndStr"
+                    android:id="@+id/strText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="12"
                     android:text="Upload STR" />
 
-            </LinearLayout>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
+            android:layout_height="1dp"
+            android:background="@color/shadow_clr" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadowy_layout"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
                 android:id="@+id/btnSipp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -357,7 +350,8 @@
                     android:text="Upload SIPP" />
 
             </LinearLayout>
-        </LinearLayout>
+
+    </LinearLayout>
 
         <View
             android:layout_width="match_parent"

@@ -5,6 +5,13 @@ package com.smartin.timedic.caregiver.config;
  */
 
 public class Constants {
+
+    //cloudinanry
+    public static final String CLOUD_NAME = "smartin-co-id";
+    public static final String API_KEY = "457753113678145";
+    public static final String API_SECRET = "u__szqNxRbkXsQnHLMXDb2LGY4A";
+
+
     //Action constants
     public static final String actionPosition = "device_pos";
 

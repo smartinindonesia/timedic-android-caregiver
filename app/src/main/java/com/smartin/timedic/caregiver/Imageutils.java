@@ -19,6 +19,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -27,23 +28,25 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.smartin.timedic.caregiver.config.Constants;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.smartin.timedic.caregiver.manager.HomecareSessionManager;
 import com.smartin.timedic.caregiver.model.parammodel.UserProfile;
-import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -61,7 +64,6 @@ public class Imageutils
     private Fragment current_fragment;
 
     private ImageAttachmentListener imageAttachment_callBack;
-    private openWindowsProgressListener openWindowsProgressListener_callBack;
 
 
     private String selected_path="";
@@ -69,6 +71,7 @@ public class Imageutils
     private File path = null;
 
     private int from=0;
+    private String type = "";
     private boolean isFragment=false;
 
     private UserAPIInterface userAPIInterface;
@@ -80,7 +83,6 @@ public class Imageutils
         this.context=act;
         this.current_activity = act;
         imageAttachment_callBack = (ImageAttachmentListener)context;
-        openWindowsProgressListener_callBack = (openWindowsProgressListener)context;
         userAPIInterface = userAPI;
         homecareSessionManager = homecare;
         //System.out.println("Ini dia : "+homecareSessionManager.getUserDetail().getId());
@@ -91,7 +93,6 @@ public class Imageutils
         this.context=act;
         this.current_activity = act;
         imageAttachment_callBack= (ImageAttachmentListener) fragment;
-        openWindowsProgressListener_callBack = (openWindowsProgressListener)context;
         if(isFragment)
         {
             this.isFragment=true;
@@ -100,41 +101,7 @@ public class Imageutils
 
     }
 
-    /**
-     * Get file name from path
-     *
-     * @param path
-     * @return
-     */
 
-    public String getfilename_from_path(String path)
-    {
-        return path.substring( path.lastIndexOf('/')+1, path.length() );
-
-    }
-
-    /**
-     * Get Image URI from Bitmap
-     *
-     * @param context
-     * @param photo
-     * @return
-     */
-
-    public Uri getImageUri(Context context, Bitmap photo)
-    {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.PNG, 80, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), photo, "Title", null);
-        return Uri.parse(path);
-    }
-
-    /**
-     * Get Path from Image URI
-     *
-     * @param uri
-     * @return
-     */
 
     public String getPath(Uri uri)
     {
@@ -152,45 +119,6 @@ public class Imageutils
             return uri.getPath();
     }
 
-    /**
-     * Bitmap from String
-     *
-     * @param encodedString
-     * @return
-     */
-    public Bitmap StringToBitMap(String encodedString){
-        try {
-            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-
-
-    /**
-     * Get String from Bitmap
-     *
-     * @param bitmap
-     * @return
-     */
-
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,80, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-
-
-    /**
-     * Check Camera Availability
-     *
-     * @return
-     */
 
     public boolean isDeviceSupportCamera() {
         if (this.context.getPackageManager().hasSystemFeature(
@@ -203,15 +131,6 @@ public class Imageutils
         }
     }
 
-
-    /**
-     * Compress Imgae
-     *
-     * @param imageUri
-     * @param height
-     * @param width
-     * @return
-     */
 
 
     public Bitmap compressImage(String imageUri, float height, float width) {
@@ -428,9 +347,10 @@ public class Imageutils
      * @param from
      */
 
-    public void imagepicker(final int from)
+    public void imagepicker(final int from, final String type)
     {
-        this.from=from;
+        this.from = from;
+        this.type = type;
 
         final CharSequence[] items;
 
@@ -570,8 +490,7 @@ public class Imageutils
     public void camera_call()
     {
         ContentValues values = new ContentValues();
-        imageUri = current_activity.getContentResolver().insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        imageUri = current_activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent1.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
@@ -597,21 +516,11 @@ public class Imageutils
             current_fragment.startActivityForResult(intent2,1);
         else
             current_activity.startActivityForResult(intent2, 1);
-
     }
 
 
-    /**
-     * Activity PermissionResult
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    public void request_permission_result(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        switch (requestCode)
-        {
+    public void request_permission_result(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     camera_call();
@@ -619,98 +528,52 @@ public class Imageutils
                     Toast.makeText(current_activity, "Permission denied", Toast.LENGTH_LONG).show();
                 }
                 break;
-
             case 2:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galley_call();
                 } else {
-
                     Toast.makeText(current_activity, "Permission denied", Toast.LENGTH_LONG).show();
                 }
                 break;
         }
     }
 
-
-    /**
-     * Intent ActivityResult
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
         String file_name;
         Bitmap bitmap;
-
-        switch (requestCode)
-        {
+        switch (requestCode){
             case 0:
-
-                if(resultCode==current_activity.RESULT_OK)
-                {
-
+                if(resultCode==current_activity.RESULT_OK){
                     Log.i("Camera Selected","Photo");
-
-                    try
-                    {
-                        selected_path=null;
-                        selected_path=getPath(imageUri);
-                        // Log.i("selected","path"+selected_path);
-                        file_name =selected_path.substring(selected_path.lastIndexOf("/")+1);
-                        // Log.i("file","name"+file_name);
-                        bitmap =compressImage(imageUri.toString(),816,612);
-                        //imageAttachment_callBack.image_attachment(from, file_name, bitmap,imageUri);
-                        //System.out.println("Path dari imageutils "+selected_path);
-                        //new Upload().execute();
+                    try{
+                        selected_path = null;
+                        selected_path = getPath(imageUri);
+                        AsyncTask<String, Integer, String> x = new Upload().execute(null,null,null);
                     }
-                    catch(Exception e)
-                    {
+                    catch(Exception e){
                         e.printStackTrace();
                     }
-
-
-
                 }
                 break;
             case 1:
                 if(resultCode==current_activity.RESULT_OK)
                 {
                     Log.i("Gallery","Photo");
-                    Uri selectedImage=data.getData();
-                    //openWindowsProgressListener_callBack.open();
-                    try
-                    {
-                        selected_path=null;
-                        selected_path=getPath(selectedImage);
-                        file_name =selected_path.substring(selected_path.lastIndexOf("/")+1);
-                        bitmap =compressImage(selectedImage.toString(),816,612);
-
-                        //System.out.println("Path dari imageutils "+selected_path);
-
+                    Uri selectedImage = data.getData();
+                    try {
+                        selected_path = null;
+                        selected_path = getPath(selectedImage);
+                        //file_name = selected_path.substring(selected_path.lastIndexOf("/")+1);
+                        //bitmap = compressImage(selectedImage.toString(),716,512);
                         AsyncTask<String, Integer, String> x = new Upload().execute(null,null,null);
-                        //x.get();
-                        //String link = new Upload().doInBackground();
-                        //System.out.println("Link nya :"+x.get());
-                        //imageAttachment_callBack.image_attachment(from, file_name, bitmap,selectedImage);
-
-                        //closeCallBack.close();
-
                     }
-                    catch(Exception e)
-                    {
+                    catch(Exception e){
                         e.printStackTrace();
                     }
-
-                    //new Upload().execute();
-
                 }
                 break;
         }
-
-
     }
 
     public void openProgress(String title, String content) {
@@ -726,223 +589,107 @@ public class Imageutils
         progressDialog.dismiss();
     }
 
-
     class Upload extends AsyncTask<String, Integer, String> {
 
         @Override
-        protected String doInBackground(String... unused)
-        {
-
+        protected String doInBackground(String... unused){
             Map config = new HashMap();
-            config.put("cloud_name", "smartin-co-id");
-            config.put("api_key", "457753113678145");
-            config.put("api_secret", "u__szqNxRbkXsQnHLMXDb2LGY4A");
+            config.put("cloud_name", Constants.CLOUD_NAME);
+            config.put("api_key", Constants.API_KEY);
+            config.put("api_secret", Constants.API_SECRET);
             Cloudinary mobileCloudinary = new Cloudinary(config);
             String returnData = "";
+            Bitmap myBitmap = null;
+            File imageFile = new File(selected_path);
             try {
-                Map uploadResult = mobileCloudinary.uploader().upload(selected_path, ObjectUtils.asMap("folder","STR-Nurse/"));
-                String secure_url = uploadResult.get("secure_url").toString();
-                returnData = secure_url ;
-                UserProfile userData = new UserProfile();
-                userData.setId(homecareSessionManager.getUserDetail().getId());
-                userData.setRegisterNurseNumberUrl(secure_url);
-                postData(userData);
-            } catch (IOException e) {
+                if(imageFile.exists()){
+                    myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                }
+                String file_name = "compress_"+selected_path.substring(selected_path.lastIndexOf("/")+1);
+                String pathFile = selected_path.substring(0,selected_path.lastIndexOf("/")+1);
+
+                File data = new File(pathFile+file_name);
+                FileOutputStream out = new FileOutputStream(data);
+                myBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                out.flush();
+                out.close();
+
+                String folder = "";
+                if(type.equals("sipp")){
+                    folder = "SIPP-Nurse/";
+                    Map uploadResult = mobileCloudinary.uploader().upload(pathFile+file_name, ObjectUtils.asMap("folder",folder));
+                    String secure_url = uploadResult.get("secure_url").toString();
+                    returnData = secure_url ;
+                    UserProfile userData = new UserProfile();
+                    userData.setId(homecareSessionManager.getUserDetail().getId());
+                    userData.setSippUrl(secure_url);
+                    postData(userData, type);
+                }
+                else{
+                    folder = "STR-Nurse/";
+                    Map uploadResult = mobileCloudinary.uploader().upload(pathFile+file_name, ObjectUtils.asMap("folder",folder));
+                    String secure_url = uploadResult.get("secure_url").toString();
+                    returnData = secure_url ;
+                    UserProfile userData = new UserProfile();
+                    userData.setId(homecareSessionManager.getUserDetail().getId());
+                    userData.setRegisterNurseNumberUrl(secure_url);
+                    postData(userData, type);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, "Error nya : "+ e.getLocalizedMessage());
             }
-            //closeProgressUtils();
             return returnData;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //openProgress("Loading ...","Proses Upload Foto");
-            //openWindowsProgressListener_callBack.open();
+            openProgress("Uploading ...","Proses Upload Foto");
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            System.out.println("Setelah Beres "+ s);
-
+            closeProgressUtils();
+            Log.i(TAG, "Upload finished");
         }
 
-        public void postData(final UserProfile registerParam) throws UnsupportedEncodingException {
-            //System.out.println("Masuk Post data : "+homecareSessionManager.getUserDetail().getId());
+        public void postData(final UserProfile registerParam, final String type) throws UnsupportedEncodingException {
             final Call<ResponseBody> resp = userAPIInterface.updateProfile(registerParam.getId(), registerParam);
             resp.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Log.i(TAG, response.code() + " Error");
                     if (response.code() == 200) {
-                        Toast.makeText(current_activity, "Foto telah berhasil diunggah", Toast.LENGTH_LONG).show();
-                        //progressDialog = new SweetAlertDialog(current_activity, SweetAlertDialog.PROGRESS_TYPE);
-                        //progressDialog.dismiss();
-                        imageAttachment_callBack.image_attachment(0, null, null,null, registerParam.getRegisterNurseNumberUrl());
+                        if(type.equals("str")){
+                            Toast.makeText(current_activity, "Foto STR telah berhasil diupload", Toast.LENGTH_LONG).show();
+                            imageAttachment_callBack.image_attachment(0, null, null,null, registerParam.getRegisterNurseNumberUrl());
+                        }
+                        else{
+                            Toast.makeText(current_activity, "Foto SIPP telah berhasil diupload", Toast.LENGTH_LONG).show();
+                            imageAttachment_callBack.image_attachment(0, null, null,null, registerParam.getSippUrl());
+                        }
                     } else {
-                        Toast.makeText(current_activity, "Foto gagal diunggah !", Toast.LENGTH_LONG).show();
+                        if(type.equals("str")){
+                            Toast.makeText(current_activity, "Foto STR gagal diupload / diunggah !", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            Toast.makeText(current_activity, "Foto SIPP gagal diupload / diunggah !", Toast.LENGTH_LONG).show();
+                        }
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.i(TAG, "Failed");
-                    Toast.makeText(current_activity, "Profil gagal diubah!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(current_activity, "Foto STR gagal diupload / diunggah !", Toast.LENGTH_LONG).show();
                     call.cancel();
-                    //progressDialog.dismiss();
                 }
             });
         }
 
     }
-
-    /**
-     * Get image from Uri
-     *
-     * @param uri
-     * @param height
-     * @param width
-     * @return
-     */
-    public Bitmap getImage_FromUri(Uri uri, float height, float width)
-    {
-        Bitmap bitmap=null;
-
-        try
-        {
-            bitmap=compressImage(uri.toString(),height,width);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
-    /**
-     * Get filename from URI
-     * @param uri
-     * @return
-     */
-    public String getFileName_from_Uri(Uri uri)
-    {
-        String path=null,file_name=null;
-
-        try {
-
-            path = getRealPathFromURI(uri.getPath());
-            file_name = path.substring(path.lastIndexOf("/") + 1);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-
-        return file_name;
-
-    }
-
-
-    /**
-     * Check Image Exist (or) Not
-     *
-     * @param file_name
-     * @param file_path
-     * @return
-     */
-
-    public boolean checkimage(String file_name, String file_path)
-    {
-        boolean flag;
-        path = new File(file_path);
-
-        File file = new File(path,file_name);
-        if (file.exists ())
-        {
-            Log.i("file","exists");
-            flag=true;
-        }
-        else
-        {
-            Log.i("file","not exist");
-            flag=false;
-        }
-
-        return flag;
-    }
-
-
-
-    /**
-     * Get Image from the given path
-     *
-     * @param file_name
-     * @param file_path
-     * @return
-     */
-
-    public Bitmap getImage(String file_name, String file_path)
-    {
-
-        path = new File(file_path);
-        File file = new File(path,file_name);
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inSampleSize = 2;
-        options.inTempStorage = new byte[16 * 1024];
-
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(),options);
-
-        if(bitmap!=null)
-            return bitmap;
-        else
-            return null;
-    }
-
-    /**
-     * Create an image
-     *
-     * @param bitmap
-     * @param file_name
-     * @param filepath
-     * @param file_replace
-     */
-
-
-    public void createImage(Bitmap bitmap, String file_name, String filepath, boolean file_replace)
-    {
-
-        path = new File(filepath);
-
-        if(!path.exists())
-        {
-            path.mkdirs();
-        }
-
-        File file = new File(path,file_name);
-
-        if (file.exists ())
-        {
-            if(file_replace)
-            {
-                file.delete ();
-                file = new File(path,file_name);
-                store_image(file,bitmap);
-                Log.i("file","replaced");
-            }
-        }
-        else
-        {
-            store_image(file,bitmap);
-        }
-
-    }
-
 
     /**
      *
@@ -968,10 +715,5 @@ public class Imageutils
     public interface ImageAttachmentListener {
         public void image_attachment(int from, String filename, Bitmap file, Uri uri, String url);
     }
-
-    public interface openWindowsProgressListener {
-        public void open();
-    }
-
 
 }

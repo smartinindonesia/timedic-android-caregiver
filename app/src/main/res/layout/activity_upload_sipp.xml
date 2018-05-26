@@ -31,6 +31,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_upload_sipp_str_activity"/>
+    <include layout="@layout/content_upload_sipp_activity"/>
 
 </RelativeLayout>
