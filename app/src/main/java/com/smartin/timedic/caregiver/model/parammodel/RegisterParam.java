@@ -23,6 +23,8 @@ public class RegisterParam implements Serializable{
     private String middlename;
     @SerializedName("lastName")
     private String lastname;
+    @SerializedName("address")
+    private String address;
     @SerializedName("phoneNumber")
     private String phone;
     @SerializedName("email")
@@ -78,6 +80,14 @@ public class RegisterParam implements Serializable{
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {

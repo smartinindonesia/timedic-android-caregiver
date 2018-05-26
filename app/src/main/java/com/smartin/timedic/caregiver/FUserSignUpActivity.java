@@ -107,6 +107,8 @@ public class FUserSignUpActivity extends AppCompatActivity {
     Spinner genderSpin;
     @BindView(R.id.religionName)
     Spinner religionName;
+    @BindView(R.id.address)
+    EditText address;
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -130,6 +132,8 @@ public class FUserSignUpActivity extends AppCompatActivity {
     TextView dobTitle;
     @BindView(R.id.religionNameText)
     TextView religionNameText;
+    @BindView(R.id.addressTitle)
+    TextView addressTitle;
 
     ReligionAdapter religionAdapter;
     List<Religion> religions;
@@ -338,6 +342,7 @@ public class FUserSignUpActivity extends AppCompatActivity {
         registerParam.setEmail(emailAddress.getText().toString());
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateOfBirth(dobs);
+        registerParam.setAddress(address.getText().toString());
         registerParam.setGender(genderSpin.getSelectedItem().toString());
         registerParam.setReligion(((Religion) religionName.getAdapter().getItem(religionName.getSelectedItemPosition())).getReligion());
 
@@ -499,6 +504,8 @@ public class FUserSignUpActivity extends AppCompatActivity {
         arrayList.add(agreementLink);
         arrayList.add(signUP);
         arrayList.add(religionNameText);
+        arrayList.add(address);
+        arrayList.add(addressTitle);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }

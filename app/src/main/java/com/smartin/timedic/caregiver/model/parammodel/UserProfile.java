@@ -36,10 +36,8 @@ public class UserProfile {
     private String religion;
     @SerializedName("status")
     private Status status;
-
     @SerializedName("registerNurseNumberUrl")
     private String registerNurseNumberUrl;
-
     @SerializedName("sippUrl")
     private String sippUrl;
 
@@ -168,4 +166,5 @@ public class UserProfile {
     public void setSippUrl(String sippUrl) {
         this.sippUrl = sippUrl;
     }
+
 }

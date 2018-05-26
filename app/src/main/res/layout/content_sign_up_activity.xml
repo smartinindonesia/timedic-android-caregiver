@@ -175,6 +175,35 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
+                android:id="@+id/addressTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Alamat"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:enabled="false"
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:minLines="4"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
                 android:id="@+id/religionNameText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

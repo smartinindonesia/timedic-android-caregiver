@@ -98,6 +98,8 @@ public class SignUpActivity extends AppCompatActivity {
     Spinner genderSpin;
     @BindView(R.id.religionName)
     Spinner religionName;
+    @BindView(R.id.address)
+    EditText address;
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -121,6 +123,8 @@ public class SignUpActivity extends AppCompatActivity {
     TextView dobTitle;
     @BindView(R.id.religionNameText)
     TextView religionNameText;
+    @BindView(R.id.addressTitle)
+    TextView addressTitle;
 
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
@@ -302,6 +306,8 @@ public class SignUpActivity extends AppCompatActivity {
         arrayList.add(agreementLink);
         arrayList.add(signUP);
         arrayList.add(religionNameText);
+        arrayList.add(address);
+        arrayList.add(addressTitle);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 
@@ -336,6 +342,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerParam.setEmail(emailAddress.getText().toString());
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateOfBirth(dobs);
+        registerParam.setAddress(address.getText().toString());
         registerParam.setGender(genderSpin.getSelectedItem().toString());
         registerParam.setReligion(((Religion) religionName.getAdapter().getItem(religionName.getSelectedItemPosition())).getReligion());
         if (retypePassword.getText().toString().equals(password.getText().toString())) {
@@ -405,22 +412,20 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void insertDataUserToAuthFirebase(final RegisterParam registerParam) throws UnsupportedEncodingException{
+    private void insertDataUserToAuthFirebase(final RegisterParam registerParam) throws UnsupportedEncodingException {
 
         mAuth.createUserWithEmailAndPassword(registerParam.getEmail(), registerParam.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     //there was an error
                     Toast.makeText(SignUpActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
 
                     final FirebaseUser newUser = task.getResult().getUser();
                     try {
                         postData(registerParam, newUser.getUid());
-                    }
-                    catch (UnsupportedEncodingException e) {
+                    } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                     //success creating user, now set display name as name

@@ -84,6 +84,8 @@ public class AccountSettingActivity extends AppCompatActivity {
     ImageView profPic;
     @BindView(R.id.religionName)
     Spinner religionName;
+    @BindView(R.id.address)
+    EditText address;
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -103,6 +105,8 @@ public class AccountSettingActivity extends AppCompatActivity {
     TextView genderSpinTitle;
     @BindView(R.id.religionNameText)
     TextView religionNameText;
+    @BindView(R.id.addressTitle)
+    TextView addressTitle;
 
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
@@ -304,6 +308,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         lastName.setText(user.getLastName());
         phone.setText(user.getPhoneNumber());
         emailAddress.setText(user.getEmail());
+        address.setText(user.getAddress());
         dob.setText(ConverterUtility.getDateString(user.getDateBirth()));
         if (user.getGender() != null) {
             if (user.getGender().equals("Laki-Laki")) {
@@ -378,6 +383,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         registerParam.setMiddleName(middleName.getText().toString());
         registerParam.setPhoneNumber(phone.getText().toString());
         registerParam.setEmail(emailAddress.getText().toString());
+        registerParam.setAddress(address.getText().toString());
         Long dobs = ConverterUtility.getTimeStamp(dob.getText().toString(), "dd-MM-yyyy");
         registerParam.setDateBirth(dobs);
         registerParam.setGender(genderSpin.getSelectedItem().toString());
@@ -434,6 +440,8 @@ public class AccountSettingActivity extends AppCompatActivity {
         arrayList.add(dob);
         arrayList.add(genderSpinTitle);
         arrayList.add(btnEdit);
+        arrayList.add(address);
+        arrayList.add(addressTitle);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 }
