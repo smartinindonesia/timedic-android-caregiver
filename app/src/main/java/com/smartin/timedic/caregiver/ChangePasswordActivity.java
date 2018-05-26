@@ -217,6 +217,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Password berhasil diganti !", Toast.LENGTH_LONG).show();
                         } else {
+                            //task.getException().getLocalizedMessage();
                             Toast.makeText(getApplicationContext(), "Penggantian password baru gagal !", Toast.LENGTH_LONG).show();
                         }
                     }

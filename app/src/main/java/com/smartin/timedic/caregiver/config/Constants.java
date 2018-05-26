@@ -13,9 +13,9 @@ public class Constants {
 
 
     //RestApi constants
-    //public static final String BASE_URL = "https://timedic.id:8443";
+    public static final String BASE_URL = "https://timedic.id:8443";
     //public static final String BASE_URL = "http://167.205.7.227:8080";
-    public static final String BASE_URL = "http://192.168.1.2:8080";
+    //public static final String BASE_URL = "http://192.168.1.2:8080";
     //public static final String BASE_URL = "http://192.168.1.5:7778";
 
     //USER
