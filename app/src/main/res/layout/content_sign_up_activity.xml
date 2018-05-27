@@ -19,23 +19,25 @@
             android:padding="@dimen/calculator_row_space">
 
             <TextView
-                android:id="@+id/usernameTitle"
+                android:id="@+id/emailAddressTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:text="Username"
+                android:text="Email"
                 android:textSize="@dimen/calculator_hint_size" />
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/emailAddress"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/calculator_input_height"
                 android:layout_weight="0.6"
                 android:background="@drawable/bg_gray_rounded_textfield"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:paddingLeft="@dimen/calculator_input_padding"
-                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+                android:paddingRight="@dimen/calculator_input_padding" />
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,6 +87,32 @@
                 android:layout_weight="0.6"
                 android:background="@drawable/bg_gray_rounded_textfield"
                 android:inputType="textPassword"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:id="@+id/usernameTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Username"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="text"
                 android:paddingLeft="@dimen/calculator_input_padding"
                 android:paddingRight="@dimen/calculator_input_padding"></EditText>
         </LinearLayout>
@@ -170,7 +198,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="fill"
             android:orientation="horizontal"
             android:padding="@dimen/calculator_row_space">
 
@@ -188,7 +216,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:background="@drawable/bg_gray_rounded_textfield"
-                android:enabled="false"
+                android:enabled="true"
+                android:gravity="top|left"
                 android:inputType="textMultiLine"
                 android:lines="6"
                 android:minLines="4"
@@ -246,31 +275,7 @@
                 android:paddingRight="@dimen/calculator_input_padding"></EditText>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/calculator_row_space">
 
-            <TextView
-                android:id="@+id/emailAddressTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:text="Email"
-                android:textSize="@dimen/calculator_hint_size" />
-
-            <EditText
-                android:id="@+id/emailAddress"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/calculator_input_height"
-                android:layout_weight="0.6"
-                android:background="@drawable/bg_gray_rounded_textfield"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="@dimen/calculator_input_padding"
-                android:paddingRight="@dimen/calculator_input_padding" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -13,11 +13,78 @@
 
         <ImageView
             android:id="@+id/profPic"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:layout_gravity="center"
             android:padding="@dimen/calculator_row_space"
             android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textUploadFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Foto Profil"
+                android:textAlignment="center"
+                android:textColor="@color/blue_btn_bg_pressed_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:id="@+id/emailAddressTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Email"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/emailAddress"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:id="@+id/phoneUserTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Nomor Telepon"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/phoneUser"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/calculator_input_height"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:inputType="number"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,36 +199,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="@dimen/calculator_row_space">
-
-            <TextView
-                android:id="@+id/addressTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:text="Alamat"
-                android:textSize="@dimen/calculator_hint_size" />
-
-            <EditText
-                android:id="@+id/address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:background="@drawable/bg_gray_rounded_textfield"
-                android:enabled="false"
-                android:inputType="textMultiLine"
-                android:lines="6"
-                android:minLines="4"
-                android:paddingLeft="@dimen/calculator_input_padding"
-                android:paddingRight="@dimen/calculator_input_padding"></EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/calculator_row_space">
-
             <TextView
                 android:id="@+id/religionNameText"
                 android:layout_width="0dp"
@@ -169,7 +206,6 @@
                 android:layout_weight="0.4"
                 android:text="Agama"
                 android:textSize="@dimen/calculator_hint_size" />
-
             <Spinner
                 android:id="@+id/religionName"
                 android:layout_width="0dp"
@@ -177,58 +213,6 @@
                 android:layout_weight="0.6"
                 android:background="@drawable/bg_blue_rounded_field" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/calculator_row_space">
-
-            <TextView
-                android:id="@+id/phoneUserTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:text="Nomor Telepon"
-                android:textSize="@dimen/calculator_hint_size" />
-
-            <EditText
-                android:id="@+id/phoneUser"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/calculator_input_height"
-                android:layout_weight="0.6"
-                android:background="@drawable/bg_gray_rounded_textfield"
-                android:inputType="number"
-                android:paddingLeft="@dimen/calculator_input_padding"
-                android:paddingRight="@dimen/calculator_input_padding"></EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/calculator_row_space">
-
-            <TextView
-                android:id="@+id/emailAddressTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:text="Email"
-                android:textSize="@dimen/calculator_hint_size" />
-
-            <EditText
-                android:id="@+id/emailAddress"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/calculator_input_height"
-                android:layout_weight="0.6"
-                android:background="@drawable/bg_gray_rounded_textfield"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="@dimen/calculator_input_padding"
-                android:paddingRight="@dimen/calculator_input_padding"></EditText>
         </LinearLayout>
 
         <LinearLayout
@@ -298,10 +282,40 @@
                 android:layout_height="@dimen/calculator_input_height"
                 android:layout_weight="0.6"
                 android:background="@drawable/bg_blue_rounded_field">
-
             </Spinner>
-
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="fill"
+            android:orientation="horizontal"
+            android:padding="@dimen/calculator_row_space">
+
+            <TextView
+                android:id="@+id/addressTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="Alamat"
+                android:textSize="@dimen/calculator_hint_size" />
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:background="@drawable/bg_gray_rounded_textfield"
+                android:enabled="true"
+                android:inputType="textMultiLine"
+                android:gravity="top|left"
+                android:lines="6"
+                android:minLines="4"
+                android:paddingLeft="@dimen/calculator_input_padding"
+                android:paddingRight="@dimen/calculator_input_padding"></EditText>
+        </LinearLayout>
+
+
 
         <Button
             android:id="@+id/btnEdit"

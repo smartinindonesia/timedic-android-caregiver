@@ -40,6 +40,8 @@ public class UserProfile {
     private String registerNurseNumberUrl;
     @SerializedName("sippUrl")
     private String sippUrl;
+    @SerializedName("photoPath")
+    private String photoPath;
 
     public Long getId() {
         return id;
@@ -167,4 +169,11 @@ public class UserProfile {
         this.sippUrl = sippUrl;
     }
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
 }

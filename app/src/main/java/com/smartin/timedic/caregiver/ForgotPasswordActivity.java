@@ -1,15 +1,20 @@
 package com.smartin.timedic.caregiver;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -62,6 +67,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private HomecareSessionManager homecareSessionManager;
 
+    final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +94,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if(email.equals("") || email.equals(null)){
                     Toast.makeText(getApplicationContext(), "Alamat email harus diisi !", Toast.LENGTH_LONG).show();
                 }
+                else if(!email.matches(emailPattern)){
+                    Snackbar.make(mainLayout, "Email anda tidak valid !", Snackbar.LENGTH_LONG).show();
+                }
                 else{
                     cekMethod(email);
                 }
@@ -98,6 +108,38 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent newinten = new Intent(ForgotPasswordActivity.this, SignUpActivity.class);
                 startActivity(newinten);
+            }
+        });
+
+        emailAddress.addTextChangedListener(new TextWatcher() {
+            @TargetApi(Build.VERSION_CODES.M)
+            public void afterTextChanged(Editable s) {
+                String email = emailAddress.getText().toString().trim();
+                Integer paddingTop = emailAddress.getPaddingTop();
+                Integer paddingBottom = emailAddress.getPaddingBottom();
+                Integer paddingLeft = emailAddress.getPaddingLeft();
+                Integer paddingRight = emailAddress.getPaddingRight();
+                if (s.length() > 0) {
+                    if (email.matches(emailPattern)) {
+                        emailAddress.setBackground(getDrawable(R.drawable.edittext_border));
+                        emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black_link_color));
+                    } else {
+                        emailAddress.setBackground(getDrawable(R.drawable.bg_red_rounded_textfield));
+                        emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
+                    }
+                } else {
+                    emailAddress.setBackground(getDrawable(R.drawable.edittext_border));
+                    emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color));
+                }
+                emailAddress.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // other stuffs
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // other stuffs
             }
         });
     }
@@ -126,9 +168,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                        else{
+                        else if(password.equals("")){
+                            Snackbar.make(mainLayout, "Email tidak terdaftar !", Snackbar.LENGTH_LONG).show();
+                        }
+                        else if(password.equals("true,g")){
                             //reset password server side for facebook and google
-                            Toast.makeText(getApplicationContext(), "untuk email facebook dan gmail masih dalam proses", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "email anda telah terhubung dengan akun google anda sehingga tidak bisa direset !", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(password.equals("true,f")){
+                            //reset password server side for facebook and google
+                            Toast.makeText(getApplicationContext(), "email anda telah terhubung dengan akun facebook anda sehingga tidak bisa direset !", Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

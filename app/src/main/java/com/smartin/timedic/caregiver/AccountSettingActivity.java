@@ -3,10 +3,14 @@ package com.smartin.timedic.caregiver;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -61,7 +65,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccountSettingActivity extends AppCompatActivity {
+public class AccountSettingActivity extends AppCompatActivity implements Imageutils.ImageAttachmentListener {
     public static final String TAG = "[AccountSettingAct]";
 
     @BindView(R.id.username)
@@ -116,11 +120,16 @@ public class AccountSettingActivity extends AppCompatActivity {
     @BindView(R.id.addressTitle)
     TextView addressTitle;
 
+    @BindView(R.id.textUploadFoto)
+    TextView textUploadFoto;
+
     GenderSpinnerAdapter adapterGender;
     List<GenderOption> genderOptions;
 
     ReligionAdapter religionAdapter;
     List<Religion> religionList;
+
+    Imageutils imageutils;
 
     private DatePickerDialog datePickerDialog;
     private UserAPIInterface userAPIInterface;
@@ -138,7 +147,8 @@ public class AccountSettingActivity extends AppCompatActivity {
         userAPIInterface = APIClient.getClientWithToken(homecareSessionManager, getApplicationContext()).create(UserAPIInterface.class);
         createTitleBar();
         user = homecareSessionManager.getUserDetail();
-        fillTheForm();
+        imageutils = new Imageutils(this, homecareSessionManager, userAPIInterface);
+
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,6 +170,14 @@ public class AccountSettingActivity extends AppCompatActivity {
                 datePickerDialog.setTitle("Pilih tanggal pelayanan");
                 datePickerDialog.show();
                 dob.setText(day + "-" + (month + 1) + "-" + year);
+            }
+        });
+
+        textUploadFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(), "Masih dikerjakan", Toast.LENGTH_LONG).show();
+                imageutils.imagepicker(1,"profile_nurse");
             }
         });
 
@@ -195,6 +213,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                 // other stuffs
             }
         });
+
         phone.addTextChangedListener(new TextWatcher() {
             @TargetApi(Build.VERSION_CODES.M)
             public void afterTextChanged(Editable s) {
@@ -319,9 +338,11 @@ public class AccountSettingActivity extends AppCompatActivity {
         emailAddress.setText(user.getEmail());
         address.setText(user.getAddress());
         dob.setText(ConverterUtility.getDateString(user.getDateBirth()));
-        if (user.getPhotoPath() != null || !user.getPhotoPath().equals("")) {
-            setGlide(user.getPhotoPath());
-            profPic.setVisibility(View.VISIBLE);
+        if (user.getPhotoPath() != null) {
+            if (!user.getPhotoPath().equals("")) {
+                setGlide(user.getPhotoPath());
+                profPic.setVisibility(View.VISIBLE);
+            }
         } else {
             profPic.setVisibility(View.GONE);
         }
@@ -352,16 +373,6 @@ public class AccountSettingActivity extends AppCompatActivity {
             }
         } else {
             religionName.setSelection(6);
-        }
-        if (user.getPhotoPath() != null) {
-            profPic.setVisibility(View.VISIBLE);
-            Glide.with(getApplicationContext()).load(user.getPhotoPath()).apply(new RequestOptions()
-                    .circleCropTransform()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .thumbnail(0.5f)
-                    .into(profPic);
-        } else {
-            profPic.setVisibility(View.GONE);
         }
     }
 
@@ -455,27 +466,31 @@ public class AccountSettingActivity extends AppCompatActivity {
         arrayList.add(dob);
         arrayList.add(genderSpinTitle);
         arrayList.add(btnEdit);
+        arrayList.add(religionNameText);
         arrayList.add(address);
         arrayList.add(addressTitle);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
     }
 
     public void setGlide(String url) {
-        openProgress("Sinkronisasi","Proses Sinkronisasi dengan server !");
-        Glide.with(this).load(url).listener(new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                closeProgress();
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                closeProgress();
-                return false;
-            }
-        }).into(profPic);
-
+        openProgress("Sinkronisasi", "Proses Sinkronisasi dengan server !");
+        Glide.with(getApplicationContext()).load(url).apply(new RequestOptions()
+                .circleCropTransform()
+                .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .thumbnail(0.5f)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        closeProgress();
+                        return false;
+                    }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        closeProgress();
+                        return false;
+                    }
+                })
+                .into(profPic);
     }
 
     private void openProgress(String title, String content) {
@@ -489,5 +504,21 @@ public class AccountSettingActivity extends AppCompatActivity {
 
     private void closeProgress() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageutils.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void image_attachment(int from, String filename, Bitmap file, Uri uri, String url) {
+        setGlide(url);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        imageutils.request_permission_result(requestCode, permissions, grantResults);
     }
 }

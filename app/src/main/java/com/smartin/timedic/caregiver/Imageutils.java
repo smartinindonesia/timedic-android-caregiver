@@ -625,7 +625,7 @@ public class Imageutils
                     userData.setSippUrl(secure_url);
                     postData(userData, type);
                 }
-                else{
+                else if(type.equals("str")){
                     folder = "STR-Nurse/";
                     Map uploadResult = mobileCloudinary.uploader().upload(pathFile+file_name, ObjectUtils.asMap("folder",folder));
                     String secure_url = uploadResult.get("secure_url").toString();
@@ -633,6 +633,16 @@ public class Imageutils
                     UserProfile userData = new UserProfile();
                     userData.setId(homecareSessionManager.getUserDetail().getId());
                     userData.setRegisterNurseNumberUrl(secure_url);
+                    postData(userData, type);
+                }
+                else if(type.equals("profile_nurse")){
+                    folder = "Profile_Picture_Nurse/";
+                    Map uploadResult = mobileCloudinary.uploader().upload(pathFile+file_name, ObjectUtils.asMap("folder",folder));
+                    String secure_url = uploadResult.get("secure_url").toString();
+                    returnData = secure_url ;
+                    UserProfile userData = new UserProfile();
+                    userData.setId(homecareSessionManager.getUserDetail().getId());
+                    userData.setPhotoPath(secure_url);
                     postData(userData, type);
                 }
             } catch (Exception e) {
@@ -666,16 +676,23 @@ public class Imageutils
                             Toast.makeText(current_activity, "Foto STR telah berhasil diupload", Toast.LENGTH_LONG).show();
                             imageAttachment_callBack.image_attachment(0, null, null,null, registerParam.getRegisterNurseNumberUrl());
                         }
-                        else{
+                        else if(type.equals("sipp")){
                             Toast.makeText(current_activity, "Foto SIPP telah berhasil diupload", Toast.LENGTH_LONG).show();
                             imageAttachment_callBack.image_attachment(0, null, null,null, registerParam.getSippUrl());
+                        }
+                        else if(type.equals("profile_nurse")){
+                            Toast.makeText(current_activity, "Foto Profil anda telah berhasil diupload", Toast.LENGTH_LONG).show();
+                            imageAttachment_callBack.image_attachment(0, null, null,null, registerParam.getPhotoPath());
                         }
                     } else {
                         if(type.equals("str")){
                             Toast.makeText(current_activity, "Foto STR gagal diupload / diunggah !", Toast.LENGTH_LONG).show();
                         }
-                        else{
+                        else if(type.equals("sipp")){
                             Toast.makeText(current_activity, "Foto SIPP gagal diupload / diunggah !", Toast.LENGTH_LONG).show();
+                        }
+                        else if(type.equals("profile_nurse")){
+                            Toast.makeText(current_activity, "Foto profile gagal diupload / diunggah !", Toast.LENGTH_LONG).show();
                         }
                     }
                 }

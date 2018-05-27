@@ -193,8 +193,8 @@ public class UploadSippActivity extends AppCompatActivity implements Imageutils.
 
     @Override
     public void image_attachment(int from, String filename, Bitmap file, Uri uri, String url) {
-        this.bitmap = file;
-        this.file_name = filename;
+        //this.bitmap = file;
+        //this.file_name = filename;
         setGlide(url);
     }
 

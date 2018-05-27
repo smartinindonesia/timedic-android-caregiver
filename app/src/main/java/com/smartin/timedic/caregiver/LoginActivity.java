@@ -1,9 +1,11 @@
 package com.smartin.timedic.caregiver;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.content.Intent;
 import android.view.View;
@@ -82,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     Button signIn;
 
     @BindView(R.id.emailAddress)
-    EditText username;
+    EditText emailAddress;
 
     @BindView(R.id.password)
     EditText password;
@@ -127,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
     private SweetAlertDialog progressDialog;
 
     private static final int MY_PERMISSIONS_REQUEST = 999;
+    final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,14 +157,49 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        emailAddress.addTextChangedListener(new TextWatcher() {
+            @TargetApi(Build.VERSION_CODES.M)
+            public void afterTextChanged(Editable s) {
+                String email = emailAddress.getText().toString().trim();
+                Integer paddingTop = emailAddress.getPaddingTop();
+                Integer paddingBottom = emailAddress.getPaddingBottom();
+                Integer paddingLeft = emailAddress.getPaddingLeft();
+                Integer paddingRight = emailAddress.getPaddingRight();
+                if (s.length() > 0) {
+                    if (email.matches(emailPattern)) {
+                        emailAddress.setBackground(getDrawable(R.drawable.edittext_border));
+                        emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black_link_color));
+                    } else {
+                        emailAddress.setBackground(getDrawable(R.drawable.bg_red_rounded_textfield));
+                        emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.btn_on_text));
+                    }
+                } else {
+                    emailAddress.setBackground(getDrawable(R.drawable.edittext_border));
+                    emailAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color));
+                }
+                emailAddress.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // other stuffs
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // other stuffs
+            }
+        });
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(password.getText().toString().equals("") && username.getText().toString().equals("")){
-                    Snackbar.make(mainLayout, "Silahkan isi email dan password akun anda", Snackbar.LENGTH_LONG).show();
+                if(password.getText().toString().equals("") && emailAddress.getText().toString().equals("")){
+                    Snackbar.make(mainLayout, "Silahkan isi email dan password akun anda !", Snackbar.LENGTH_LONG).show();
+                }
+                else if(!emailAddress.getText().toString().matches(emailPattern)){
+                    Snackbar.make(mainLayout, "Email anda tidak valid !", Snackbar.LENGTH_LONG).show();
                 }
                 else{
-                    cekMethod(username.getText().toString());
+                    cekMethod(emailAddress.getText().toString());
                 }
             }
         });
@@ -252,6 +292,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(dataIndikator.equals("false")){
                             doLoginEmail();
+                        }
+                        else if(dataIndikator.equals("")){
+                            Snackbar.make(mainLayout, "Email tidak terdaftar !", Snackbar.LENGTH_LONG).show();
                         }
                         else{
                             if(dataIndikator.substring(5).equals("f")){
@@ -448,7 +491,7 @@ public class LoginActivity extends AppCompatActivity {
         openProgress("Loading...", "Proses Login!");
 
         String shahex = AesUtil.Encrypt(password.getText().toString());
-        Call<LoginResponse> responseCall = userAPIInterface.loginUser(username.getText().toString(), shahex);
+        Call<LoginResponse> responseCall = userAPIInterface.loginUser(emailAddress.getText().toString(), shahex);
         responseCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -480,7 +523,7 @@ public class LoginActivity extends AppCompatActivity {
         openProgress("Loading...", "Proses Login!");
         String shahex = AesUtil.Encrypt(password.getText().toString().trim());
         Log.d(TAG, "Hasil enkripsi : " + shahex);
-        mAuth.signInWithEmailAndPassword(username.getText().toString().trim(), password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(emailAddress.getText().toString().trim(), password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -622,7 +665,7 @@ public class LoginActivity extends AppCompatActivity {
         ArrayList<TextView> arrayList = new ArrayList<>();
         arrayList.add(signIn);
         arrayList.add(signUp);
-        arrayList.add(username);
+        arrayList.add(emailAddress);
         arrayList.add(password);
         arrayList.add(lupaPassword);
         arrayList.add(orWithText);
