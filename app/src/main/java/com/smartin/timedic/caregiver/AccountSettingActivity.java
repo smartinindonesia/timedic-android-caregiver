@@ -3,8 +3,11 @@ package com.smartin.timedic.caregiver;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +35,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.smartin.timedic.caregiver.adapter.GenderSpinnerAdapter;
 import com.smartin.timedic.caregiver.adapter.ReligionAdapter;
 import com.smartin.timedic.caregiver.config.ConstantVals;
@@ -48,6 +55,7 @@ import com.smartin.timedic.caregiver.tools.ViewFaceUtility;
 import com.smartin.timedic.caregiver.tools.restservice.APIClient;
 import com.smartin.timedic.caregiver.tools.restservice.UserAPIInterface;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -118,6 +126,7 @@ public class AccountSettingActivity extends AppCompatActivity {
     private UserAPIInterface userAPIInterface;
     private HomecareSessionManager homecareSessionManager;
     private User user;
+    private SweetAlertDialog progressDialog;
 
 
     @Override
@@ -310,6 +319,12 @@ public class AccountSettingActivity extends AppCompatActivity {
         emailAddress.setText(user.getEmail());
         address.setText(user.getAddress());
         dob.setText(ConverterUtility.getDateString(user.getDateBirth()));
+        if (user.getPhotoPath() != null || !user.getPhotoPath().equals("")) {
+            setGlide(user.getPhotoPath());
+            profPic.setVisibility(View.VISIBLE);
+        } else {
+            profPic.setVisibility(View.GONE);
+        }
         if (user.getGender() != null) {
             if (user.getGender().equals("Laki-Laki")) {
                 genderSpin.setSelection(0);
@@ -443,5 +458,36 @@ public class AccountSettingActivity extends AppCompatActivity {
         arrayList.add(address);
         arrayList.add(addressTitle);
         ViewFaceUtility.applyFonts(arrayList, this, "fonts/Dosis-Medium.otf");
+    }
+
+    public void setGlide(String url) {
+        openProgress("Sinkronisasi","Proses Sinkronisasi dengan server !");
+        Glide.with(this).load(url).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                closeProgress();
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                closeProgress();
+                return false;
+            }
+        }).into(profPic);
+
+    }
+
+    private void openProgress(String title, String content) {
+        progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        progressDialog.setTitleText(title);
+        progressDialog.setContentText(content);
+        progressDialog.setCanceledOnTouchOutside(true);
+        progressDialog.show();
+    }
+
+    private void closeProgress() {
+        progressDialog.dismiss();
     }
 }
